@@ -1,0 +1,48 @@
+@use '../../styles/variables' as v;
+
+.Home {
+  padding: 20px;
+}
+.page-title {
+  text-align: left;
+  padding: 20px 0px 20px 0;
+}
+
+.tile {
+  background-color: #d9d9d9;
+  border-radius: 2ch;
+  margin-bottom: 2ch;
+  padding: 2ch;
+
+  &--header {
+    margin-bottom: 1ch;
+    display: flex;
+    justify-content: space-between;
+
+    &--title {
+      flex-grow: 1;
+    }
+
+    &--button {
+      // Utiliser position relative par rapport au parent
+    }
+  }
+
+  &--goal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &--title {
+      font-weight: 400;
+    }
+
+    &--img {
+      max-width: 70%;
+    }
+  }
+}
+
+li {
+  list-style-type: none;
+}
