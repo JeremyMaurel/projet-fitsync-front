@@ -14,12 +14,18 @@ importers:
       axios:
         specifier: ^1.6.8
         version: 1.6.8
+      pnpm:
+        specifier: ^9.1.1
+        version: 9.1.1
       react:
         specifier: ^18.2.0
         version: 18.3.1
       react-dom:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
+      react-feather:
+        specifier: ^2.0.10
+        version: 2.0.10(react@18.3.1)
       react-redux:
         specifier: ^9.1.2
         version: 9.1.2(@types/react@18.3.2)(react@18.3.1)(redux@5.0.1)
@@ -1342,6 +1348,11 @@ packages:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
 
+  pnpm@9.1.1:
+    resolution: {integrity: sha512-FOkVdZwR936sB/q6TQGcGT7IY3Ip5i7Jnu+3zzw7dcZER4grfEhRQkUe46a0CAWc37e3+gNBuXXxLQ92KccRlQ==}
+    engines: {node: '>=18.12'}
+    hasBin: true
+
   possible-typed-array-names@1.0.0:
     resolution: {integrity: sha512-d7Uw+eZoloe0EHDIYoe+bQ5WXnGMOpmiZFTuMWCwpjzzkL2nTjcKiAk4hh8TjnGye2TwWOk3UXucZ+3rbmBa8Q==}
     engines: {node: '>= 0.4'}
@@ -1384,6 +1395,11 @@ packages:
     resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
     peerDependencies:
       react: ^18.3.1
+
+  react-feather@2.0.10:
+    resolution: {integrity: sha512-BLhukwJ+Z92Nmdcs+EMw6dy1Z/VLiJTzEQACDUEnWMClhYnFykJCGWQx+NmwP/qQHGX/5CzQ+TGi8ofg2+HzVQ==}
+    peerDependencies:
+      react: '>=16.8.6'
 
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
@@ -3051,6 +3067,8 @@ snapshots:
 
   picomatch@2.3.1: {}
 
+  pnpm@9.1.1: {}
+
   possible-typed-array-names@1.0.0: {}
 
   postcss@8.4.38:
@@ -3086,6 +3104,11 @@ snapshots:
       loose-envify: 1.4.0
       react: 18.3.1
       scheduler: 0.23.2
+
+  react-feather@2.0.10(react@18.3.1):
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.3.1
 
   react-is@16.13.1: {}
 
