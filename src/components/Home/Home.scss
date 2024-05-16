@@ -10,12 +10,12 @@
 
 .tile {
   background-color: #d9d9d9;
-  border-radius: 20px;
-  margin-bottom: 20px;
-  padding: 20px;
+  border-radius: 2ch;
+  margin-bottom: 2ch;
+  padding: 2ch;
 
   &--header {
-    margin-bottom: 10px;
+    margin-bottom: 1ch;
     display: flex;
     justify-content: space-between;
 
@@ -24,7 +24,7 @@
     }
 
     &--button {
-      size: 100px;
+      // Utiliser position relative par rapport au parent
     }
   }
 

@@ -31,7 +31,7 @@ export default function Home() {
       <div className="tile tile--favorites">
         <div className="tile--header">
           <h2 className="tile--header--title">My favorite activities</h2>
-          <PlusCircle size={40} className="tile--header--button" />
+          <PlusCircle size={30} className="tile--header--button" />
         </div>
         <ul>
           <li>Favorite activity 1</li>
