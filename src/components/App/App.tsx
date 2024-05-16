@@ -1,4 +1,4 @@
-import Header from '../Header/Header';
+import Header from '../Base/Header/Header';
 
 import './App.scss';
 
