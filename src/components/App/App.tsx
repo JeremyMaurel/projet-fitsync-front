@@ -1,14 +1,15 @@
 import logo from '../../assets/logo.svg';
 import Home from '../Home/Home';
+import Header from '../Base/Header/Header';
+import Footer from '../Home/Footer';
 
 import './App.scss';
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
+    <div className="app">
+      <Header />
       <Home />
+      <Footer />
     </div>
-  );
-}
-
-export default App;
+  )};
