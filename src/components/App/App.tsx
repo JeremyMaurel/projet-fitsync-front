@@ -16,20 +16,21 @@ import CategoryId from '../CategoryId/CategoryId';
 import './App.scss';
 
 export default function App() {
-  // -- state 1 -- State du username
-  const [username, setUsername] = useState([]);
+  // -- state 1 -- State des Catégories
+  // const [category, setCategory] = useState([]);
 
-  // -- fetchData -- fetch de l'api avec axios
-  const fetchData = async (inputValue: string) => {
-    const response = await axios.get(`https://api.com`);
+  // -- fetchCategory -- fetch de l'api avec axios
+  const fetchCategory = async () => {
+    const response = await axios.get(`http://localhost:3000/api/v1/categories`);
     console.log(response.data);
+    // setCategory(response.data);
   };
 
   return (
     <div className="app">
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/settings" element={<Settings fetchData={fetchData} />} />
+        <Route path="/settings" element={<Settings />} />
         <Route path="/category-list" element={<CategoryList />} />
         <Route path="/category-list/categoryId" element={<CategoryId />} />
         <Route path="*" element={<div>Page 404 (belle page à créer)</div>} />
