@@ -16,8 +16,11 @@ code {
 
 .main {
   padding: 20px;
+  margin-top: 3rem;
   height: 100%;
+
   &--title {
+    font-weight: 400;
     text-align: left;
     padding: 20px 0px 20px 0;
   }
@@ -35,6 +38,7 @@ code {
     justify-content: space-between;
 
     &--title {
+      font-weight: 400;
       flex-grow: 1;
     }
 
