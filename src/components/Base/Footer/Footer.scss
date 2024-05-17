@@ -2,9 +2,10 @@
   display: flex;
   justify-content: space-between;
   background-color: black;
-  padding: 1.2rem 1.2rem;
-  position: absolute;
-  bottom: 0;
+  height: 5rem;
+  padding: 1.2rem;
+  position: fixed;
+  bottom: 0px;
   width: 100%;
 
   &--btn {
