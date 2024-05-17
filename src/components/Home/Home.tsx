@@ -1,12 +1,12 @@
 // Import d'icônes de React-Feather
 import { PlusCircle } from 'react-feather';
 
-// Import des headers, footers et menu une fois prêts
+// Import des headers, footers et menu
+import Header from '../Base/Header/Header';
+import Footer from '../Base/Footer/Footer';
 
 // Gestion du style
 import './Home.scss';
-import Header from '../Base/Header/Header';
-import Footer from '../Base/Footer/Footer';
 
 export default function Home() {
   return (
