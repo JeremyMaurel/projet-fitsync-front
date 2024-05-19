@@ -8,6 +8,7 @@ import SettingsLogedIn from '../Settings/SettingsLogedIn';
 import CategoryId from '../CategoryId/CategoryId';
 import CategoryList from '../CategoryList/CategoryList';
 import History from '../History/History';
+import NewSession from '../NewSession/NewSession';
 
 // Import du style
 import './App.scss';
@@ -22,6 +23,7 @@ export default function App() {
         <Route path="/category-list" element={<CategoryList />} />
         <Route path="/category-list/categoryId" element={<CategoryId />} />
         <Route path="/history" element={<History />} />
+        <Route path="/new-session" element={<NewSession />} />
         <Route path="*" element={<div>Page 404 (belle page à créer)</div>} />
         <Route path="/test" element={<div>test route ok!</div>} />
       </Routes>
