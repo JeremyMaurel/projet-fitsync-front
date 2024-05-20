@@ -1,0 +1,40 @@
+.history--list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding-bottom: 4rem;
+  background-color: white;
+}
+
+.tile--category {
+  width: 48%;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #d9d9d9;
+  border-radius: 2ch;
+  margin-bottom: 2ch;
+  padding: 2ch;
+}
+
+.tile--title {
+  font-weight: 400;
+  margin: auto;
+}
+
+.tile--date {
+  font-weight: 400;
+  margin: auto;
+}
+
+.tile--mets {
+  font-weight: 400;
+  margin: auto;
+}
+
+@media (min-width: 900px) {
+  .tile-category {
+    width: 24%;
+    aspect-ratio: 1 / 1;
+  }
+}
