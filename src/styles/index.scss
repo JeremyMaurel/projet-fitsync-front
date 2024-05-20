@@ -22,7 +22,11 @@ code {
   &--title {
     font-weight: 400;
     text-align: left;
-    padding: 20px 0px 20px 0;
+    padding: 20px 0 20px 0;
+  }
+  &--subtitle {
+    text-align: left;
+    padding: 0 0 20px 0;
   }
 }
 

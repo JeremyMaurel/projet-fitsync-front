@@ -8,6 +8,8 @@ import SettingsLogedIn from '../Settings/SettingsLogedIn';
 import CategoryId from '../CategoryId/CategoryId';
 import CategoryList from '../CategoryList/CategoryList';
 import History from '../History/History';
+import Login from '../Authentification/Login';
+import Signin from '../Authentification/Signin';
 
 // Import du style
 import './App.scss';
@@ -22,6 +24,8 @@ export default function App() {
         <Route path="/category-list" element={<CategoryList />} />
         <Route path="/category-list/categoryId" element={<CategoryId />} />
         <Route path="/history" element={<History />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signin" element={<Signin />} />
         <Route path="*" element={<div>Page 404 (belle page à créer)</div>} />
         <Route path="/test" element={<div>test route ok!</div>} />
       </Routes>
