@@ -4,7 +4,6 @@ import { PlusCircle } from 'react-feather';
 // Import des headers, footers et menu
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
-import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
 
 // Gestion du style
 import './Home.scss';
@@ -46,7 +45,7 @@ export default function Home() {
           </ul>
         </div>
       </main>
-      <DisconnectedFooter />
+      <Footer />
     </>
   );
 }
