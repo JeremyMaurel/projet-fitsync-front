@@ -14,8 +14,9 @@
 
 /* Position and sizing of clickable cross button */
 .bm-cross-button {
-  height: 3rem;
+  height: 40px;
   width: 3rem;
+  font-size: 3rem;
 }
 
 /* Color/shape of close button cross */
@@ -36,7 +37,7 @@ Note: Beware of modifying this element as it can break the animations - you shou
 .bm-menu {
   background: #fff;
   padding: 2.5em 1.5em 0;
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   width: 100%;
 }
 
@@ -72,5 +73,5 @@ Note: Beware of modifying this element as it can break the animations - you shou
 }
 
 .bm-item:hover {
-  color: #ffffff;
+  color: grey;
 }

@@ -5,7 +5,12 @@ import './BurgerMenu.scss';
 
 export default function BurgerMenu() {
   return (
-    <Menu right width={'100%'}>
+    // Adding in props de Menu son pl
+    <Menu
+      right
+      width={'100%'}
+      customBurgerIcon={<img src="public/menu-icon.svg" />}
+    >
       <Link className="menu-item" to="/">
         Home
       </Link>
@@ -25,4 +30,4 @@ export default function BurgerMenu() {
   );
 }
 
-// Based on the library 'react-burger-menu' documentation: https://github.com/negomi/react-burger-menu/blob/main/README.md
+// Based on the library 'react-burger-menu'. Documentation: https://github.com/negomi/react-burger-menu/blob/main/README.md
