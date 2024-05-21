@@ -12,7 +12,6 @@ export default function CategoryId() {
       <Header />
       <main className="main">
         <h1 className="main--title">Category</h1>
-        <CtaAdd />
         <div className="tile--list">
           <div className="tile--list--item">
             <h2 className="tile--list--title">
@@ -88,6 +87,7 @@ export default function CategoryId() {
           </div>
         </div>
         <CtaMore />
+        <CtaAdd />
       </main>
       <Footer />
     </>
