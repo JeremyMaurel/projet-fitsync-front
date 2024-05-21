@@ -1,0 +1,23 @@
+.tile--activity-name {
+  background-color: #d9d9d9;
+  border-radius: 4ch;
+  margin-bottom: 2ch;
+
+  &--title {
+    padding: 1rem;
+    text-align: center;
+    font-weight: 400;
+  }
+}
+
+.tile--met--title {
+  padding: 1rem;
+  text-align: center;
+  font-weight: 400;
+}
+
+.tile--description--title {
+  padding: 4rem;
+  text-align: center;
+  font-weight: 400;
+}

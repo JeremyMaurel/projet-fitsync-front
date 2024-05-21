@@ -1,54 +1,20 @@
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
-import CtaAdd from '../Base/CtaAdd/CtaAdd';
 import CtaMore from '../Base/CtaMore/CtaMore';
 
 // Gestion du style
-import './CategoryId.scss';
+import './Favorites.scss';
 
-export default function CategoryId() {
+export default function Favorites() {
   return (
     <>
       <Header />
       <main className="main">
-        <h1 className="main--title">Category</h1>
+        <h1 className="main--title">Favorites</h1>
+        <div className="tile tile--addfav">
+          <h2 className="tile--addfav--title">+</h2>
+        </div>
         <div className="tile--list">
-          <div className="tile--list--item">
-            <h2 className="tile--list--title">
-              Activity
-              <br /> MET
-            </h2>
-          </div>
-          <div className="tile--list--item">
-            <h2 className="tile--list--title">
-              Activity
-              <br /> MET
-            </h2>
-          </div>
-          <div className="tile--list--item">
-            <h2 className="tile--list--title">
-              Activity
-              <br /> MET
-            </h2>
-          </div>
-          <div className="tile--list--item">
-            <h2 className="tile--list--title">
-              Activity
-              <br /> MET
-            </h2>
-          </div>
-          <div className="tile--list--item">
-            <h2 className="tile--list--title">
-              Activity
-              <br /> MET
-            </h2>
-          </div>
-          <div className="tile--list--item">
-            <h2 className="tile--list--title">
-              Activity
-              <br /> MET
-            </h2>
-          </div>
           <div className="tile--list--item">
             <h2 className="tile--list--title">
               Activity
@@ -87,7 +53,6 @@ export default function CategoryId() {
           </div>
         </div>
         <CtaMore />
-        <CtaAdd />
       </main>
       <Footer />
     </>
