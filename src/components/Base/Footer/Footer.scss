@@ -7,6 +7,7 @@
   position: fixed;
   bottom: 0px;
   width: 100%;
+  color: white;
 
   &--btn {
     text-align: center;
@@ -23,4 +24,8 @@
       margin: auto;
     }
   }
+}
+// Ajout de cette propriété CSS pour forcer l'affichage en blanc des liens ou icones...
+a {
+  color: white;
 }
