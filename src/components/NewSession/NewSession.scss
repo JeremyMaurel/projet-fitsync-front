@@ -48,6 +48,7 @@
   }
 
   &--comments-container {
+    z-index: -1;
     position: relative;
     margin: auto;
     width: 95%;
