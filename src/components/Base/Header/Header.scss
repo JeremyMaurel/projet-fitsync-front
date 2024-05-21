@@ -16,6 +16,13 @@
   &--icons {
     display: flex;
     width: 4rem;
+    margin-right: 2rem;
     justify-content: space-between;
+    text-decoration: none;
   }
+}
+
+// Ajout de cette propriété CSS pour forcer l'affichage en blanc des liens ou icones...
+a {
+  color: white;
 }
