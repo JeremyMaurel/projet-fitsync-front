@@ -26,16 +26,20 @@ import Signin from '../Authentification/Signin';
 import './App.scss';
 
 function App() {
-  // -- fetchData --
-  const fetchData = async () => {
-    const response = await axios.get(`https://api.github.com/rate_limit`);
-    // const response = await axios.get(`http://localhost:3000/api/v1/categories`);
+  // -- state 1 --
+  const [categories, setCategories] = useState([]);
 
-    console.log('Hello World!');
+  // -- fetchCategs --
+  const fetchCategories = async () => {
+    const response = await axios.get('http://localhost:3000/api/v1/categories');
     console.log(response.data);
+    // Afficher le tableau dans l'objet de l'API
+    console.log(response.data.data);
+    setCategories(response.data.data);
   };
+
   useEffect(() => {
-    fetchData();
+    fetchCategories();
   }, []);
 
   return (
@@ -47,13 +51,16 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/settings-LogedIn" element={<SettingsLogedIn />} />
-        <Route path="/category-list" element={<CategoryList />} />
-        <Route path="/category-list/categoryId" element={<CategoryId />} />
         <Route
-          path="/category-list/categoryId/activityId"
+          path="/category-list"
+          element={<CategoryList categories={categories} />}
+        />
+        <Route path="/category-list/:categoryId" element={<CategoryId />} />
+        <Route
+          path="/category-list/categoryId/:activityId"
           element={<ActivityId />}
         />
-        <Route path="/history/sessionId" element={<SessionId />} />
+        <Route path="/history/:sessionId" element={<SessionId />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/history" element={<History />} />
