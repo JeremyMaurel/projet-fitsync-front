@@ -1,6 +1,4 @@
 import { User } from 'react-feather';
-import Header from '../Base/Header/Header';
-import Footer from '../Base/Footer/Footer';
 
 import './Settings.scss';
 
