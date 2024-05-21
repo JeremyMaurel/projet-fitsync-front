@@ -4,6 +4,10 @@ import Footer from '../Base/Footer/Footer';
 
 import './Settings.scss';
 
+// Import of header, footer and menu
+import Header from '../Base/Header/Header';
+import Footer from '../Base/Footer/Footer';
+
 export default function Settings() {
   return (
     <>

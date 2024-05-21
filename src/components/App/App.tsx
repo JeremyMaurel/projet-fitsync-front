@@ -9,6 +9,8 @@ import CategoryId from '../CategoryId/CategoryId';
 import CategoryList from '../CategoryList/CategoryList';
 import History from '../History/History';
 import NewSession from '../NewSession/NewSession';
+import Login from '../Authentification/Login';
+import Signin from '../Authentification/Signin';
 
 // Import du style
 import './App.scss';
@@ -17,15 +19,16 @@ export default function App() {
   return (
     <div className="app">
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/settings-LogedIn" element={<SettingsLogedIn />} />
         <Route path="/category-list" element={<CategoryList />} />
         <Route path="/category-list/categoryId" element={<CategoryId />} />
         <Route path="/history" element={<History />} />
         <Route path="/new-session" element={<NewSession />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signin" element={<Signin />} />
         <Route path="*" element={<div>Page 404 (belle page à créer)</div>} />
-        <Route path="/test" element={<div>test route ok!</div>} />
       </Routes>
     </div>
   );
