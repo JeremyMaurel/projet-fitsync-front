@@ -1,18 +1,22 @@
-import './Footer.scss';
+// Import of React libraries
+import { Link } from 'react-router-dom';
 import { Plus } from 'react-feather';
-function Footer() {
+
+// Stylesheet
+import './Footer.scss';
+
+export default function Footer() {
   return (
     <footer className="footer">
-      <a className="footer--btn" href="#">
-        Dashboard
-      </a>
-      <a className="footer--btn" href="#">
+      <Link className="footer--btn" to="/home">
         Home
-      </a>
-      <a className="footer--btn" href="#">
+      </Link>
+      <Link className="footer--btn" to="/dashboard">
+        Dashboard
+      </Link>
+      <Link className="footer--btn" to="/new-session">
         <Plus className="footer--btn--plus" />
-      </a>
+      </Link>
     </footer>
   );
 }
-export default Footer;
