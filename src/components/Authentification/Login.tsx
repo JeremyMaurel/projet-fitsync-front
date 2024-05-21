@@ -44,7 +44,7 @@ export default function Login() {
 
             <p>
               You don&lsquo;t have an account yet ? &nbsp;
-              <Link className="form--link" to="/signup">
+              <Link className="form--link" to="/signin">
                 Register here
               </Link>
             </p>

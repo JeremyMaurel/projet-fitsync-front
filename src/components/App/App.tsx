@@ -18,7 +18,7 @@ export default function App() {
   return (
     <div className="app">
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/settings-LogedIn" element={<SettingsLogedIn />} />
         <Route path="/category-list" element={<CategoryList />} />
@@ -27,7 +27,6 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="*" element={<div>Page 404 (belle page à créer)</div>} />
-        <Route path="/test" element={<div>test route ok!</div>} />
       </Routes>
     </div>
   );
