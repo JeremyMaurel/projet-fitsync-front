@@ -6,11 +6,7 @@ import './BurgerMenu.scss';
 export default function BurgerMenu() {
   return (
     // Adding in props de Menu son pl
-    <Menu
-      right
-      width={'100%'}
-      customBurgerIcon={<img src="public/menu-icon.svg" />}
-    >
+    <Menu right width={'100%'} customBurgerIcon={<img src="/menu-icon.svg" />}>
       <Link className="menu-item" to="/home">
         Home
       </Link>
