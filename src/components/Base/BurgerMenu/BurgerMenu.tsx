@@ -14,17 +14,26 @@ export default function BurgerMenu() {
       <Link className="menu-item" to="/home">
         Home
       </Link>
-      <Link className="menu-item" to="/settings">
-        Settings
+      <Link className="menu-item" to="/dashboard">
+        Dashboard
       </Link>
       <Link className="menu-item" to="/category-list">
         Categories
       </Link>
-      <Link className="menu-item" to="/category-list/categoryId">
-        Activities
+      <Link className="menu-item" to="/new-session">
+        New Session
       </Link>
-      <Link className="menu-item" to="/test">
-        Test
+      <Link className="menu-item" to="/history">
+        History
+      </Link>
+      <Link className="menu-item" to="/favorites">
+        Favorites
+      </Link>
+      <Link className="menu-item" to="/support">
+        Contact support
+      </Link>
+      <Link className="menu-item" to="/">
+        Logout
       </Link>
     </Menu>
   );
