@@ -11,7 +11,7 @@ export default function BurgerMenu() {
       width={'100%'}
       customBurgerIcon={<img src="public/menu-icon.svg" />}
     >
-      <Link className="menu-item" to="/">
+      <Link className="menu-item" to="/home">
         Home
       </Link>
       <Link className="menu-item" to="/settings">
