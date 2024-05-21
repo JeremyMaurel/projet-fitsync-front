@@ -48,12 +48,12 @@ function App() {
         <Route path="/settings" element={<Settings />} />
         <Route path="/settings-LogedIn" element={<SettingsLogedIn />} />
         <Route path="/category-list" element={<CategoryList />} />
-        <Route path="/category-list/categoryId" element={<CategoryId />} />
+        <Route path="/category-list/:categoryId" element={<CategoryId />} />
         <Route
-          path="/category-list/categoryId/activityId"
+          path="/category-list/categoryId/:activityId"
           element={<ActivityId />}
         />
-        <Route path="/history/sessionId" element={<SessionId />} />
+        <Route path="/history/:sessionId" element={<SessionId />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/history" element={<History />} />
