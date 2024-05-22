@@ -2,13 +2,13 @@ import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 import CtaMore from '../Base/CtaMore/CtaMore';
 
-import ICategories from '../../@types/categories';
+import ICategory from '../../@types/category';
 
 // Gestion du style
 import './CategoryList.scss';
 
 interface CategoryListProps {
-  categories: ICategories[];
+  categories: ICategory[];
 }
 
 export default function CategoryList({ categories }: CategoryListProps) {
