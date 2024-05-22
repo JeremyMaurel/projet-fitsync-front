@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 import CtaAdd from '../Base/CtaAdd/CtaAdd';
@@ -45,6 +47,10 @@ export default function CategoryId({
           <div className="tile--list">
             {activities.map((activity) => (
               <div key={activity.id} className="tile--list--item">
+                <Link
+                  className="tile--list--link"
+                  to="/activity/{activity.id}"
+                />
                 <h2 className="tile--list--title">
                   {activity.name}
                   <br /> MET: {activity.met}
