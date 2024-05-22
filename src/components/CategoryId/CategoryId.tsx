@@ -21,7 +21,7 @@ export default function CategoryId({
   categoryId,
   categoryName,
 }: CategoryIdProps) {
-  const [activities, setActivities] = useState<IActivity[] | null>(null);
+  const [activities, setActivities] = useState<IActivity[]>([]);
 
   // -- fetchActivities --
   const fetchActivities = async () => {
@@ -39,20 +39,17 @@ export default function CategoryId({
       <Header />
       <main className="main">
         <h1 className="main--title">{categoryName}</h1>
-        {/* afficher le activities.map si la variable activities n'est pas null */}
-        {/* il va falloir compléter avec des isLoading pour gérer le render */}
-        {activities !== null && (
-          <div className="tile--list">
-            {activities.map((activity) => (
-              <div key={activity.id} className="tile--list--item">
-                <h2 className="tile--list--title">
-                  {activity.name}
-                  <br /> MET: {activity.met}
-                </h2>
-              </div>
-            ))}
-          </div>
-        )}
+        <div className="tile--list">
+          {activities.map((activity) => (
+            <div key={activity.id} className="tile--list--item">
+              <h2 className="tile--list--title">
+                {activity.name}
+                <br /> MET: {activity.met}
+              </h2>
+            </div>
+          ))}
+        </div>
+
         <CtaMore />
         <CtaAdd />
       </main>
