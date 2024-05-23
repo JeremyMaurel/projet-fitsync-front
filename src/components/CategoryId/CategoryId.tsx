@@ -49,12 +49,13 @@ export default function CategoryId({
               <div key={activity.id} className="tile--list--item">
                 <Link
                   className="tile--list--link"
-                  to="/activity/{activity.id}"
-                />
-                <h2 className="tile--list--title">
-                  {activity.name}
-                  <br /> MET: {activity.met}
-                </h2>
+                  to={`/activity/${activity.id}`}
+                >
+                  <h2 className="tile--list--title">
+                    {activity.name}
+                    <br /> MET: {activity.met}
+                  </h2>
+                </Link>
               </div>
             ))}
           </div>

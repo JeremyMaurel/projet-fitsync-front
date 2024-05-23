@@ -1,6 +1,7 @@
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 import CtaMore from '../Base/CtaMore/CtaMore';
+import { Link } from 'react-router-dom';
 
 import ICategory from '../../@types/category';
 
@@ -20,7 +21,12 @@ export default function CategoryList({ categories }: CategoryListProps) {
         <div className="tile--list">
           {categories.map((category) => (
             <div key={category.id} className="tile--list--item">
-              <h2 className="tile--list--title">{category.name}</h2>
+              <Link
+                className="tile--list--link"
+                to={`/category-list/${category.id}`}
+              >
+                <h2 className="tile--list--title">{category.name}</h2>
+              </Link>
             </div>
           ))}
         </div>
