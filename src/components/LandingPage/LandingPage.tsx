@@ -1,3 +1,6 @@
+// Import of React component or libraries
+import { Link } from 'react-router-dom';
+
 // Import of components
 import DisconnectedHeader from '../Base/Header/DisconnectedHeader';
 import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
@@ -15,9 +18,11 @@ export default function LandingPage() {
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor.
         </h3>
-        <button className="form--btn lp-cta" type="submit">
-          Create account
-        </button>
+        <Link to="/signin" className="lp-cta--link">
+          <button className="form--btn lp-cta" type="submit">
+            Create account
+          </button>
+        </Link>
       </main>
       <DisconnectedFooter />
     </>
