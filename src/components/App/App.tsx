@@ -21,6 +21,7 @@ import History from '../History/History';
 import NewSession from '../NewSession/NewSession';
 import Login from '../Authentification/Login';
 import Signin from '../Authentification/Signin';
+import ResetPassword from '../ResetPassword/ResetPassword';
 
 // Import de l'interface de types
 import ICategory from '../../@types/category';
@@ -51,6 +52,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signin" element={<Signin />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/home" element={<Home />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/settings-LogedIn" element={<SettingsLogedIn />} />
