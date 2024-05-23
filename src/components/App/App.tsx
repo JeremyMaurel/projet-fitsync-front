@@ -30,7 +30,7 @@ import ICategory from '../../@types/category';
 import './App.scss';
 
 function App() {
-  // -- state 1 --
+  // -- state 1 for categories --
   const [categories, setCategories] = useState<ICategory[]>([]);
 
   // -- fetchCategories --
@@ -74,10 +74,7 @@ function App() {
           />
         ))}
 
-        <Route
-          path="/category-list/categoryId/:activityId"
-          element={<ActivityId />}
-        />
+        <Route path="/activity/:activityId" element={<ActivityId />} />
         <Route path="/history/:sessionId" element={<SessionId />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/favorites" element={<Favorites />} />
