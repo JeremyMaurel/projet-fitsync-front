@@ -1,8 +1,8 @@
 // Import of librairies or technical components
+import { Zap, ArrowRightCircle, PlusCircle } from 'react-feather';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import instanceAxios from '../../axios/axiosInstance';
-import { Zap, ArrowRightCircle } from 'react-feather';
 
 // Import of sub-components
 import Header from '../Base/Header/Header';
@@ -49,9 +49,16 @@ export default function ActivityId() {
         <div className="tile tile--description">
           <h2 className="tile--description--title">Description</h2>
         </div>
-        <button className="form--btn" type="submit" value="{activity.id}">
-          Select this activity &nbsp; <ArrowRightCircle />
-        </button>
+        <Link to="/new-session" className="form--btn--link">
+          <button className="form--btn" type="submit" value={`${activity.id}`}>
+            Select this activity &nbsp; <ArrowRightCircle />
+          </button>
+        </Link>
+        <Link to="/favorites" className="form--btn--link">
+          <button className="form--btn" type="submit" value={`${activity.id}`}>
+            Add to my favorite activities &nbsp; <PlusCircle />
+          </button>
+        </Link>
       </main>
       <Footer />
     </>
