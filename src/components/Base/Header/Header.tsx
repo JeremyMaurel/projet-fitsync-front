@@ -11,7 +11,9 @@ export default function Header() {
   return (
     <header className="header">
       <div className="header--logo">
-        <img src="/fitsync-logo.svg" alt="Logo Fitsync" />
+        <Link className="menu-item" to="/home">
+          <img src="/fitsync-logo.svg" alt="Logo Fitsync" />
+        </Link>
       </div>
       <div className="header--icons">
         <Link className="menu-item" to="/settings">
