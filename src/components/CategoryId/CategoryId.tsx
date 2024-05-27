@@ -37,10 +37,11 @@ export default function CategoryId({
     (state) => state.categories.categoriesList
   );
 
-  const activitiesToDisplay = activitiesList.find(
+  const activitiesToDisplay = activitiesList.filter(
     (activity) => activity.category_id === +categoryId
   );
   console.log({ activitiesToDisplay });
+
   return (
     <>
       <Header />

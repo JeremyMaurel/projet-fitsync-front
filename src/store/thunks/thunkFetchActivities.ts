@@ -7,7 +7,7 @@ import instanceAxios from '../../axios/axiosInstance';
 
 const actionThunkFetchActivities = createAsyncThunk(
   // naming the action type (best-practice from Solène)
-  'activities/FETCH_CATEGORIES',
+  'activities/FETCH_ACTIVITIES',
 
   // the callback to go fetch Activities data on API
   async () => {
