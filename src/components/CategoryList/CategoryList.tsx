@@ -1,25 +1,28 @@
+// Import of librairies or technical components
+import { Link } from 'react-router-dom';
+import { useAppSelector } from '../../hooks/redux-hooks';
+
+// Import of sub-components
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 import CtaMore from '../Base/CtaMore/CtaMore';
-import { Link } from 'react-router-dom';
 
-import ICategory from '../../@types/category';
-
-// Gestion du style
+// Stylesheet
 import './CategoryList.scss';
 
-interface CategoryListProps {
-  categories: ICategory[];
-}
+export default function CategoryList() {
+  // -- STATE REDUX --
+  const categoriesList = useAppSelector(
+    (state) => state.categories.categoriesList
+  );
 
-export default function CategoryList({ categories }: CategoryListProps) {
   return (
     <>
       <Header />
       <main className="main">
         <h1 className="main--title">Categories</h1>
         <div className="tile--list">
-          {categories.map((category) => (
+          {categoriesList.map((category) => (
             <div key={category.id} className="tile--list--item">
               <Link
                 className="tile--list--link"

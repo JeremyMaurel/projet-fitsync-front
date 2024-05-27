@@ -1,10 +1,12 @@
 // Import du composant routes de react-router-dom pour englober nos routes
 import { Routes, Route } from 'react-router-dom';
 // Import du hook useState pour la gestion du state
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useAppDispatch } from '../../hooks/redux-hooks';
 
-// Import de l'instance axios pour fetch l'api
-import instanceAxios from '../../axios/axiosInstance';
+// Import of Redux store thunks
+import actionThunkFetchActivities from '../../store/thunks/thunkFetchActivities';
+import actionThunkFetchCategories from '../../store/thunks/thunkFetchCategories';
 
 // Import des sous-composants
 import Home from '../Home/Home';
@@ -30,20 +32,11 @@ import ICategory from '../../@types/category';
 import './App.scss';
 
 function App() {
-  // -- state 1 for categories --
-  const [categories, setCategories] = useState<ICategory[]>([]);
-
-  // -- fetchCategories --
-  const fetchCategories = async () => {
-    const response = await instanceAxios.get('/categories');
-    console.log(response.data);
-    // Afficher le tableau dans l'objet de l'API
-    console.log(response.data.data);
-    setCategories(response.data.data);
-  };
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    fetchCategories();
+    dispatch(actionThunkFetchCategories());
+    dispatch(actionThunkFetchActivities());
   }, []);
 
   return (
@@ -56,24 +49,8 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/settings-LogedIn" element={<SettingsLogedIn />} />
-        <Route
-          path="/category-list"
-          element={<CategoryList categories={categories} />}
-        />
-
-        {categories.map((category) => (
-          <Route
-            key={category.id}
-            path={`/category-list/${category.id}`}
-            element={
-              <CategoryId
-                categoryId={category.id}
-                categoryName={category.name}
-              />
-            }
-          />
-        ))}
-
+        <Route path="/category-list" element={<CategoryList />} />
+        <Route path="/category-list/:categoryId" element={<CategoryId />} />
         <Route path="/activity/:activityId" element={<ActivityId />} />
         <Route path="/history/:sessionId" element={<SessionId />} />
         <Route path="/dashboard" element={<Dashboard />} />
@@ -87,3 +64,18 @@ function App() {
 }
 
 export default App;
+
+/*
+Backup de la route pour categoryID
+{categories.map((category) => (
+          <Route
+            key={category.id}
+            path={`/category-list/${category.id}`}
+            element={
+              <CategoryId
+                categoryId={category.id}
+                categoryName={category.name}
+              />
+            }
+          />
+        ))} */
