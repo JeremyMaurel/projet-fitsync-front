@@ -1,36 +1,93 @@
-// Import of librairies or technical components
-import { createAction, createReducer } from '@reduxjs/toolkit';
+// Importation des librairies ou composants techniques
+import { createAction, createReducer, PayloadAction } from '@reduxjs/toolkit';
+import actionCheckLogin from '../thunks/actionCheckLogin';
 
-// --- THE INITIAL STATE AND ITS TYPE
-
-interface InitalUserState {
-  id: null | number;
-  isConnected: boolean;
+// --- L'ÉTAT INITIAL ET SON TYPE
+interface UserState {
+  logged: boolean;
   credentials: {
-    pseudo: string;
+    email: string;
     password: string;
   };
-  email: null | string;
-  age: null | number;
-  weight: number;
-  height: null | number;
+  pseudo: null | string;
+  token: null | string;
+  error: null | string;
 }
-const initialState: InitalUserState = {
-  id: null,
-  isConnected: false,
+
+const initialState: UserState = {
+  logged: false,
+  // Ici les emplacements pour contrôler les inputs du formulaire de login
   credentials: {
-    pseudo: '',
+    email: '',
     password: '',
   },
-  email: null,
-  age: null,
-  weight: 70,
-  height: null,
+  pseudo: null,
+  token: null,
+  error: null,
 };
 
-// --- THE ACTIONS
+// -- ACTION CREATORS --
+export const actionChangeCredential = createAction<{
+  name: 'email' | 'password';
+  value: string;
+}>('user/CHANGE_CREDENTIAL');
 
-// --- THE REDUCER
-const userReducer = createReducer(initialState, (builder) => {});
+// Cette action est dispatchée au clic sur le bouton de déconnexion
+export const actionLogOut = createAction('user/LOGOUT');
+
+// Cette action est dispatchée si, au chargement de l'App, il y a un token dans le localStorage pour se connecter
+export const actionLogIn = createAction<{ jwt: string; pseudo: string | null }>(
+  'user/LOGIN'
+);
+
+// -- REDUCER --
+const userReducer = createReducer(initialState, (builder) => {
+  builder
+    .addCase(
+      actionChangeCredential,
+      (
+        state,
+        action: PayloadAction<{ name: 'email' | 'password'; value: string }>
+      ) => {
+        // Quand je reçois la demande 'changer les credentials'
+        // il me faut le nom du champ à modifier (soit email soit password)
+        // et aussi la nouvelle valeur
+        // -> on va chercher ces deux infos dans le payload de l'action
+        state.credentials[action.payload.name] = action.payload.value;
+      }
+    )
+    .addCase(actionCheckLogin.fulfilled, (state, action) => {
+      // Le thunk a bien fait la requête vers /login, il a récupéré le pseudo et le token, il les a ajoutés au payload de l'action, je vais les enregistrer dans le state
+      state.logged = true;
+      state.pseudo = action.payload.pseudo;
+      // On stocke le token JWT qui sert d'authentification, il faudra le renvoyer dans les en-têtes des requêtes où on demande des données privées
+      state.token = action.payload.token;
+      state.error = null;
+    })
+    .addCase(actionCheckLogin.rejected, (state) => {
+      state.error = 'erreur de connexion';
+    })
+    .addCase(actionLogOut, (state) => {
+      // Passer logged à false dans le state
+      // Supprimer le pseudo et le token
+      state.logged = false;
+      state.pseudo = null;
+      state.token = null;
+    })
+    .addCase(
+      actionLogIn,
+      (
+        state,
+        action: PayloadAction<{ jwt: string; pseudo: string | null }>
+      ) => {
+        // On connecte l'utilisateur
+        state.logged = true;
+        // On enregistre le token récupéré du payload de l'action
+        state.token = action.payload.jwt;
+        state.pseudo = action.payload.pseudo;
+        console.log(state.token);
+      }
+    );
+});
 
 export default userReducer;

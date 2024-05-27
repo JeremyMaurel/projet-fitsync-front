@@ -2,7 +2,7 @@
 import { Routes, Route } from 'react-router-dom';
 // Import du hook useState pour la gestion du state
 import { useEffect } from 'react';
-import { useAppDispatch } from '../../hooks/redux-hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 
 // Import of Redux store thunks
 import actionThunkFetchActivities from '../../store/thunks/thunkFetchActivities';
@@ -25,14 +25,14 @@ import Login from '../Authentification/Login';
 import Signin from '../Authentification/Signin';
 import ResetPassword from '../ResetPassword/ResetPassword';
 
-// Import de l'interface de types
-import ICategory from '../../@types/category';
-
 // Import du style
 import './App.scss';
 
 function App() {
   const dispatch = useAppDispatch();
+
+  // on recupere islogged dans le state pour conditionner l'affichage de notre route privée /favorites
+  const logged = useAppSelector((state) => state.user.logged);
 
   useEffect(() => {
     dispatch(actionThunkFetchCategories());
@@ -54,7 +54,8 @@ function App() {
         <Route path="/activity/:activityId" element={<ActivityId />} />
         <Route path="/history/:sessionId" element={<SessionId />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/favorites" element={<Favorites />} />
+        {logged && <Route path="/favorites" element={<Favorites />} />}
+        {/* <Route path="/favorites" element={<Favorites />} /> */}
         <Route path="/history" element={<History />} />
         <Route path="/new-session" element={<NewSession />} />
         <Route path="*" element={<div>Page 404 (belle page à créer)</div>} />
