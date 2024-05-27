@@ -50,7 +50,7 @@ export default function Signin() {
         <h1 className="main--title">Hello dear user !</h1>
         <p className="main--subtitle">
           Please create your account to access the app <br />
-          Already have an account ? &nbsp;
+          Already have an account? &nbsp;
           <Link className="form--link" to="/login">
             Login here
           </Link>
@@ -99,7 +99,6 @@ export default function Signin() {
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
-
           <div>
             <input
               type="checkbox"
