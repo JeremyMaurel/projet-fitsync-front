@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom';
 import { Send } from 'react-feather';
 
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 // Import of components
 import DisconnectedHeader from '../Base/Header/DisconnectedHeader';
 import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
@@ -10,6 +11,23 @@ import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
 import './Authentification.scss';
 
 export default function Login() {
+  const emailFormState = useAppSelector(
+    (state) => state.user.credentials.email
+  );
+  const passFromState = useAppSelector(
+    (state) => state.user.credentials.password
+  );
+  const dispatch = useAppDispatch();
+
+  // on recupere l'erreur du state si jamais y'en a une on l'affiche
+  const loginError = useAppSelector((state) => state.user.error);
+
+  // on recupere dans le state isLogged pour filer en prop à LoginForm et ça conditionne l'affichage du form ou du bouton deco
+  const logged = useAppSelector((state) => state.user.logged);
+
+  // on recupère le pseudo dans le state pour afficher le message de bienvenue
+  const pseudo = useAppSelector((state) => state.user.pseudo);
+
   return (
     <>
       <DisconnectedHeader />
