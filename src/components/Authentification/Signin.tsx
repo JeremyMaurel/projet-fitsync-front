@@ -27,7 +27,6 @@ export default function Signin() {
     // Basic validation
     if (!pseudo || !email || !password || !confirmPassword) {
       setError('All fields are required');
-      console.log(error);
       return;
     }
 
@@ -51,15 +50,16 @@ export default function Signin() {
         <h1 className="main--title">Hello dear user !</h1>
         <p className="main--subtitle">
           Please create your account to access the app <br />
-          Already have an account ? &nbsp;
+          Already have an account? &nbsp;
           <Link className="form--link" to="/login">
             Login here
           </Link>
         </p>
         <form className="form" onSubmit={handleSubmit}>
           <h2 className="form--subtitle">Your Fitsync account</h2>
+          {error && <p className="form--error">{error}</p>}
+          {success && <p className="form--success">{success}</p>}
           <input
-            required
             className="form--input"
             type="text"
             id="pseudo"
@@ -67,45 +67,46 @@ export default function Signin() {
             placeholder="Choose your pseudo"
             value={pseudo}
             onChange={(e) => setPseudo(e.target.value)}
+            required
           />
           <input
             className="form--input"
-            required
             type="email"
             id="email"
             name="email"
             placeholder="Your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
           <input
             className="form--input"
-            required
-            type="text"
+            type="password"
             id="password"
             name="password"
             placeholder="Choose your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
           <input
             className="form--input"
-            required
-            type="text"
+            type="password"
             id="password--confirm"
             name="password-confirm"
             placeholder="Confirm your password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
+            required
           />
-
           <div>
             <input
               type="checkbox"
+              id="conditions"
               name="conditions"
-              required
               checked={conditions}
               onChange={(e) => setConditions(e.target.checked)}
+              required
             />
             <label htmlFor="conditions">
               &nbsp;&nbsp;&nbsp;I agree to the Terms and Conditions
