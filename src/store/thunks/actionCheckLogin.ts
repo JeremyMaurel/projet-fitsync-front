@@ -9,7 +9,7 @@ const actionCheckLogin = createAsyncThunk(
   async (_, thunkAPI) => {
     const state = thunkAPI.getState() as RootState;
     const response = await instanceAxios.post('/login', {
-      email: state.user.credentials.email,
+      pseudo: state.user.credentials.pseudo,
       password: state.user.credentials.password,
     });
     const { pseudo, token } = response.data;

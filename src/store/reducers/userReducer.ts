@@ -6,10 +6,10 @@ import actionCheckLogin from '../thunks/actionCheckLogin';
 interface UserState {
   logged: boolean;
   credentials: {
-    email: string;
+    pseudo: string;
     password: string;
   };
-  pseudo: null | string;
+  email: null | string;
   token: null | string;
   error: null | string;
 }
@@ -18,17 +18,17 @@ const initialState: UserState = {
   logged: false,
   // Ici les emplacements pour contrôler les inputs du formulaire de login
   credentials: {
-    email: '',
+    pseudo: '',
     password: '',
   },
-  pseudo: null,
+  email: null,
   token: null,
   error: null,
 };
 
 // -- ACTION CREATORS --
 export const actionChangeCredential = createAction<{
-  name: 'email' | 'password';
+  name: 'pseudo' | 'password';
   value: string;
 }>('user/CHANGE_CREDENTIAL');
 
@@ -47,7 +47,7 @@ const userReducer = createReducer(initialState, (builder) => {
       actionChangeCredential,
       (
         state,
-        action: PayloadAction<{ name: 'email' | 'password'; value: string }>
+        action: PayloadAction<{ name: 'pseudo' | 'password'; value: string }>
       ) => {
         // Quand je reçois la demande 'changer les credentials'
         // il me faut le nom du champ à modifier (soit email soit password)

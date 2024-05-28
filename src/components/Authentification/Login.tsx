@@ -36,11 +36,11 @@ export default function Login() {
         <p className="main--subtitle">Please login to access the app</p>
         <form className="form">
           <input
-            type="email"
+            type="text"
             required="required"
             className="form--input"
-            name="email"
-            placeholder="Your email"
+            name="pseudo"
+            placeholder="Your pseudo"
           />
           <input
             type="password"
