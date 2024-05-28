@@ -1,10 +1,16 @@
 // Import of librairies or technical components
 import { configureStore } from '@reduxjs/toolkit';
 // import of reducers
-import reducer from './reducers';
+import activitiesReducer from './reducers/activitiesReducer';
+import categoriesReducer from './reducers/categoriesReducer';
+import userReducer from './reducers/userReducer';
 
 const store = configureStore({
-  reducer,
+  reducer: {
+    activities: activitiesReducer,
+    categories: categoriesReducer,
+    user: userReducer,
+  },
 });
 
 export default store;

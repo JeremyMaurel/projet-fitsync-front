@@ -46,6 +46,7 @@ function App() {
       dispatch(actionLogIn({ jwt, pseudo }));
       // on doit aussi ajouter le JWT dans l'instance axios pour le fetch des recettes pref
       addTokenJwtToAxiosInstance(jwt);
+      console.log('le token JWT:', jwt);
     } else {
       console.log('rien dans le localstorage');
     }
@@ -74,7 +75,7 @@ function App() {
         <Route path="/activity/:activityId" element={<ActivityId />} />
         <Route path="/history/:sessionId" element={<SessionId />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        {/* {logged && <Route path="/favorites" element={<Favorites />} />} */}
+        {logged && <Route path="/favorites" element={<Favorites />} />}
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/history" element={<History />} />
         <Route path="/new-session" element={<NewSession />} />
