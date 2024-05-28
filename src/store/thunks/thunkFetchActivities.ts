@@ -12,10 +12,10 @@ const actionThunkFetchActivities = createAsyncThunk(
   // the callback to go fetch Activities data on API
   async () => {
     const response = await instanceAxios.get('/activities');
-    console.log(
-      'thunk FetchActivities executed, API call, response : ',
-      response.data.data
-    );
+    // console.log(
+    //   'thunk FetchActivities executed, API call, response : ',
+    //   response.data.data
+    // );
 
     return response.data.data;
   }

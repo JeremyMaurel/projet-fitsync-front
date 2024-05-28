@@ -15,10 +15,10 @@ const actionThunkFetchCategories = createAsyncThunk(
   // the callback to go fetch Categories data on API
   async () => {
     const response = await instanceAxios.get('/categories');
-    console.log(
-      'thunk FetchCategories executed, API call, response : ',
-      response.data.data
-    );
+    // console.log(
+    //   'thunk FetchCategories executed, API call, response : ',
+    //   response.data.data
+    // );
 
     return response.data.data;
   }

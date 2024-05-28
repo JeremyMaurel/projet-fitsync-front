@@ -12,9 +12,10 @@ import './ActivityId.scss';
 
 export default function ActivityId() {
   // -- STATE REDUX --
+  // I pickup from the state all the activities
   const activities = useAppSelector((state) => state.activities.activitiesList);
 
-  // Je récupère l'ID de l'activité consultée via son URL
+  // I use the Activity id from the page URL
   const { activityId } = useParams();
   const idFromUrl = Number(activityId);
 
