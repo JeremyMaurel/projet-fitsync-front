@@ -7,9 +7,6 @@ import { useAppSelector } from '../../hooks/redux-hooks';
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 
-// Import of custom types
-import IActivity from '../../@types/activity';
-
 // Stylesheet
 import './ActivityId.scss';
 
@@ -19,12 +16,11 @@ export default function ActivityId() {
 
   // Je récupère l'ID de l'activité consultée via son URL
   const { activityId } = useParams();
-  console.log(activityId);
+  const idFromUrl = Number(activityId);
 
   const activityToDisplay = activities.find(
-    (activity) => activity.id === +activityId
+    (activity) => activity.id === idFromUrl
   );
-  console.log(activityToDisplay);
 
   return (
     <>
@@ -33,13 +29,13 @@ export default function ActivityId() {
         <h1 className="main--title">Activity</h1>
         <div className="tile--activity-name">
           <h2 className="tile--activity-name--title">
-            {activityToDisplay.name}
+            {activityToDisplay?.name}
           </h2>
         </div>
         <div className="tile tile--met">
           <h2 className="tile--met--title">
             &nbsp;
-            <Zap /> &nbsp;: &nbsp;{activityToDisplay.met} MET
+            <Zap /> &nbsp;: &nbsp;{activityToDisplay?.met} MET
           </h2>
           <p className="tile--met--title">per minute of exercise</p>
         </div>
@@ -50,7 +46,7 @@ export default function ActivityId() {
           <button
             className="form--btn"
             type="submit"
-            value={`${activityToDisplay.id}`}
+            value={`${activityToDisplay?.id}`}
           >
             Select this activity &nbsp; <ArrowRightCircle />
           </button>
@@ -59,7 +55,7 @@ export default function ActivityId() {
           <button
             className="form--btn"
             type="submit"
-            value={`${activityToDisplay.id}`}
+            value={`${activityToDisplay?.id}`}
           >
             Add to my favorite activities &nbsp; <PlusCircle />
           </button>
