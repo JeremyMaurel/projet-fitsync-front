@@ -3,6 +3,7 @@ import { configureStore } from '@reduxjs/toolkit';
 // import of reducers
 import activitiesReducer from './reducers/activitiesReducer';
 import categoriesReducer from './reducers/categoriesReducer';
+// eslint-disable-next-line import/no-cycle
 import userReducer from './reducers/userReducer';
 
 const store = configureStore({

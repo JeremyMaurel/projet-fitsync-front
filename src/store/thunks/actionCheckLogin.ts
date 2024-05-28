@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 // Import de l'instance axios pour fetch l'api
 import instanceAxios from '../../axios/axiosInstance';
+// eslint-disable-next-line import/no-cycle
 import { RootState } from '../store';
 
 const actionCheckLogin = createAsyncThunk(

@@ -1,8 +1,11 @@
 // Import of React component or libraries
-import { Link } from 'react-router-dom';
+import React, { FormEvent, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Send } from 'react-feather';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
+import { actionChangeCredential } from '../../store/reducers/userReducer';
+import actionCheckLogin from '../../store/thunks/actionCheckLogin';
 // Import of components
 import DisconnectedHeader from '../Base/Header/DisconnectedHeader';
 import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
@@ -11,13 +14,12 @@ import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
 import './Authentification.scss';
 
 export default function Login() {
-  const emailFormState = useAppSelector(
-    (state) => state.user.credentials.email
-  );
-  const passFromState = useAppSelector(
-    (state) => state.user.credentials.password
+  const pseudo = useAppSelector((state) => state.user.credentials.pseudo ?? '');
+  const password = useAppSelector(
+    (state) => state.user.credentials.password ?? ''
   );
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   // on recupere l'erreur du state si jamais y'en a une on l'affiche
   const loginError = useAppSelector((state) => state.user.error);
@@ -25,8 +27,24 @@ export default function Login() {
   // on recupere dans le state isLogged pour filer en prop à LoginForm et ça conditionne l'affichage du form ou du bouton deco
   const logged = useAppSelector((state) => state.user.logged);
 
-  // on recupère le pseudo dans le state pour afficher le message de bienvenue
-  const pseudo = useAppSelector((state) => state.user.pseudo);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    dispatch(
+      actionChangeCredential({ name: name as 'pseudo' | 'password', value })
+    );
+  };
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    // Dispatch login thunk or action
+    dispatch(actionCheckLogin());
+  };
+
+  useEffect(() => {
+    if (logged) {
+      navigate('/home'); // Redirect to the home page or any other page when logged in
+    }
+  }, [logged, navigate]);
 
   return (
     <>
@@ -34,20 +52,25 @@ export default function Login() {
       <main className="main">
         <h1 className="main--title">Hello dear user !</h1>
         <p className="main--subtitle">Please login to access the app</p>
-        <form className="form">
+        {loginError && <p className="error">{loginError}</p>}
+        <form className="form" onSubmit={handleSubmit}>
           <input
             type="text"
-            required="required"
+            required
             className="form--input"
             name="pseudo"
+            value={pseudo}
             placeholder="Your pseudo"
+            onChange={handleInputChange}
           />
           <input
             type="password"
-            required="required"
+            required
             className="form--input"
             name="password"
+            value={password}
             placeholder="Your password"
+            onChange={handleInputChange}
           />
           <p>
             I forgot my password, &nbsp;
