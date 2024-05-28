@@ -9,8 +9,26 @@ import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
 
 // Stylesheet
 import './Authentification.scss';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 
 export default function Signin() {
+  // const emailFormState = useAppSelector(
+  //   (state) => state.user.credentials.email
+  // );
+  // const passFromState = useAppSelector(
+  //   (state) => state.user.credentials.password
+  // );
+  // const dispatch = useAppDispatch();
+
+  // // on recupere l'erreur du state si jamais y'en a une on l'affiche
+  // const loginError = useAppSelector((state) => state.user.error);
+
+  // // on recupere dans le state isLogged pour filer en prop à LoginForm et ça conditionne l'affichage du form ou du bouton deco
+  // const logged = useAppSelector((state) => state.user.logged);
+
+  // // on recupère le pseudo dans le state pour afficher le message de bienvenue
+  // const pseudo = useAppSelector((state) => state.user.pseudo);
+
   const [pseudo, setPseudo] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
