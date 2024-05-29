@@ -31,14 +31,14 @@ import './App.scss';
 function App() {
   const dispatch = useAppDispatch();
 
-  // on recupere islogged dans le state pour conditionner l'affichage de notre route privée /favorites
-  const logged = useAppSelector((state) => state.user.logged);
-
   useEffect(() => {
     dispatch(actionThunkFetchCategories());
     dispatch(actionThunkFetchActivities());
   }, []);
 
+  // on recupere islogged dans le state pour conditionner l'affichage de notre route privée /favorites
+  const logged = useAppSelector((state) => state.user.logged);
+  console.log('connected?', logged);
   return (
     <div className="app">
       <Routes>
@@ -65,18 +65,3 @@ function App() {
 }
 
 export default App;
-
-/*
-Backup de la route pour categoryID
-{categories.map((category) => (
-          <Route
-            key={category.id}
-            path={`/category-list/${category.id}`}
-            element={
-              <CategoryId
-                categoryId={category.id}
-                categoryName={category.name}
-              />
-            }
-          />
-        ))} */

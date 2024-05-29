@@ -43,8 +43,9 @@ export default function Login() {
   useEffect(() => {
     if (logged) {
       navigate('/home'); // Redirect to the home page or any other page when logged in
+      console.log('pseudo:', pseudo);
     }
-  }, [logged, navigate]);
+  }, [logged, navigate, pseudo]);
 
   return (
     <>

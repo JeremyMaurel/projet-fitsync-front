@@ -67,7 +67,8 @@ const userReducer = createReducer(initialState, (builder) => {
       state.error = null;
     })
     .addCase(actionCheckLogin.rejected, (state) => {
-      state.error = 'erreur de connexion';
+      state.error =
+        'Connection error, please check your pseudo and password inputs';
     })
     .addCase(actionLogOut, (state) => {
       // Passer logged à false dans le state
