@@ -39,6 +39,7 @@ function App() {
   // on recupere islogged dans le state pour conditionner l'affichage de notre route privée /favorites
   const logged = useAppSelector((state) => state.user.logged);
   console.log('connected?', logged);
+
   return (
     <div className="app">
       <Routes>

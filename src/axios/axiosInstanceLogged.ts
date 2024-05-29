@@ -1,8 +1,9 @@
 // Import d'axios pour fetch l'api
 import axios from 'axios';
 
-const instanceAxios = axios.create({
+const instanceAxiosLogged = axios.create({
   baseURL: 'http://maureljeremy.me/api/v1',
+  withCredentials: true,
 });
 
 // // fonction executée quand on est connecté
@@ -17,4 +18,4 @@ const instanceAxios = axios.create({
 //   instanceAxios.defaults.headers.common.Authorization = '';
 // }
 
-export default instanceAxios;
+export default instanceAxiosLogged;
