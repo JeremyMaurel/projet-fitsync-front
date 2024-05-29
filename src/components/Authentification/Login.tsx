@@ -37,7 +37,10 @@ export default function Login() {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     // Dispatch login thunk or action
-    dispatch(actionCheckLogin());
+    dispatch(actionCheckLogin()).then(() => {
+      // Redirect to /home AFTER a successfull login
+      navigate('/home');
+    });
   };
 
   useEffect(() => {
