@@ -47,18 +47,20 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/home" element={<Home />} />
+        {logged && <Route path="/home" element={<Home />} />}
         <Route path="/settings" element={<Settings />} />
-        <Route path="/settings-LogedIn" element={<SettingsLogedIn />} />
+        {logged && (
+          <Route path="/settings-LogedIn" element={<SettingsLogedIn />} />
+        )}
         <Route path="/category-list" element={<CategoryList />} />
         <Route path="/category-list/:categoryId" element={<CategoryId />} />
         <Route path="/activity/:activityId" element={<ActivityId />} />
-        <Route path="/history/:sessionId" element={<SessionId />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        {logged && <Route path="/history/:sessionId" element={<SessionId />} />}
+        {logged && <Route path="/dashboard" element={<Dashboard />} />}
         {logged && <Route path="/favorites" element={<Favorites />} />}
-        <Route path="/favorites" element={<Favorites />} />
-        <Route path="/history" element={<History />} />
-        <Route path="/new-session" element={<NewSession />} />
+        {/* <Route path="/favorites" element={<Favorites />} /> */}
+        {logged && <Route path="/history" element={<History />} />}
+        {logged && <Route path="/new-session" element={<NewSession />} />}
         <Route path="*" element={<div>Page 404 (belle page à créer)</div>} />
       </Routes>
     </div>
