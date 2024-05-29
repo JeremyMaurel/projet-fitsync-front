@@ -14,7 +14,6 @@ const actionCheckLogin = createAsyncThunk(
       password: state.user.credentials.password,
     });
     const { pseudo, token } = response.data;
-    console.log(response.data);
 
     return { pseudo, token };
   }
