@@ -3,6 +3,8 @@
 import { createAction, createReducer, PayloadAction } from '@reduxjs/toolkit';
 // eslint-disable-next-line import/no-cycle
 import actionCheckLogin from '../thunks/actionCheckLogin';
+// Import of localStorage addLoggedStatusToLocalStorage
+import { addLoggedStatusToLocalStorage } from '../../localStorage/localStorage';
 
 // --- L'ÉTAT INITIAL ET SON TYPE
 interface UserState {
@@ -65,6 +67,7 @@ const userReducer = createReducer(initialState, (builder) => {
       // On stocke le token JWT qui sert d'authentification, il faudra le renvoyer dans les en-têtes des requêtes où on demande des données privées
       state.token = action.payload.token;
       state.error = null;
+      addLoggedStatusToLocalStorage('yes');
     })
     .addCase(actionCheckLogin.rejected, (state) => {
       state.error =
@@ -78,6 +81,7 @@ const userReducer = createReducer(initialState, (builder) => {
       state.credentials.password = '';
       state.token = null;
       state.error = null;
+      addLoggedStatusToLocalStorage('');
     })
     .addCase(
       actionLogIn,

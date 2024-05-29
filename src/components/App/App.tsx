@@ -8,6 +8,9 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import actionThunkFetchActivities from '../../store/thunks/thunkFetchActivities';
 import actionThunkFetchCategories from '../../store/thunks/thunkFetchCategories';
 
+// imort of loggedStatus from localStorage
+import { getItemLoggedStatusFromLocalStorage } from '../../localStorage/localStorage';
+
 // Import des sous-composants
 import Home from '../Home/Home';
 import Settings from '../Settings/Settings';
@@ -36,9 +39,9 @@ function App() {
     dispatch(actionThunkFetchActivities());
   }, []);
 
-  // on recupere islogged dans le state pour conditionner l'affichage de notre route privée /favorites
-  const logged = useAppSelector((state) => state.user.logged);
-  console.log('connected?', logged);
+  // We check from localStorage if the user us connected
+  const logged = getItemLoggedStatusFromLocalStorage();
+  console.log('is user connected?', logged);
 
   return (
     <div className="app">
