@@ -13,13 +13,13 @@ const actionThunkFetchUser = createAsyncThunk(
   // the callback to go fetch Activities data on API
   async (_, thunkAPI) => {
     const state = thunkAPI.getState() as RootState;
-    const response = await instanceAxiosLogged.get('/user');
+    const response = await instanceAxiosLogged.get('/users');
     console.log(
       'thunk FetchUser executed, API call, response : ',
-      response.data
+      response.data.data
     );
 
-    return response.data;
+    return response.data.data;
   }
 );
 

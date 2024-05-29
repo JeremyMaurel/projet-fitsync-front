@@ -1,26 +1,25 @@
-// Import of librairies or technical components
-import { Link, useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { PlusCircle } from 'react-feather';
-import { useAppSelector } from '../../hooks/redux-hooks';
-
-// Import of sub-components
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
+import actionThunkFetchUser from '../../store/thunks/thunkFetchUser';
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
-
-// Stylesheet
 import './Home.scss';
 
 export default function Home() {
-  const token = useAppSelector((state) => state.user.token);
-  console.log('token: ', token);
-
-  // I recover the user pseudo from the state
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const pseudo = useAppSelector((state) => state.user.credentials.pseudo);
-  console.log('pseudo: ', pseudo);
 
-  // test en essayant de récupérer le poids du user
-  const weight = useAppSelector((state) => state.user.weight);
-  console.log('weight: ', weight);
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    if (!storedToken) {
+      navigate('/login'); // Redirige si le token n'est pas présent
+    } else {
+      dispatch(actionThunkFetchUser());
+    }
+  }, [navigate, dispatch]);
 
   return (
     <>

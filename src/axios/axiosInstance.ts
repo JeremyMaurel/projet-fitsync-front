@@ -1,8 +1,8 @@
-// Import d'axios pour fetch l'api
+// axios/axiosInstance.js
 import axios from 'axios';
 
 const instanceAxios = axios.create({
-  baseURL: 'http://maureljeremy.me/api/v1',
+  baseURL: 'http://localhost:4000/api/v1',
 });
 
 // // fonction executée quand on est connecté
