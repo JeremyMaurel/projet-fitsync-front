@@ -1,19 +1,28 @@
-// Import d'icônes de React-Feather
+// Import of librairies or technical components
+import { Link, useParams } from 'react-router-dom';
 import { PlusCircle } from 'react-feather';
+import { useAppSelector } from '../../hooks/redux-hooks';
 
-// Import des headers, footers et menu
+// Import of sub-components
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 
-// Gestion du style
+// Stylesheet
 import './Home.scss';
 
 export default function Home() {
+  const token = useAppSelector((state) => state.user.token);
+
+  // I recover the user pseudo from the state
+  const pseudo = useAppSelector((state) => state.user.credentials.pseudo);
+  console.log(pseudo);
+  console.log(token);
+
   return (
     <>
       <Header />
       <main className="main">
-        <h1 className="main--title">Hello user!</h1>
+        <h1 className="main--title">Hello {pseudo}!</h1>
         <div className="tile tile--goals">
           <div className="tile--goal">
             <h2 className="tile--goal--title">Weekly Goal</h2>
