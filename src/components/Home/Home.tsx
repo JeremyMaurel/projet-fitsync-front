@@ -12,11 +12,15 @@ import './Home.scss';
 
 export default function Home() {
   const token = useAppSelector((state) => state.user.token);
+  console.log('token: ', token);
 
   // I recover the user pseudo from the state
   const pseudo = useAppSelector((state) => state.user.credentials.pseudo);
-  console.log(pseudo);
-  console.log(token);
+  console.log('pseudo: ', pseudo);
+
+  // test en essayant de récupérer le poids du user
+  const weight = useAppSelector((state) => state.user.weight);
+  console.log('weight: ', weight);
 
   return (
     <>

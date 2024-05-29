@@ -13,9 +13,10 @@ const actionCheckLogin = createAsyncThunk(
       pseudo: state.user.credentials.pseudo,
       password: state.user.credentials.password,
     });
-    const { pseudo, token } = response.data;
+    const { token } = response.data;
+    console.log('réponse API login: ', response.data);
 
-    return { pseudo, token };
+    return { token };
   }
 );
 

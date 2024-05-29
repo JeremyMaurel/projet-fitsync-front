@@ -16,6 +16,13 @@ interface UserState {
   email: null | string;
   token: null | string;
   error: null | string;
+  id: null | string;
+  role: null | string;
+  birthdate: null | string;
+  gender: null | string;
+  height: null | number;
+  weight: null | number;
+  objective: null | number;
 }
 
 const initialState: UserState = {
@@ -25,9 +32,16 @@ const initialState: UserState = {
     pseudo: '',
     password: '',
   },
-  email: null,
-  token: null,
-  error: null,
+  email: '',
+  token: '',
+  error: '',
+  id: '',
+  role: '',
+  birthdate: '',
+  gender: '',
+  height: null,
+  weight: 70,
+  objective: null,
 };
 
 // -- ACTION CREATORS --
@@ -40,9 +54,23 @@ export const actionChangeCredential = createAction<{
 export const actionLogOut = createAction('user/LOGOUT');
 
 // Cette action est dispatchée si, au chargement de l'App, il y a un token dans le localStorage pour se connecter
-export const actionLogIn = createAction<{ jwt: string; pseudo: string }>(
+export const actionCheckLogIn = createAction<{ jwt: string; pseudo: string }>(
   'user/LOGIN'
 );
+
+// Action pour aller chercher les infos du profil du User
+export const actionGetUserProfile = createAction<{
+  id: string;
+  email: string;
+  pseudo: string;
+  role: string;
+  password: string;
+  birthdate: string;
+  gender: string;
+  height: number;
+  weight: number;
+  objective: number;
+}>('user/FETCH_USER');
 
 // -- REDUCER --
 const userReducer = createReducer(initialState, (builder) => {
@@ -63,7 +91,6 @@ const userReducer = createReducer(initialState, (builder) => {
     .addCase(actionCheckLogin.fulfilled, (state, action) => {
       // Le thunk a bien fait la requête vers /login, il a récupéré le pseudo et le token, il les a ajoutés au payload de l'action, je vais les enregistrer dans le state
       state.logged = true;
-      state.credentials.pseudo = action.payload.pseudo;
       // On stocke le token JWT qui sert d'authentification, il faudra le renvoyer dans les en-têtes des requêtes où on demande des données privées
       state.token = action.payload.token;
       state.error = null;
@@ -71,30 +98,82 @@ const userReducer = createReducer(initialState, (builder) => {
     })
     .addCase(actionCheckLogin.rejected, (state) => {
       state.error =
-        'Connection error, please check your pseudo and password inputs';
+        'Connection refused, please check your pseudo and password inputs';
     })
     .addCase(actionLogOut, (state) => {
       // Passer logged à false dans le state
-      // Supprimer le pseudo et le token
       state.logged = false;
+      // Supprimer le pseudo et le token
       state.credentials.pseudo = '';
       state.credentials.password = '';
       state.token = null;
       state.error = null;
+      // retirer le loggedStatus du localStorage
       addLoggedStatusToLocalStorage('');
     })
     .addCase(
-      actionLogIn,
-      (state, action: PayloadAction<{ jwt: string; pseudo: string }>) => {
-        // On connecte l'utilisateur
-        state.logged = true;
-        // On enregistre le token récupéré du payload de l'action
-        state.token = action.payload.jwt;
+      actionGetUserProfile,
+      (
+        state,
+        action: PayloadAction<{
+          id: string;
+          email: string;
+          pseudo: string;
+          role: string;
+          password: string;
+          birthdate: string;
+          gender: string;
+          height: number;
+          weight: number;
+          objective: number;
+        }>
+      ) => {
+        state.id = action.payload.id;
+        state.email = action.payload.email;
         state.credentials.pseudo = action.payload.pseudo;
-        state.error = null;
-        console.log(state.token);
+        state.role = action.payload.role;
+        state.credentials.password = action.payload.password;
+        state.birthdate = action.payload.birthdate;
+        state.gender = action.payload.gender;
+        state.height = action.payload.height;
+        state.weight = action.payload.weight;
+        state.objective = action.payload.objective;
       }
     );
 });
 
 export default userReducer;
+
+/*
+.addCase(
+      actionGetUserProfile,
+      (
+        state,
+        action: PayloadAction<{
+          id: string;
+          email: string;
+          pseudo: string;
+          role: string;
+          password: string;
+          birthdate: string;
+          gender: string;
+          height: number;
+          weight: number;
+          objective: number;
+        }>
+      ) => {
+        state.id = action.payload.id;
+        state.email = action.payload.email;
+        state.credentials.pseudo = action.payload.pseudo;
+        state.role = action.payload.role;
+        state.credentials.password = action.payload.password;
+        state.birthdate = action.payload.birthdate;
+        state.gender = action.payload.gender;
+        state.height = action.payload.height;
+        state.weight = action.payload.weight;
+        state.objective = action.payload.objective;
+      }
+    );
+});
+
+*/
