@@ -1,13 +1,13 @@
 // thunks/actionThunkFetchUser.js
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import instanceAxiosLogged from '../../axios/axiosInstanceLogged';
+import instanceAxios from '../../axios/axiosInstance';
 
 const actionThunkFetchUser = createAsyncThunk(
   'user/FETCH_USER',
   async (_, thunkAPI) => {
     try {
-      const response = await instanceAxiosLogged.get('/users');
+      const response = await instanceAxios.get('/users');
       return response.data.data;
     } catch (error) {
       console.error('Login error:', error);
