@@ -1,27 +1,23 @@
 // thunks/actionCheckLogin.js
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import instanceAxios from '../../axios/axiosInstance'; // Unauthenticated instance
+import instanceAxiosLogged from '../../axios/axiosInstanceLogged';
+// eslint-disable-next-line import/no-cycle
 import { RootState } from '../store';
-import { addLoggedStatusToLocalStorage } from '../../localStorage/localStorage';
+// import { addLoggedStatusToLocalStorage } from '../../localStorage/localStorage';
 
 const actionCheckLogin = createAsyncThunk(
   'user/CHECK_LOGIN',
   async (_, thunkAPI) => {
     try {
       const state = thunkAPI.getState() as RootState;
-      const response = await instanceAxios.post('/login', {
+      const response = await instanceAxiosLogged.post('/login', {
         pseudo: state.user.credentials.pseudo,
         password: state.user.credentials.password,
       });
-      const { token } = response.data;
       console.log('API login response: ', response.data);
 
-      // Store the token in localStorage
-      localStorage.setItem('token', token);
-      addLoggedStatusToLocalStorage('yes'); // Update login status
-
-      return { token };
+      return response.data;
     } catch (error) {
       console.error('Login error:', error);
 

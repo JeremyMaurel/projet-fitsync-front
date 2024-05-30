@@ -2,7 +2,8 @@
 import axios from 'axios';
 
 const instanceAxios = axios.create({
-  baseURL: 'http://localhost:4000/api/v1',
+  baseURL: 'http://maureljeremy.me/api/v1',
+  withCredentials: true,
 });
 
 // // fonction executée quand on est connecté

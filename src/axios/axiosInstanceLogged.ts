@@ -3,20 +3,21 @@
 import axios from 'axios';
 
 const instanceAxiosLogged = axios.create({
-  baseURL: 'http://localhost:4000/api/v1',
+  baseURL: 'http://maureljeremy.me/api/v1',
   withCredentials: true,
 });
 
-instanceAxiosLogged.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+// instanceAxiosLogged.interceptors.request.use(
+//   (config) => {
+//     const token = localStorage.getItem('token');
+//     if (token) {
+//       config.headers.Authorization = `Bearer ${token}`;
+//     }
+//     return config;
+//   },
+//   (error) => Promise.reject(error)
+// );
+
 // // fonction executée quand on est connecté
 // export function addTokenJwtToAxiosInstance(token: string) {
 //   // ajout des headers dans l'instance après création
