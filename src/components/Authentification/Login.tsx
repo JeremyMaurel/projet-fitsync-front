@@ -1,16 +1,11 @@
-// Import of React component or libraries
 import React, { FormEvent, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Send } from 'react-feather';
-
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import { actionChangeCredential } from '../../store/reducers/userReducer';
 import actionCheckLogin from '../../store/thunks/actionCheckLogin';
-// Import of components
 import DisconnectedHeader from '../Base/Header/DisconnectedHeader';
 import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
-
-// Stylesheet
 import './Authentification.scss';
 
 export default function Login() {
@@ -21,10 +16,7 @@ export default function Login() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  // on recupere l'erreur du state si jamais y'en a une on l'affiche
   const loginError = useAppSelector((state) => state.user.error);
-
-  // on recupere dans le state isLogged pour filer en prop à LoginForm et ça conditionne l'affichage du form ou du bouton deco
   const logged = useAppSelector((state) => state.user.logged);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,20 +28,19 @@ export default function Login() {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    // Dispatch login thunk or action
-    dispatch(actionCheckLogin()).then(() => {
-      // Redirect to /home AFTER a successfull login
-      navigate('/home');
+    dispatch(actionCheckLogin()).then((result) => {
+      if (actionCheckLogin.fulfilled.match(result)) {
+        navigate('/home');
+      }
     });
   };
 
   useEffect(() => {
     if (logged) {
-      navigate('/home'); // Redirect to the home page or any other page when logged in
+      navigate('/home');
       console.log('pseudo:', pseudo);
     }
   }, [logged, navigate, pseudo]);
-
   return (
     <>
       <DisconnectedHeader />

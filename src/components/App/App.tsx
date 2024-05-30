@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 // Import of Redux store thunks
 import actionThunkFetchActivities from '../../store/thunks/thunkFetchActivities';
 import actionThunkFetchCategories from '../../store/thunks/thunkFetchCategories';
+import actionThunkFetchUser from '../../store/thunks/thunkFetchUser';
 
 // imort of loggedStatus from localStorage
 import { getItemLoggedStatusFromLocalStorage } from '../../localStorage/localStorage';
@@ -37,9 +38,10 @@ function App() {
   useEffect(() => {
     dispatch(actionThunkFetchCategories());
     dispatch(actionThunkFetchActivities());
-  }, []);
+    dispatch(actionThunkFetchUser());
+  }, [dispatch]);
 
-  // We check from localStorage if the user us connected
+  // We check from localStorage if the user is connected
   const logged = getItemLoggedStatusFromLocalStorage();
   console.log('is user connected?', logged);
 
@@ -50,7 +52,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        {logged && <Route path="/home" element={<Home />} />}
+        `<Route path="/home" element={<Home />} />
         <Route path="/settings" element={<Settings />} />
         {logged && (
           <Route path="/settings-LogedIn" element={<SettingsLogedIn />} />
