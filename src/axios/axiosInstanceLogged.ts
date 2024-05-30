@@ -1,5 +1,6 @@
 // axios/axiosInstanceLogged.js
-import axios, { InternalAxiosRequestConfig } from 'axios';
+// axios/axiosInstanceLogged.js
+import axios from 'axios';
 
 const instanceAxiosLogged = axios.create({
   baseURL: 'http://localhost:4000/api/v1',
@@ -7,19 +8,14 @@ const instanceAxiosLogged = axios.create({
 });
 
 instanceAxiosLogged.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
+  (config) => {
     const token = localStorage.getItem('token');
     if (token) {
-      const newConfig = { ...config };
-      newConfig.headers = newConfig.headers || {};
-      newConfig.headers.Authorization = `Bearer ${token}`;
-      return newConfig;
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 // // fonction executée quand on est connecté
 // export function addTokenJwtToAxiosInstance(token: string) {
