@@ -54,7 +54,6 @@ export default function Login() {
             required
             className="form--input"
             name="pseudo"
-            value={pseudo}
             placeholder="Your pseudo"
             onChange={handleInputChange}
           />
@@ -63,7 +62,6 @@ export default function Login() {
             required
             className="form--input"
             name="password"
-            value={password}
             placeholder="Your password"
             onChange={handleInputChange}
           />
