@@ -1,26 +1,19 @@
-import React, { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+// Import of librairies or technical components
 import { PlusCircle } from 'react-feather';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
-import actionThunkFetchUser from '../../store/thunks/thunkFetchUser';
+import { useAppSelector } from '../../hooks/redux-hooks';
+
+// Import of sub-components
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
+
+// Stylesheet
 import './Home.scss';
 
 export default function Home() {
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  // -- STATE REDUX --
+  // Pickup from the state of pseudo and logged status
   const pseudo = useAppSelector((state) => state.user.credentials.pseudo);
   const loggedStatusHome = useAppSelector((state) => state.user.logged);
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    if (!storedToken) {
-      navigate('/login'); // Redirige si le token n'est pas présent
-    } else {
-      dispatch(actionThunkFetchUser());
-    }
-  }, [navigate, dispatch]);
 
   console.log('loggedStatusHome: ', loggedStatusHome);
 
