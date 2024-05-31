@@ -4,8 +4,13 @@ import Footer from '../Base/Footer/Footer';
 
 // Gestion du style
 import './NewSession.scss';
+import { useAppSelector } from '../../hooks/redux-hooks';
 
 export default function NewSession() {
+  const activitiesList = useAppSelector(
+    (state) => state.activities.activitiesList
+  );
+
   return (
     <>
       <Header />
@@ -14,11 +19,13 @@ export default function NewSession() {
           <h1 className="session--title">Session</h1>
           <h2 className="session--last">My last sessions</h2>
           <div className="session--searchBar-container">
-            <input
-              className="session--searchBar"
-              type="text"
-              placeholder="Activity name"
-            />
+            <ul className="session--activity-list">
+              {activitiesList.map((activity) => (
+                <li key={activity.id} className="session--activity-item">
+                  {activity.name}
+                </li>
+              ))}
+            </ul>
             <Search className="session--searchIcon" />
           </div>
           <h3 className="session--info">Date</h3>
