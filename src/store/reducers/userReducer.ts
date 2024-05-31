@@ -53,6 +53,15 @@ export const actionLogIn = createAction<{ jwt: string; pseudo: string }>(
   'user/LOGIN'
 );
 
+export const actionUpdateUser = createAction<{
+  birthdate: string;
+  gender: string;
+  weight: number;
+  height: number;
+  pseudo: string;
+  email: string;
+}>('user/UPDATE_USER');
+
 const userReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(
@@ -136,6 +145,27 @@ const userReducer = createReducer(initialState, (builder) => {
         state.height = action.payload.height;
         state.weight = action.payload.weight;
         state.objective = action.payload.objective;
+      }
+    )
+    .addCase(
+      actionUpdateUser,
+      (
+        state,
+        action: PayloadAction<{
+          birthdate: string;
+          gender: string;
+          weight: number;
+          height: number;
+          pseudo: string;
+          email: string;
+        }>
+      ) => {
+        state.birthdate = action.payload.birthdate;
+        state.gender = action.payload.gender;
+        state.weight = action.payload.weight;
+        state.height = action.payload.height;
+        state.credentials.pseudo = action.payload.pseudo;
+        state.email = action.payload.email;
       }
     );
 });
