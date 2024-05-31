@@ -48,21 +48,21 @@ export default function Home() {
             />
           </div>
         </div>
-        <div className="tile tile--favorites">
-          <div className="tile--header">
-            <h2 className="tile--header--title">My favorite activities</h2>
-            {/* <PlusCircle size={30} className="tile--header--button" /> */}
-          </div>
-          {favoritesList.map((favorite) => (
-            <div key={favorite.activity_id}>
-              <li>{favorite.activity_name}</li>
+        <Link to="/favorites" className="tile--list--link">
+          <div className="tile tile--favorites">
+            <div className="tile--header">
+              <h2 className="tile--header--title">My Favorite Activities</h2>
             </div>
-          ))}
-        </div>
+            {favoritesList.map((favorite) => (
+              <div key={favorite.activity_id}>
+                <li>{favorite.activity_name}</li>
+              </div>
+            ))}
+          </div>
+        </Link>
         <div className="tile tile--history">
           <div className="tile--header">
-            <h2 className="tile--header--title">My last sessions</h2>
-            {/* <PlusCircle size={30} className="tile--header--button" /> */}
+            <h2 className="tile--header--title">My Last Sessions</h2>
           </div>
           <ul>
             <li>Placeholder session 1</li>
