@@ -11,11 +11,8 @@ import './Home.scss';
 
 export default function Home() {
   // -- STATE REDUX --
-  // Pickup from the state of pseudo and logged status
+  // Pickup from the state of pseudo to say hello
   const pseudo = useAppSelector((state) => state.user.credentials.pseudo);
-  const loggedStatusHome = useAppSelector((state) => state.user.logged);
-
-  console.log('loggedStatusHome: ', loggedStatusHome);
 
   return (
     <>
