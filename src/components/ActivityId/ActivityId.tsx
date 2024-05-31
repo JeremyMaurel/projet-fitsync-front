@@ -1,7 +1,7 @@
 // Import of librairies or technical components
 import { Zap, ArrowRightCircle, PlusCircle } from 'react-feather';
-import { useParams, Link } from 'react-router-dom';
-import { useAppSelector } from '../../hooks/redux-hooks';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
 
 // Import of sub-components
 import Header from '../Base/Header/Header';
@@ -9,9 +9,12 @@ import Footer from '../Base/Footer/Footer';
 
 // Stylesheet
 import './ActivityId.scss';
+import thunkAddFavorite from '../../store/thunks/thunkAddFavorite';
 
 export default function ActivityId() {
   // -- STATE REDUX --
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   // I pickup from the state all the activities
   const activities = useAppSelector((state) => state.activities.activitiesList);
 
@@ -22,6 +25,11 @@ export default function ActivityId() {
   const activityToDisplay = activities.find(
     (activity) => activity.id === idFromUrl
   );
+
+  const handleAddToFavorites = async () => {
+    await dispatch(thunkAddFavorite(Number(activityId)));
+    navigate('/favorites');
+  };
 
   return (
     <>
@@ -52,15 +60,13 @@ export default function ActivityId() {
             Select this activity &nbsp; <ArrowRightCircle />
           </button>
         </Link>
-        <Link to="/favorites" className="form--btn--link">
-          <button
-            className="form--btn"
-            type="submit"
-            value={`${activityToDisplay?.id}`}
-          >
-            Add to my favorite activities &nbsp; <PlusCircle />
-          </button>
-        </Link>
+        <button
+          className="form--btn"
+          type="button"
+          onClick={handleAddToFavorites}
+        >
+          Add to my favorite activities <PlusCircle />
+        </button>
       </main>
       <Footer />
     </>
