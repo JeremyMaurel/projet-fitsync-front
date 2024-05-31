@@ -2,10 +2,11 @@
 import { createAction, createReducer, PayloadAction } from '@reduxjs/toolkit';
 // eslint-disable-next-line import/no-cycle
 import actionLogin from '../thunks/actionLogin';
+// eslint-disable-next-line import/no-cycle
+import actionLogout from '../thunks/actionLogout';
 import actionThunkFetchUser from '../thunks/thunkFetchUser';
 // eslint-disable-next-line import/no-cycle
 import actionCheckLogin from '../thunks/actionCheckLogin';
-// import { addLoggedStatusToLocalStorage } from '../../localStorage/localStorage';
 
 interface UserState {
   logged: boolean;
@@ -51,8 +52,6 @@ export const actionChangeCredential = createAction<{
 export const actionLogIn = createAction<{ jwt: string; pseudo: string }>(
   'user/LOGIN'
 );
-
-export const actionLogOut = createAction('user/LOGOUT');
 
 const userReducer = createReducer(initialState, (builder) => {
   builder
@@ -107,12 +106,8 @@ const userReducer = createReducer(initialState, (builder) => {
       state.error =
         'Connection refused, please check your pseudo and password inputs';
     })
-    .addCase(actionLogOut, (state) => {
+    .addCase(actionLogout.fulfilled, (state) => {
       state.logged = false;
-      state.credentials.pseudo = '';
-      state.credentials.password = '';
-      state.token = null;
-      state.error = null;
     })
     .addCase(
       actionThunkFetchUser.fulfilled,

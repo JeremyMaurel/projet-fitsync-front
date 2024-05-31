@@ -1,7 +1,7 @@
 import { fallDown as Menu } from 'react-burger-menu';
 import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../../hooks/redux-hooks';
-import { actionLogOut } from '../../../store/reducers/userReducer';
+import actionLogout from '../../../store/thunks/actionLogout';
 
 import './BurgerMenu.scss';
 
@@ -9,12 +9,16 @@ export default function BurgerMenu() {
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {
-    dispatch(actionLogOut());
+    dispatch(actionLogout());
   };
 
   return (
     // Adding in props de Menu son pl
-    <Menu right width={'100%'} customBurgerIcon={<img src="/menu-icon.svg" />}>
+    <Menu
+      right
+      width="100%"
+      customBurgerIcon={<img src="/menu-icon.svg" alt="menu" />}
+    >
       <Link className="menu-item" to="/home">
         Home
       </Link>
