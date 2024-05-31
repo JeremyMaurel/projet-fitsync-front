@@ -1,8 +1,12 @@
-/* eslint-disable import/no-cycle */
+// Import of librairies or technical components
 import { createAction, createReducer, PayloadAction } from '@reduxjs/toolkit';
-import actionCheckLogin from '../thunks/actionCheckLogin';
+// eslint-disable-next-line import/no-cycle
+import actionLogin from '../thunks/actionLogin';
+// eslint-disable-next-line import/no-cycle
+import actionLogout from '../thunks/actionLogout';
 import actionThunkFetchUser from '../thunks/thunkFetchUser';
-import { addLoggedStatusToLocalStorage } from '../../localStorage/localStorage';
+// eslint-disable-next-line import/no-cycle
+import actionCheckLogin from '../thunks/actionCheckLogin';
 
 interface UserState {
   logged: boolean;
@@ -45,10 +49,7 @@ export const actionChangeCredential = createAction<{
   value: string;
 }>('user/CHANGE_CREDENTIAL');
 
-export const actionLogOut = createAction('user/LOGOUT');
-
-// Cette action est dispatchée si, au chargement de l'App, il y a un token dans le localStorage pour se connecter
-export const actionCheckLogIn = createAction<{ jwt: string; pseudo: string }>(
+export const actionLogIn = createAction<{ jwt: string; pseudo: string }>(
   'user/LOGIN'
 );
 
@@ -63,25 +64,50 @@ const userReducer = createReducer(initialState, (builder) => {
         state.credentials[action.payload.name] = action.payload.value;
       }
     )
-    .addCase(actionCheckLogin.fulfilled, (state, action) => {
+    .addCase(
+      actionCheckLogin.fulfilled,
+      (
+        state,
+        action: PayloadAction<{
+          id: string;
+          email: string;
+          pseudo: string;
+          role: string;
+          password: string;
+          birthdate: string;
+          gender: string;
+          height: number;
+          weight: number;
+          objective: number;
+        }>
+      ) => {
+        state.logged = true;
+        state.id = action.payload.id;
+        state.email = action.payload.email;
+        state.credentials.pseudo = action.payload.pseudo;
+        state.role = action.payload.role;
+        state.credentials.password = action.payload.password;
+        state.birthdate = action.payload.birthdate;
+        state.gender = action.payload.gender;
+        state.height = action.payload.height;
+        state.weight = action.payload.weight;
+        state.objective = action.payload.objective;
+      }
+    )
+    .addCase(actionCheckLogin.rejected, (state) => {
+      state.logged = false;
+    })
+    .addCase(actionLogin.fulfilled, (state, action) => {
       state.logged = true;
       state.token = action.payload.token;
       state.error = null;
-      addLoggedStatusToLocalStorage('yes');
-      localStorage.setItem('token', action.payload.token);
     })
-    .addCase(actionCheckLogin.rejected, (state) => {
+    .addCase(actionLogin.rejected, (state) => {
       state.error =
         'Connection refused, please check your pseudo and password inputs';
     })
-    .addCase(actionLogOut, (state) => {
+    .addCase(actionLogout.fulfilled, (state) => {
       state.logged = false;
-      state.credentials.pseudo = '';
-      state.credentials.password = '';
-      state.token = null;
-      state.error = null;
-      addLoggedStatusToLocalStorage('');
-      localStorage.removeItem('token');
     })
     .addCase(
       actionThunkFetchUser.fulfilled,

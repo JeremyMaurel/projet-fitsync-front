@@ -10,8 +10,6 @@ const actionThunkFetchUser = createAsyncThunk(
       const response = await instanceAxios.get('/users');
       return response.data.data;
     } catch (error) {
-      console.error('Login error:', error);
-
       if (axios.isAxiosError(error)) {
         return thunkAPI.rejectWithValue(error.response?.data);
       }

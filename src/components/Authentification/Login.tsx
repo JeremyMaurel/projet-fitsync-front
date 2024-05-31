@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Send } from 'react-feather';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import { actionChangeCredential } from '../../store/reducers/userReducer';
-import actionCheckLogin from '../../store/thunks/actionCheckLogin';
+import actionLogin from '../../store/thunks/actionLogin';
 import DisconnectedHeader from '../Base/Header/DisconnectedHeader';
 import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
 import './Authentification.scss';
@@ -28,8 +28,8 @@ export default function Login() {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    dispatch(actionCheckLogin()).then((result) => {
-      if (actionCheckLogin.fulfilled.match(result)) {
+    dispatch(actionLogin()).then((result) => {
+      if (actionLogin.fulfilled.match(result)) {
         navigate('/home');
       }
     });
@@ -38,7 +38,6 @@ export default function Login() {
   useEffect(() => {
     if (logged) {
       navigate('/home');
-      console.log('pseudo:', pseudo);
     }
   }, [logged, navigate, pseudo]);
   return (

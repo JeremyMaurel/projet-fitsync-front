@@ -1,18 +1,15 @@
-// Import du composant routes de react-router-dom pour englober nos routes
+// Import of librairies or technical components
 import { Routes, Route } from 'react-router-dom';
-// Import du hook useState pour la gestion du state
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 
 // Import of Redux store thunks
 import actionThunkFetchActivities from '../../store/thunks/thunkFetchActivities';
 import actionThunkFetchCategories from '../../store/thunks/thunkFetchCategories';
-import actionThunkFetchUser from '../../store/thunks/thunkFetchUser';
+// import actionThunkFetchUser from '../../store/thunks/thunkFetchUser';
+import actionCheckLogin from '../../store/thunks/actionCheckLogin';
 
-// imort of loggedStatus from localStorage
-import { getItemLoggedStatusFromLocalStorage } from '../../localStorage/localStorage';
-
-// Import des sous-composants
+// Import of sub-components
 import Home from '../Home/Home';
 import Settings from '../Settings/Settings';
 import ActivityId from '../ActivityId/ActivityId';
@@ -29,21 +26,21 @@ import Login from '../Authentification/Login';
 import Signin from '../Authentification/Signin';
 import ResetPassword from '../ResetPassword/ResetPassword';
 
-// Import du style
+// Stylesheet
 import './App.scss';
 
 function App() {
   const dispatch = useAppDispatch();
+  const logged = useAppSelector((state) => state.user.logged);
 
   useEffect(() => {
     dispatch(actionThunkFetchCategories());
     dispatch(actionThunkFetchActivities());
-    dispatch(actionThunkFetchUser());
+    dispatch(actionCheckLogin());
+    // dispatch(actionThunkFetchUser());
   }, [dispatch]);
 
-  // We check from localStorage if the user is connected
-  const logged = getItemLoggedStatusFromLocalStorage();
-  console.log('is user connected?', logged);
+  console.log('Is user connected?', logged);
 
   return (
     <div className="app">
@@ -52,8 +49,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        `<Route path="/home" element={<Home />} />
-        <Route path="/settings" element={<Settings />} />
+        {logged && <Route path="/home" element={<Home />} />}
+        {logged && <Route path="/settings" element={<Settings />} />}
         {logged && (
           <Route path="/settings-LogedIn" element={<SettingsLogedIn />} />
         )}
