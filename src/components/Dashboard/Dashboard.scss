@@ -1,0 +1,52 @@
+.tile {
+  position: relative;
+  z-index: -1;
+}
+
+.tile--goals {
+  &--title {
+    padding: 2.5rem;
+    text-align: center;
+    font-weight: 400;
+  }
+}
+
+.tile--weight {
+  &--title {
+    padding: 2.5rem;
+    text-align: center;
+    font-weight: 400;
+  }
+}
+
+.cta--plus-icon {
+  color: white;
+  position: absolute;
+  top: 0.8rem;
+  right: 0.8rem;
+  width: 2rem;
+  height: 2rem;
+  background: #9f9f9f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -moz-border-radius: 4.3rem;
+  -webkit-border-radius: 4.3rem;
+  border-radius: 4.3rem;
+}
+
+.tile--favorites {
+  &--title {
+    padding: 2.5rem;
+    text-align: center;
+    font-weight: 400;
+  }
+}
+
+.tile--history {
+  &--title {
+    padding: 2.5rem;
+    text-align: center;
+    font-weight: 400;
+  }
+}

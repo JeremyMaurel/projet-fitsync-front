@@ -1,0 +1,28 @@
+.header {
+  background-color: black;
+  color: white;
+  height: 3.7rem;
+  display: flex;
+  justify-content: space-between;
+  padding: 1.2rem;
+  position: fixed;
+  top: 0px;
+  width: 100%;
+
+  &--logo {
+    width: 7rem;
+  }
+
+  &--icons {
+    display: flex;
+    width: 4rem;
+    margin-right: 2rem;
+    justify-content: space-between;
+    text-decoration: none;
+  }
+}
+
+// Ajout de cette propriété CSS pour forcer l'affichage en blanc des liens ou icones...
+a {
+  color: white;
+}
