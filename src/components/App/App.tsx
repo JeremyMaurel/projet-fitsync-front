@@ -34,15 +34,21 @@ import './App.scss';
 
 function App() {
   const dispatch = useAppDispatch();
+  const logged = useAppSelector((state) => state.user.logged);
 
   useEffect(() => {
+    // déclencher une action qui va récupérer ce qu'il y a dans le cookie
+    // et tenter de faire un get user s'il y un cookie pour récupérer les données
+    // utilisateur dans le store
+    getItemLoggedStatusFromLocalStorage();
+
     dispatch(actionThunkFetchCategories());
     dispatch(actionThunkFetchActivities());
     dispatch(actionThunkFetchUser());
   }, [dispatch]);
 
-  // We check from localStorage if the user is connected
-  const logged = getItemLoggedStatusFromLocalStorage();
+  // // We check from localStorage if the user is connected
+  // const logged = getItemLoggedStatusFromLocalStorage();
   console.log('is user connected?', logged);
 
   return (
@@ -52,7 +58,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        `<Route path="/home" element={<Home />} />
+        {logged && <Route path="/home" element={<Home />} />}
         <Route path="/settings" element={<Settings />} />
         {logged && (
           <Route path="/settings-LogedIn" element={<SettingsLogedIn />} />

@@ -11,6 +11,7 @@ export default function Home() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const pseudo = useAppSelector((state) => state.user.credentials.pseudo);
+  const loggedStatusHome = useAppSelector((state) => state.user.logged);
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
@@ -20,6 +21,8 @@ export default function Home() {
       dispatch(actionThunkFetchUser());
     }
   }, [navigate, dispatch]);
+
+  console.log('loggedStatusHome: ', loggedStatusHome);
 
   return (
     <>
