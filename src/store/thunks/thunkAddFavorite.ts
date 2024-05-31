@@ -3,10 +3,10 @@ import instanceAxios from '../../axios/axiosInstance';
 
 const thunkAddFavorite = createAsyncThunk(
   'user/ADD_FAVORITE',
-  async (activityId: number, thunkAPI) => {
+  async (activityId: number) => {
     try {
       const response = await instanceAxios.post('/favorites', {
-        newFavorite: activityId,
+        activityId: activityId,
       });
       return response.data;
     } catch (error) {
