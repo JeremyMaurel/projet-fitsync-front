@@ -1,3 +1,5 @@
+import Button from '@mui/material/Button';
+
 // Import of React component or libraries
 import { Link } from 'react-router-dom';
 
@@ -19,9 +21,9 @@ export default function LandingPage() {
           eiusmod tempor.
         </h3>
         <Link to="/signin" className="lp-cta--link">
-          <button className="form--btn lp-cta" type="submit">
+          <Button variant="contained" color="primary">
             Create account
-          </button>
+          </Button>
         </Link>
       </main>
       <DisconnectedFooter />

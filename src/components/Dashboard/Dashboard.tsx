@@ -1,36 +1,141 @@
+import React from 'react';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import {
+  CssBaseline,
+  Container,
+  Box,
+  Typography,
+  Card,
+  CardContent,
+  Divider,
+  IconButton,
+} from '@mui/material';
+import {
+  Add as AddIcon,
+  Favorite as FavoriteIcon,
+  History as HistoryIcon,
+  FitnessCenter as FitnessCenterIcon,
+} from '@mui/icons-material';
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 
-// Gestion du style
-import './Dashboard.scss';
-import { Plus } from 'react-feather';
+const theme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#adfa1d',
+    },
+  },
+});
 
 export default function Dashboard() {
   return (
-    <>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
       <Header />
-      <main className="main">
-        <h1 className="main--title">Dashboard</h1>
-        <div className="tile tile--goals">
-          <h2 className="tile--goals--title">Goals Tracking</h2>
-          <div className="cta--plus-icon">
-            <Plus size={30} />
-          </div>
-        </div>
-        <div className="tile tile--weight">
-          <h2 className="tile--weight--title">Weight tracking data</h2>
-          <div className="cta--plus-icon">
-            <Plus size={30} />
-          </div>
-        </div>
-        <div className="tile tile--favorites">
-          <h2 className="tile--favorites--title">Favorites</h2>
-        </div>
-        <div className="tile tile--history">
-          <h2 className="tile--history--title">History</h2>
-        </div>
+      <main>
+        <Container
+          maxWidth="md"
+          sx={{
+            marginTop: 10,
+          }}
+        >
+          <Typography variant="h3" color="primary" gutterBottom>
+            Dashboard
+          </Typography>
+          <Card sx={{ mb: 2, boxShadow: 3, borderRadius: 2 }}>
+            <CardContent>
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Typography variant="h5" color="primary">
+                  Goals Tracking
+                </Typography>
+                <IconButton color="primary">
+                  <AddIcon />
+                </IconButton>
+              </Box>
+              <Divider sx={{ my: 2 }} />
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Typography variant="body1">
+                  Track your goals and monitor your progress.
+                </Typography>
+                <FitnessCenterIcon color="primary" />
+              </Box>
+            </CardContent>
+          </Card>
+          <Card sx={{ mb: 2, boxShadow: 3, borderRadius: 2 }}>
+            <CardContent>
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Typography variant="h5" color="primary">
+                  Weight Tracking Data
+                </Typography>
+                <IconButton color="primary">
+                  <AddIcon />
+                </IconButton>
+              </Box>
+              <Divider sx={{ my: 2 }} />
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Typography variant="body1">
+                  Monitor your weight over time.
+                </Typography>
+                <FitnessCenterIcon color="primary" />
+              </Box>
+            </CardContent>
+          </Card>
+          <Card sx={{ mb: 2, boxShadow: 3, borderRadius: 2 }}>
+            <CardContent>
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Typography variant="h5" color="primary">
+                  Favorites
+                </Typography>
+                <FavoriteIcon color="primary" />
+              </Box>
+              <Divider sx={{ my: 2 }} />
+              <Typography variant="body1">
+                Access your favorite activities and routines quickly.
+              </Typography>
+            </CardContent>
+          </Card>
+          <Card sx={{ mb: 2, boxShadow: 3, borderRadius: 2 }}>
+            <CardContent>
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Typography variant="h5" color="primary">
+                  History
+                </Typography>
+                <HistoryIcon color="primary" />
+              </Box>
+              <Divider sx={{ my: 2 }} />
+              <Typography variant="body1">
+                Review your past activities and progress.
+              </Typography>
+            </CardContent>
+          </Card>
+        </Container>
       </main>
       <Footer />
-    </>
+    </ThemeProvider>
   );
 }

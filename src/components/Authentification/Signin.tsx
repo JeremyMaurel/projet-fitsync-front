@@ -1,7 +1,16 @@
-// Import of React component or libraries
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Send } from 'react-feather';
-import { useState } from 'react';
+import {
+  Box,
+  Button,
+  Checkbox,
+  Container,
+  FormControlLabel,
+  TextField,
+  Typography,
+  Alert,
+} from '@mui/material';
 
 // Import of components
 import DisconnectedHeader from '../Base/Header/DisconnectedHeader';
@@ -9,26 +18,8 @@ import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
 
 // Stylesheet
 import './Authentification.scss';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 
 export default function Signin() {
-  // const emailFormState = useAppSelector(
-  //   (state) => state.user.credentials.email
-  // );
-  // const passFromState = useAppSelector(
-  //   (state) => state.user.credentials.password
-  // );
-  // const dispatch = useAppDispatch();
-
-  // // on recupere l'erreur du state si jamais y'en a une on l'affiche
-  // const loginError = useAppSelector((state) => state.user.error);
-
-  // // on recupere dans le state isLogged pour filer en prop à LoginForm et ça conditionne l'affichage du form ou du bouton deco
-  // const logged = useAppSelector((state) => state.user.logged);
-
-  // // on recupère le pseudo dans le state pour afficher le message de bienvenue
-  // const pseudo = useAppSelector((state) => state.user.pseudo);
-
   const [pseudo, setPseudo] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -64,79 +55,101 @@ export default function Signin() {
   return (
     <>
       <DisconnectedHeader />
-      <main className="main">
-        <h1 className="main--title">Hello dear user !</h1>
-        <p className="main--subtitle">
-          Please create your account to access the app <br />
-          Already have an account? &nbsp;
-          <Link className="form--link" to="/login">
-            Login here
-          </Link>
-        </p>
-        <form className="form" onSubmit={handleSubmit}>
-          <h2 className="form--subtitle">Your Fitsync account</h2>
-          {error && <p className="form--error">{error}</p>}
-          {success && <p className="form--success">{success}</p>}
-          <input
-            className="form--input"
-            type="text"
-            id="pseudo"
-            name="pseudo"
-            placeholder="Choose your pseudo"
-            value={pseudo}
-            onChange={(e) => setPseudo(e.target.value)}
-            required
-          />
-          <input
-            className="form--input"
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            className="form--input"
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Choose your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <input
-            className="form--input"
-            type="password"
-            id="password--confirm"
-            name="password-confirm"
-            placeholder="Confirm your password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-          <div>
-            <input
-              type="checkbox"
-              id="conditions"
-              name="conditions"
-              checked={conditions}
-              onChange={(e) => setConditions(e.target.checked)}
+      <Container component="main" maxWidth="xs">
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Typography component="h1" variant="h5">
+            Hello dear user!
+          </Typography>
+          <Typography
+            component="p"
+            variant="body2"
+            align="center"
+            sx={{ mt: 2 }}
+          >
+            Please create your account to access the app <br />
+            Already have an account? &nbsp;
+            <Link to="/login">Login here</Link>
+          </Typography>
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+            {error && <Alert severity="error">{error}</Alert>}
+            {success && <Alert severity="success">{success}</Alert>}
+            <TextField
+              margin="normal"
               required
+              fullWidth
+              id="pseudo"
+              label="Choose your pseudo"
+              name="pseudo"
+              autoComplete="pseudo"
+              autoFocus
+              value={pseudo}
+              onChange={(e) => setPseudo(e.target.value)}
             />
-            <label htmlFor="conditions">
-              &nbsp;&nbsp;&nbsp;I agree to the Terms and Conditions
-            </label>
-          </div>
-          <div>
-            <button type="submit" className="form--cta">
-              Create my account &nbsp; <Send />
-            </button>
-          </div>
-        </form>
-      </main>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Your email"
+              name="email"
+              autoComplete="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Choose your password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password-confirm"
+              label="Confirm your password"
+              type="password"
+              id="password--confirm"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={conditions}
+                  onChange={(e) => setConditions(e.target.checked)}
+                  color="primary"
+                  required
+                />
+              }
+              label="I agree to the Terms and Conditions"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              sx={{ mt: 3, mb: 2 }}
+              endIcon={<Send />}
+            >
+              Create my account
+            </Button>
+          </Box>
+        </Box>
+      </Container>
       <DisconnectedFooter />
     </>
   );

@@ -1,20 +1,34 @@
-// Import of librairies or technical components
+// Importation des librairies et des composants techniques
 import { PlusCircle } from 'react-feather';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
 import thunkFetchFavorites from '../../store/thunks/thunkFetchFavorites';
 
-// Import of sub-components
+// Importation des sous-composants
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 
-// Stylesheet
+// Importation des composants MUI
+import {
+  Container,
+  Box,
+  Typography,
+  Card,
+  CardContent,
+  CardHeader,
+  List,
+  ListItem,
+  Button,
+  Link as MuiLink,
+} from '@mui/material';
+
+// Feuille de style
 import './Home.scss';
 
 export default function Home() {
-  // -- STATE REDUX --
-  // Pickup from the state of pseudo to say hello
+  // -- ÉTAT REDUX --
+  // Récupération du pseudo depuis l'état pour dire bonjour
   const pseudo = useAppSelector((state) => state.user.credentials.pseudo);
   const favoritesList = useAppSelector(
     (state) => state.favorites.favoritesList
@@ -28,50 +42,69 @@ export default function Home() {
   return (
     <>
       <Header />
-      <main className="main">
-        <h1 className="main--title">Hello {pseudo}!</h1>
-        <div className="tile tile--goals">
-          <div className="tile--goal">
-            <h2 className="tile--goal--title">Weekly Goal</h2>
-            <img
-              src="src/assets/weekly-goal-fake-progress-bar.png"
-              alt="fake-progress-weekly"
-              className="tile--goal--img"
-            />
-          </div>
-          <div className="tile--goal">
-            <h2 className="tile--goal--title">Monthly Goal</h2>
-            <img
-              src="src/assets/monthly-goal-fake-progress-bar.png"
-              alt="fake-progress-monthly"
-              className="tile--goal--img"
-            />
-          </div>
-        </div>
-        <Link to="/favorites" className="tile--list--link">
-          <div className="tile tile--favorites">
-            <div className="tile--header">
-              <h2 className="tile--header--title">My Favorite Activities</h2>
-            </div>
-            {favoritesList.map((favorite) => (
-              <div key={favorite.activity_id}>
-                <li>{favorite.activity_name}</li>
-              </div>
-            ))}
-          </div>
-        </Link>
-        <div className="tile tile--history">
-          <div className="tile--header">
-            <h2 className="tile--header--title">My Last Sessions</h2>
-          </div>
-          <ul>
-            <li>Placeholder session 1</li>
-            <li>Placeholder session 2</li>
-            <li>Placeholder session 3</li>
-            <li>Placeholder session 4</li>
-          </ul>
-        </div>
-      </main>
+      <Container component="main" maxWidth="md" sx={{ mt: 10 }}>
+        <Typography variant="h2" component="h2" gutterBottom>
+          Hello {pseudo}!
+        </Typography>
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          mb={4}
+          width="100%"
+        >
+          <Card sx={{ width: '100%', mb: 2 }}>
+            <CardHeader title="Weekly Goal" />
+            <CardContent>
+              <img
+                src="src/assets/weekly-goal-fake-progress-bar.png"
+                alt="fake-progress-weekly"
+                className="tile--goal--img"
+              />
+            </CardContent>
+          </Card>
+          <Card sx={{ width: '100%' }}>
+            <CardHeader title="Monthly Goal" />
+            <CardContent>
+              <img
+                src="src/assets/monthly-goal-fake-progress-bar.png"
+                alt="fake-progress-monthly"
+                className="tile--goal--img"
+              />
+            </CardContent>
+          </Card>
+        </Box>
+        <MuiLink
+          component={Link}
+          to="/favorites"
+          underline="none"
+          sx={{ width: '100%' }}
+        >
+          <Card sx={{ mb: 4, width: '100%' }}>
+            <CardHeader title="My Favorite Activities" />
+            <CardContent>
+              <List>
+                {favoritesList.map((favorite) => (
+                  <ListItem key={favorite.activity_id}>
+                    {favorite.activity_name}
+                  </ListItem>
+                ))}
+              </List>
+            </CardContent>
+          </Card>
+        </MuiLink>
+        <Card sx={{ width: '100%' }}>
+          <CardHeader title="My Last Sessions" />
+          <CardContent>
+            <List>
+              <ListItem>Placeholder session 1</ListItem>
+              <ListItem>Placeholder session 2</ListItem>
+              <ListItem>Placeholder session 3</ListItem>
+              <ListItem>Placeholder session 4</ListItem>
+            </List>
+          </CardContent>
+        </Card>
+      </Container>
       <Footer />
     </>
   );

@@ -3,6 +3,10 @@ import { Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 
+// Import of MUI Core Librairy for Darkmode
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
 // Import of Redux store thunks
 import actionThunkFetchActivities from '../../store/thunks/thunkFetchActivities';
 import actionThunkFetchCategories from '../../store/thunks/thunkFetchCategories';
@@ -29,6 +33,18 @@ import ResetPassword from '../ResetPassword/ResetPassword';
 // Stylesheet
 import './App.scss';
 
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#adfa1d',
+    },
+    secondary: {
+      main: '#ff1744',
+    },
+  },
+});
+
 function App() {
   const dispatch = useAppDispatch();
   const logged = useAppSelector((state) => state.user.logged);
@@ -44,27 +60,32 @@ function App() {
 
   return (
     <div className="app">
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signin" element={<Signin />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        {logged && <Route path="/home" element={<Home />} />}
-        {logged && <Route path="/settings" element={<Settings />} />}
-        {logged && (
-          <Route path="/settings-LogedIn" element={<SettingsLogedIn />} />
-        )}
-        <Route path="/category-list" element={<CategoryList />} />
-        <Route path="/category-list/:categoryId" element={<CategoryId />} />
-        <Route path="/activity/:activityId" element={<ActivityId />} />
-        {logged && <Route path="/history/:sessionId" element={<SessionId />} />}
-        {logged && <Route path="/dashboard" element={<Dashboard />} />}
-        {logged && <Route path="/favorites" element={<Favorites />} />}
-        {/* <Route path="/favorites" element={<Favorites />} /> */}
-        {logged && <Route path="/history" element={<History />} />}
-        {logged && <Route path="/new-session" element={<NewSession />} />}
-        <Route path="*" element={<div>Page 404 (belle page à créer)</div>} />
-      </Routes>
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signin" element={<Signin />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          {logged && <Route path="/home" element={<Home />} />}
+          {logged && <Route path="/settings" element={<Settings />} />}
+          {logged && (
+            <Route path="/settings-LogedIn" element={<SettingsLogedIn />} />
+          )}
+          <Route path="/category-list" element={<CategoryList />} />
+          <Route path="/category-list/:categoryId" element={<CategoryId />} />
+          <Route path="/activity/:activityId" element={<ActivityId />} />
+          {logged && (
+            <Route path="/history/:sessionId" element={<SessionId />} />
+          )}
+          {logged && <Route path="/dashboard" element={<Dashboard />} />}
+          {logged && <Route path="/favorites" element={<Favorites />} />}
+          {/* <Route path="/favorites" element={<Favorites />} /> */}
+          {logged && <Route path="/history" element={<History />} />}
+          {logged && <Route path="/new-session" element={<NewSession />} />}
+          <Route path="*" element={<div>Page 404 (belle page à créer)</div>} />
+        </Routes>
+      </ThemeProvider>
     </div>
   );
 }
