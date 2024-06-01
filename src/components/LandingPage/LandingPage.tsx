@@ -1,8 +1,10 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import DisconnectedHeader from '../Base/Header/DisconnectedHeader';
 import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
 import { Container, Box, Typography, Button } from '@mui/material';
+
+// Feuille de style
+import './LandingPage.scss';
 
 export default function LandingPage() {
   return (

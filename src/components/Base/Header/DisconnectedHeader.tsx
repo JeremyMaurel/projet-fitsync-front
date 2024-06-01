@@ -2,9 +2,6 @@
 import { Link } from 'react-router-dom';
 import { AppBar, Toolbar, IconButton, Box, Button } from '@mui/material';
 
-// Stylesheet
-import './Header.scss';
-
 export default function DisconnectedHeader() {
   return (
     <AppBar position="static">

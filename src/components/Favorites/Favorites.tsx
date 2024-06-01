@@ -78,9 +78,7 @@ export default function Favorites() {
               </Grid>
             ))}
           </Grid>
-          <Box mt={5}>
-            <CtaMore />
-          </Box>
+          <Box mt={5}></Box>
         </Container>
       </main>
       <Footer />

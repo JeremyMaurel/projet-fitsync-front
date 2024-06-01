@@ -5,7 +5,6 @@ import { useAppSelector } from '../../hooks/redux-hooks';
 // Import of sub-components
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
-import CtaMore from '../Base/CtaMore/CtaMore';
 
 // Import of MUI components
 import {
@@ -111,7 +110,6 @@ export default function CategoryList() {
             })}
           </Grid>
         </Box>
-        <CtaMore />
       </Container>
       <Footer />
     </>

@@ -50,7 +50,6 @@ export default function CategoryId() {
             </div>
           ))}
         </div>
-        <CtaMore />
         <CtaAdd />
       </main>
       <Footer />
