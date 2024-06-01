@@ -82,10 +82,10 @@ const NewSession = () => {
         <Container
           maxWidth="md"
           sx={{
-            marginTop: 10,
+            marginTop: 5,
           }}
         >
-          <Typography variant="h4" color="primary" gutterBottom>
+          <Typography variant="h3" component="h1" gutterBottom>
             New Session
           </Typography>
 

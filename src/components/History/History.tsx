@@ -6,7 +6,7 @@ export default function History() {
   return (
     <>
       <Header />
-      <Container component="main" maxWidth="md" sx={{ mt: 10 }}>
+      <Container component="main" maxWidth="md" sx={{ mt: 5 }}>
         <Typography variant="h3" gutterBottom>
           History
         </Typography>

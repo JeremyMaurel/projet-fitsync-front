@@ -58,9 +58,9 @@ export default function CategoryList() {
       <Container
         component="main"
         maxWidth="md"
-        sx={{ mt: 10, color: theme.palette.text.primary }}
+        sx={{ mt: 5, color: theme.palette.text.primary }}
       >
-        <Typography variant="h3" component="h1" gutterBottom color="primary">
+        <Typography variant="h3" component="h1" gutterBottom>
           Categories
         </Typography>
         <Box

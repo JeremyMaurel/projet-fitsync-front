@@ -38,7 +38,7 @@ export default function Favorites() {
         <Container
           maxWidth="md"
           sx={{
-            marginTop: 10,
+            marginTop: 5,
           }}
         >
           <Typography variant="h3" gutterBottom>

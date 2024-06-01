@@ -1,15 +1,9 @@
-// Importation des librairies et des composants techniques
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
 import thunkFetchFavorites from '../../store/thunks/thunkFetchFavorites';
-
-// Importation des sous-composants
-import Header from '../Base/Header/Header';
-import Footer from '../Base/Footer/Footer';
-
-// Importation des composants MUI
 import {
+  Avatar,
   Container,
   Box,
   Typography,
@@ -18,17 +12,16 @@ import {
   CardHeader,
   List,
   ListItem,
-  Button,
   Link as MuiLink,
+  Divider,
 } from '@mui/material';
 
-// Feuille de style
-import './Home.scss';
+import Header from '../Base/Header/Header';
+import Footer from '../Base/Footer/Footer';
 
-export default function Home() {
-  // -- ÉTAT REDUX --
-  // Récupération du pseudo depuis l'état pour dire bonjour
+const Home: React.FC = () => {
   const pseudo = useAppSelector((state) => state.user.credentials.pseudo);
+  const avatarUrl = 'public/1.jpg';
   const favoritesList = useAppSelector(
     (state) => state.favorites.favoritesList
   );
@@ -38,13 +31,28 @@ export default function Home() {
     dispatch(thunkFetchFavorites());
   }, [dispatch]);
 
+  // Fonction pour générer un pourcentage aléatoire pour simuler la progression
+  const getRandomPercentage = () => Math.floor(Math.random() * 100) + 1;
+
   return (
     <>
       <Header />
-      <Container component="main" maxWidth="md" sx={{ mt: 10 }}>
-        <Typography variant="h2" component="h2" gutterBottom>
-          Hello {pseudo}!
-        </Typography>
+      <Container component="main" maxWidth="md" sx={{ mt: 5 }}>
+        <Box
+          sx={{
+            display: 'block',
+            justifyContent: 'center',
+          }}
+        >
+          <Avatar
+            alt="User Photo"
+            src={avatarUrl}
+            sx={{ width: 70, height: 70, mb: 2 }}
+          />
+          <Typography component="h1" variant="h4" sx={{ mb: 5 }}>
+            Hello {pseudo}!
+          </Typography>
+        </Box>
         <Box
           display="flex"
           flexDirection="column"
@@ -52,26 +60,20 @@ export default function Home() {
           mb={4}
           width="100%"
         >
-          <Card sx={{ width: '100%', mb: 2 }}>
+          <Card sx={{ width: '100%', mb: 2, boxShadow: 3, borderRadius: 2 }}>
             <CardHeader title="Weekly Goal" />
             <CardContent>
-              <Box
-                component="img"
-                src="src/assets/weekly-goal-fake-progress-bar.png"
-                alt="fake-progress-weekly"
-                sx={{ width: '100%' }}
-              />
+              <Typography variant="h3" color="primary">
+                {getRandomPercentage()}%
+              </Typography>
             </CardContent>
           </Card>
-          <Card sx={{ width: '100%' }}>
+          <Card sx={{ width: '100%', boxShadow: 3, borderRadius: 2 }}>
             <CardHeader title="Monthly Goal" />
             <CardContent>
-              <Box
-                component="img"
-                src="src/assets/monthly-goal-fake-progress-bar.png"
-                alt="fake-progress-monthly"
-                sx={{ width: '100%' }}
-              />
+              <Typography variant="h3" color="primary">
+                {getRandomPercentage()}%
+              </Typography>
             </CardContent>
           </Card>
         </Box>
@@ -81,27 +83,40 @@ export default function Home() {
           underline="none"
           sx={{ width: '100%' }}
         >
-          <Card sx={{ mb: 4, width: '100%' }}>
+          <Card sx={{ mb: 4, width: '100%', boxShadow: 3, borderRadius: 2 }}>
             <CardHeader title="My Favorite Activities" />
             <CardContent>
               <List>
-                {favoritesList.map((favorite) => (
-                  <ListItem key={favorite.activity_id}>
-                    {favorite.activity_name}
-                  </ListItem>
+                {favoritesList.map((favorite, index) => (
+                  <React.Fragment key={favorite.activity_id}>
+                    <ListItem>{favorite.activity_name}</ListItem>
+                    {index !== favoritesList.length - 1 && <Divider />}
+                  </React.Fragment>
                 ))}
               </List>
             </CardContent>
           </Card>
         </MuiLink>
-        <Card sx={{ width: '100%' }}>
+        <Card sx={{ width: '100%', boxShadow: 3, borderRadius: 2 }}>
           <CardHeader title="My Last Sessions" />
           <CardContent>
             <List>
-              <ListItem>Placeholder session 1</ListItem>
-              <ListItem>Placeholder session 2</ListItem>
-              <ListItem>Placeholder session 3</ListItem>
-              <ListItem>Placeholder session 4</ListItem>
+              <ListItem sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                {/* Placeholder pour les sessions */}
+                Placeholder session 1
+              </ListItem>
+              <ListItem sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                {/* Placeholder pour les sessions */}
+                Placeholder session 2
+              </ListItem>
+              <ListItem sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                {/* Placeholder pour les sessions */}
+                Placeholder session 3
+              </ListItem>
+              <ListItem sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                {/* Placeholder pour les sessions */}
+                Placeholder session 4
+              </ListItem>
             </List>
           </CardContent>
         </Card>
@@ -109,4 +124,6 @@ export default function Home() {
       <Footer />
     </>
   );
-}
+};
+
+export default Home;
