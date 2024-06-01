@@ -1,6 +1,5 @@
 import React, { FormEvent, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Send } from 'react-feather';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import { actionChangeCredential } from '../../store/reducers/userReducer';
 import actionLogin from '../../store/thunks/actionLogin';

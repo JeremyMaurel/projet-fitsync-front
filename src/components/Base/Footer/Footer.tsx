@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import { Home, Dashboard, Add } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
@@ -28,20 +27,18 @@ export default function Footer() {
         icon={<Home />}
         component={Link}
         to="/home"
-        selected={value === 0}
       />
       <BottomNavigationAction
         label="Dashboard"
         icon={<Dashboard />}
         component={Link}
         to="/dashboard"
-        selected={value === 1}
       />
       <BottomNavigationAction
+        label="Session"
         icon={<Add />}
         component={Link}
         to="/new-session"
-        selected={value === 2}
       />
     </FixedBottomNavigation>
   );

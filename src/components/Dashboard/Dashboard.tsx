@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider, createTheme, Theme } from '@mui/material/styles';
 import {
   CssBaseline,
   Container,
@@ -19,6 +19,7 @@ import {
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 
+// Définition du thème personnalisé
 const theme = createTheme({
   palette: {
     mode: 'dark',
@@ -28,7 +29,7 @@ const theme = createTheme({
   },
 });
 
-export default function Dashboard() {
+const Dashboard: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -43,6 +44,8 @@ export default function Dashboard() {
           <Typography variant="h3" color="primary" gutterBottom>
             Dashboard
           </Typography>
+
+          {/* Card pour le suivi des objectifs */}
           <Card sx={{ mb: 2, boxShadow: 3, borderRadius: 2 }}>
             <CardContent>
               <Box
@@ -70,6 +73,8 @@ export default function Dashboard() {
               </Box>
             </CardContent>
           </Card>
+
+          {/* Card pour le suivi du poids */}
           <Card sx={{ mb: 2, boxShadow: 3, borderRadius: 2 }}>
             <CardContent>
               <Box
@@ -97,6 +102,8 @@ export default function Dashboard() {
               </Box>
             </CardContent>
           </Card>
+
+          {/* Card pour les favoris */}
           <Card sx={{ mb: 2, boxShadow: 3, borderRadius: 2 }}>
             <CardContent>
               <Box
@@ -115,6 +122,8 @@ export default function Dashboard() {
               </Typography>
             </CardContent>
           </Card>
+
+          {/* Card pour l'historique */}
           <Card sx={{ mb: 2, boxShadow: 3, borderRadius: 2 }}>
             <CardContent>
               <Box
@@ -138,4 +147,6 @@ export default function Dashboard() {
       <Footer />
     </ThemeProvider>
   );
-}
+};
+
+export default Dashboard;

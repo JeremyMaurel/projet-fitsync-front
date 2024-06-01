@@ -177,7 +177,7 @@ const NewSession = () => {
             </Box>
           </LocalizationProvider>
 
-          <Typography variant="h6" color="primary" gutterBottom>
+          <Typography variant="h6" gutterBottom>
             Duration
           </Typography>
           <Box display="flex" mb={2}>

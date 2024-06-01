@@ -1,31 +1,34 @@
-import Button from '@mui/material/Button';
-
-// Import of React component or libraries
+import React from 'react';
 import { Link } from 'react-router-dom';
-
-// Import of components
 import DisconnectedHeader from '../Base/Header/DisconnectedHeader';
 import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
-
-// Stylesheet
-import './LandingPage.scss';
+import { Container, Box, Typography, Button } from '@mui/material';
 
 export default function LandingPage() {
   return (
     <>
       <DisconnectedHeader />
-      <main className="main">
-        <h1 className="main--title">Fitsync lorem ipsum dolor sit amet</h1>
-        <h3>
+      <Container component="main" maxWidth="md" sx={{ mt: 10 }}>
+        <Typography variant="h3" color="primary" gutterBottom>
+          Fitsync lorem ipsum dolor sit amet
+        </Typography>
+        <Typography variant="h5" paragraph>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor.
-        </h3>
-        <Link to="/signin" className="lp-cta--link">
-          <Button variant="contained" color="primary">
+        </Typography>
+        <Box textAlign="center" sx={{ mt: 4 }}>
+          <Button
+            component={Link}
+            to="/signin"
+            variant="contained"
+            color="primary"
+            size="large"
+            sx={{ mt: 20 }}
+          >
             Create account
           </Button>
-        </Link>
-      </main>
+        </Box>
+      </Container>
       <DisconnectedFooter />
     </>
   );

@@ -1,78 +1,39 @@
+import { Container, Typography, Card, CardContent, Grid } from '@mui/material';
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
-
-// Gestion du style
-import './History.scss';
 
 export default function History() {
   return (
     <>
       <Header />
-      <main className="main">
-        <h1 className="main--title">History</h1>
-        <div className="history--list">
-          <div className="tile--category">
-            <h2 className="tile--title">Activity</h2>
-            <h2 className="tile--date">Date</h2>
-            <h2 className="tile--mets">METS</h2>
-          </div>
-          <div className="tile--category">
-            <h2 className="tile--title">Activity</h2>
-            <h2 className="tile--date">Date</h2>
-            <h2 className="tile--mets">METS</h2>
-          </div>
-          <div className="tile--category">
-            <h2 className="tile--title">Activity</h2>
-            <h2 className="tile--date">Date</h2>
-            <h2 className="tile--mets">METS</h2>
-          </div>
-          <div className="tile--category">
-            <h2 className="tile--title">Activity</h2>
-            <h2 className="tile--date">Date</h2>
-            <h2 className="tile--mets">METS</h2>
-          </div>
-          <div className="tile--category">
-            <h2 className="tile--title">Activity</h2>
-            <h2 className="tile--date">Date</h2>
-            <h2 className="tile--mets">METS</h2>
-          </div>
-          <div className="tile--category">
-            <h2 className="tile--title">Activity</h2>
-            <h2 className="tile--date">Date</h2>
-            <h2 className="tile--mets">METS</h2>
-          </div>
-          <div className="tile--category">
-            <h2 className="tile--title">Activity</h2>
-            <h2 className="tile--date">Date</h2>
-            <h2 className="tile--mets">METS</h2>
-          </div>
-          <div className="tile--category">
-            <h2 className="tile--title">Activity</h2>
-            <h2 className="tile--date">Date</h2>
-            <h2 className="tile--mets">METS</h2>
-          </div>
-          <div className="tile--category">
-            <h2 className="tile--title">Activity</h2>
-            <h2 className="tile--date">Date</h2>
-            <h2 className="tile--mets">METS</h2>
-          </div>
-          <div className="tile--category">
-            <h2 className="tile--title">Activity</h2>
-            <h2 className="tile--date">Date</h2>
-            <h2 className="tile--mets">METS</h2>
-          </div>
-          <div className="tile--category">
-            <h2 className="tile--title">Activity</h2>
-            <h2 className="tile--date">Date</h2>
-            <h2 className="tile--mets">METS</h2>
-          </div>
-          <div className="tile--category">
-            <h2 className="tile--title">Activity</h2>
-            <h2 className="tile--date">Date</h2>
-            <h2 className="tile--mets">METS</h2>
-          </div>
-        </div>
-      </main>
+      <Container component="main" maxWidth="md" sx={{ mt: 10 }}>
+        <Typography variant="h3" gutterBottom>
+          History
+        </Typography>
+        <Grid container spacing={2}>
+          {[...Array(12)].map((_, index) => (
+            <Grid item xs={12} key={index}>
+              <Card>
+                <CardContent>
+                  <Grid container>
+                    <Grid item xs={4}>
+                      <Typography variant="h6" color="primary">
+                        Activity
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Typography variant="h6">Date</Typography>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Typography variant="h6">METS</Typography>
+                    </Grid>
+                  </Grid>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
       <Footer />
     </>
   );

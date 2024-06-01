@@ -1,7 +1,6 @@
 // Importation des librairies et des composants techniques
-import { PlusCircle } from 'react-feather';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
 import thunkFetchFavorites from '../../store/thunks/thunkFetchFavorites';
 
@@ -56,26 +55,28 @@ export default function Home() {
           <Card sx={{ width: '100%', mb: 2 }}>
             <CardHeader title="Weekly Goal" />
             <CardContent>
-              <img
+              <Box
+                component="img"
                 src="src/assets/weekly-goal-fake-progress-bar.png"
                 alt="fake-progress-weekly"
-                className="tile--goal--img"
+                sx={{ width: '100%' }}
               />
             </CardContent>
           </Card>
           <Card sx={{ width: '100%' }}>
             <CardHeader title="Monthly Goal" />
             <CardContent>
-              <img
+              <Box
+                component="img"
                 src="src/assets/monthly-goal-fake-progress-bar.png"
                 alt="fake-progress-monthly"
-                className="tile--goal--img"
+                sx={{ width: '100%' }}
               />
             </CardContent>
           </Card>
         </Box>
         <MuiLink
-          component={Link}
+          component={RouterLink}
           to="/favorites"
           underline="none"
           sx={{ width: '100%' }}
