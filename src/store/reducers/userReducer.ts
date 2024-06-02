@@ -1,12 +1,15 @@
+/* eslint-disable import/no-cycle */
 // Import of librairies or technical components
 import { createAction, createReducer, PayloadAction } from '@reduxjs/toolkit';
-// eslint-disable-next-line import/no-cycle
 import actionLogin from '../thunks/actionLogin';
-// eslint-disable-next-line import/no-cycle
 import actionLogout from '../thunks/actionLogout';
 import actionThunkFetchUser from '../thunks/thunkFetchUser';
-// eslint-disable-next-line import/no-cycle
 import actionCheckLogin from '../thunks/actionCheckLogin';
+import {
+  fetchWeight,
+  actionUserUpdate,
+  actionUserUpdateWeight,
+} from '../thunks/actionUserUpdate';
 
 interface UserState {
   logged: boolean;
@@ -14,7 +17,7 @@ interface UserState {
     pseudo: string;
     password: string;
   };
-  email: null | string;
+  mail: null | string;
   token: null | string;
   error: null | string;
   id: null | string;
@@ -32,13 +35,13 @@ const initialState: UserState = {
     pseudo: '',
     password: '',
   },
-  email: '',
+  mail: '',
   token: '',
   error: '',
   id: '',
   role: '',
-  birthdate: '',
-  gender: '',
+  birthdate: null,
+  gender: null,
   height: null,
   weight: 70,
   objective: null,
@@ -52,15 +55,6 @@ export const actionChangeCredential = createAction<{
 export const actionLogIn = createAction<{ jwt: string; pseudo: string }>(
   'user/LOGIN'
 );
-
-export const actionUpdateUser = createAction<{
-  birthdate: string;
-  gender: string;
-  weight: number;
-  height: number;
-  pseudo: string;
-  email: string;
-}>('user/UPDATE_USER');
 
 const userReducer = createReducer(initialState, (builder) => {
   builder
@@ -79,7 +73,7 @@ const userReducer = createReducer(initialState, (builder) => {
         state,
         action: PayloadAction<{
           id: string;
-          email: string;
+          mail: string;
           pseudo: string;
           role: string;
           password: string;
@@ -92,7 +86,7 @@ const userReducer = createReducer(initialState, (builder) => {
       ) => {
         state.logged = true;
         state.id = action.payload.id;
-        state.email = action.payload.email;
+        state.mail = action.payload.mail;
         state.credentials.pseudo = action.payload.pseudo;
         state.role = action.payload.role;
         state.credentials.password = action.payload.password;
@@ -124,7 +118,7 @@ const userReducer = createReducer(initialState, (builder) => {
         state,
         action: PayloadAction<{
           id: string;
-          email: string;
+          mail: string;
           pseudo: string;
           role: string;
           password: string;
@@ -136,7 +130,7 @@ const userReducer = createReducer(initialState, (builder) => {
         }>
       ) => {
         state.id = action.payload.id;
-        state.email = action.payload.email;
+        state.mail = action.payload.mail;
         state.credentials.pseudo = action.payload.pseudo;
         state.role = action.payload.role;
         state.credentials.password = action.payload.password;
@@ -148,7 +142,7 @@ const userReducer = createReducer(initialState, (builder) => {
       }
     )
     .addCase(
-      actionUpdateUser,
+      actionUserUpdate.fulfilled,
       (
         state,
         action: PayloadAction<{
@@ -157,7 +151,7 @@ const userReducer = createReducer(initialState, (builder) => {
           weight: number;
           height: number;
           pseudo: string;
-          email: string;
+          mail: string;
         }>
       ) => {
         state.birthdate = action.payload.birthdate;
@@ -165,9 +159,19 @@ const userReducer = createReducer(initialState, (builder) => {
         state.weight = action.payload.weight;
         state.height = action.payload.height;
         state.credentials.pseudo = action.payload.pseudo;
-        state.email = action.payload.email;
+        state.mail = action.payload.mail;
       }
-    );
+    )
+    .addCase(
+      actionUserUpdateWeight.fulfilled,
+      (state, action: PayloadAction<{ weight: number }>) => {
+        state.weight = action.payload.weight;
+      }
+    )
+    .addCase(fetchWeight.fulfilled, (state, action) => {
+      console.log('Weight data stored in state:', action.payload.value);
+      state.weight = action.payload.value;
+    });
 });
 
 export default userReducer;

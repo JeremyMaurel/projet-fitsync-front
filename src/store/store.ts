@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 // Import of librairies or technical components
 import { configureStore } from '@reduxjs/toolkit';
 // import of reducers
