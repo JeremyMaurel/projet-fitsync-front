@@ -13,13 +13,13 @@ import {
   CardContent,
   Divider,
   InputAdornment,
-  MenuItem,
   Container,
+  OutlinedInput,
 } from '@mui/material';
 import { Add as AddIcon, Search as SearchIcon } from '@mui/icons-material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker, TimePicker } from '@mui/x-date-pickers';
+import { DateTimePicker } from '@mui/x-date-pickers';
 
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
@@ -32,8 +32,9 @@ const NewSession = () => {
   // -- NEW SESSION STATES --
   const [newSessionComment, setNewSessionComment] = useState('');
   const [newSessionDuration, setNewSessionDuration] = useState('');
+  const [newSessionActivityName, setNewSessionActivityName] = useState('');
   const [newSessionActivityId, setNewSessionActivityId] = useState('');
-  const [newSessionDate, setNewSessionDate] = useState('');
+  const [newSessionDateTime, setNewSessionDateTime] = useState('');
 
   // -- LIST SESSIONS SELECTOR --
   const sessionsList = useAppSelector((state) => state.sessions.sessionsList);
@@ -47,17 +48,12 @@ const NewSession = () => {
     (state) => state.activities.activitiesList
   );
 
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchActivities, setSearchActivities] = useState('');
   const [filteredActivities, setFilteredActivities] = useState([]);
-  const [durationHours, setDurationHours] = useState('');
-  const [durationMinutes, setDurationMinutes] = useState('');
-
-  const handleChangeComment = (event) => {
-    setNewSessionComment(event.target.value);
-  };
+  const currentDateTime = dayjs();
 
   const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
+    setSearchActivities(event.target.value);
     if (event.target.value === '') {
       setFilteredActivities([]);
     } else {
@@ -69,37 +65,39 @@ const NewSession = () => {
     }
   };
 
-  const handleSelectActivity = (activityName) => {
-    setSearchTerm(activityName);
-    setFilteredActivities([]);
+  const handleNewSessionDuration = (event) => {
+    setNewSessionDuration(event.target.value);
   };
 
-  const handleDurationChange = (event) => {
-    const { name, value } = event.target;
-    if (name === 'hours') {
-      setDurationHours(value);
-    } else if (name === 'minutes') {
-      setDurationMinutes(value);
-    }
+  const handleNewSessionComment = (event) => {
+    setNewSessionComment(event.target.value);
   };
 
-  const today = dayjs();
-  const yesterday = dayjs().subtract(1, 'day');
-  const todayStartOfTheDay = today.startOf('day');
-
-  const hoursOptions = Array.from({ length: 24 }, (_, i) => i);
-  const minutesOptions = Array.from({ length: 60 }, (_, i) => i);
+  const handleSelectActivity = (activityId: number, activityName: string) => {
+    setNewSessionActivityId(activityId); // Définit l'ID de l'activité sélectionnée
+    setSearchActivities(activityName); // Met à jour le terme de recherche avec le nom de l'activité
+    setFilteredActivities([]); // Réinitialise la liste des activités filtrées
+  };
 
   // SUBMIT NEW SESSION
-  const handleSubmit = () => {
-    dispatch(
-      thunkAddNewSession({
-        // duration,
-        // activityId,
-        // date,
-        // comment,
-      })
-    );
+  const handleSubmitAddSession = () => {
+    // Créer un objet représentant la nouvelle session avec le commentaire
+    const newSession = {
+      duration: newSessionDuration,
+      activityId: newSessionActivityId,
+      date: newSessionDateTime,
+      comment: newSessionComment,
+    };
+
+    console.log(newSessionDateTime);
+
+    // Envoyer la nouvelle session à la base de données en utilisant le thunkAddNewSession
+    dispatch(thunkAddNewSession(newSession));
+
+    // Réinitialiser le champ de commentaire après l'ajout de la session
+    setNewSessionDuration('');
+    setNewSessionComment('');
+    setNewSessionActivityId('');
   };
 
   return (
@@ -149,8 +147,11 @@ const NewSession = () => {
             <TextField
               label="Search Activities"
               variant="outlined"
-              value={searchTerm}
-              onChange={handleSearch}
+              value={searchActivities}
+              onChange={(event) => {
+                handleSearch(event);
+                setNewSessionActivityName(event.target.value);
+              }}
               sx={{ mb: 2 }}
               InputProps={{
                 endAdornment: (
@@ -173,7 +174,9 @@ const NewSession = () => {
                   {filteredActivities.map((activity) => (
                     <ListItem
                       key={activity.id}
-                      onClick={() => handleSelectActivity(activity.name)}
+                      onClick={() =>
+                        handleSelectActivity(activity.id, activity.name)
+                      }
                     >
                       {activity.name}
                     </ListItem>
@@ -186,57 +189,34 @@ const NewSession = () => {
           <Typography variant="h6" gutterBottom>
             Date & Time
           </Typography>
+
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Box display="flex" flexDirection="column" mb={2}>
-              <DatePicker
-                label="Date Picker"
-                defaultValue={yesterday}
-                disablePast
-                views={['year', 'month', 'day']}
-                slotProps={{ textField: { fullWidth: true, sx: { mb: 2 } } }}
-              />
-              <TimePicker
-                label="Time Picker"
-                defaultValue={todayStartOfTheDay}
-                disablePast
-                slotProps={{ textField: { fullWidth: true, sx: { mb: 2 } } }}
-              />
-            </Box>
+            <DateTimePicker
+              defaultValue={currentDateTime}
+              sx={{ width: '100%', mb: 5 }}
+              slotProps={{ textField: { fullWidth: true } }}
+              onChange={(newValue) => {
+                if (newValue !== null) {
+                  setNewSessionDateTime(newValue.toISOString());
+                }
+              }}
+            />
           </LocalizationProvider>
 
           <Typography variant="h6" gutterBottom>
             Duration
           </Typography>
           <Box display="flex" mb={2}>
-            <TextField
-              select
-              label="Hours"
-              name="hours"
-              value={durationHours}
-              onChange={handleDurationChange}
-              sx={{ mr: 2 }}
+            <OutlinedInput
               fullWidth
-            >
-              {hoursOptions.map((hour) => (
-                <MenuItem key={hour} value={hour}>
-                  {hour}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              select
-              label="Minutes"
-              name="minutes"
-              value={durationMinutes}
-              onChange={handleDurationChange}
-              fullWidth
-            >
-              {minutesOptions.map((minute) => (
-                <MenuItem key={minute} value={minute}>
-                  {minute}
-                </MenuItem>
-              ))}
-            </TextField>
+              type="number"
+              placeholder="Enter duration in minutes"
+              value={newSessionDuration}
+              onChange={handleNewSessionDuration}
+              endAdornment={
+                <InputAdornment position="end">minutes</InputAdornment>
+              }
+            />
           </Box>
 
           <TextField
@@ -247,7 +227,7 @@ const NewSession = () => {
             variant="outlined"
             margin="normal"
             value={newSessionComment}
-            onChange={handleChangeComment}
+            onChange={handleNewSessionComment}
           />
           <Button
             variant="contained"
@@ -261,7 +241,7 @@ const NewSession = () => {
                 bgcolor: '#8bcc0f',
               },
             }}
-            onClick={handleSubmit}
+            onClick={handleSubmitAddSession}
           >
             Add Session
           </Button>

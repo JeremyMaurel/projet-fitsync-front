@@ -1,14 +1,14 @@
-// Import of libraries or technical components
+// Import des bibliothèques ou des composants techniques
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import actionThunkFetchSessions from '../../store/thunks/thunkFetchSessions';
 
-// Import of sub-components
+// Import des sous-composants
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 
-// Import of MUI components
+// Import des composants MUI
 import {
   Container,
   Box,
@@ -20,7 +20,7 @@ import {
   Grid,
 } from '@mui/material';
 
-// Stylesheet
+// Feuille de style
 import './History.scss';
 
 export default function History() {
@@ -55,46 +55,43 @@ export default function History() {
           width="100%"
         >
           <Grid container spacing={2}>
-            {sessionsList.map((session) => {
-              return (
-                <Grid item xs={12} sm={6} key={session.id}>
-                  <Card
+            {sessionsList.map((session) => (
+              <Grid item xs={12} sm={6} key={session.id}>
+                <Card
+                  sx={{
+                    boxShadow: 3,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: '100%',
+                  }}
+                >
+                  <CardHeader
+                    title={
+                      <Link
+                        to={`/history/${session.id}`}
+                        style={{ textDecoration: 'none', color: 'inherit' }}
+                      >
+                        <Typography variant="body2" color="primary">
+                          SESSION DATE: {session.date}
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary">
+                          Duration: {session.duration} mn
+                        </Typography>
+                        {session.activity_name}
+                      </Link>
+                    }
                     sx={{
-                      boxShadow: 3,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      height: '100%',
+                      borderBottom: `1px solid ${theme.palette.divider}`,
                     }}
-                  >
-                    <CardHeader
-                      title={
-                        <Link
-                          to={`/history/${session.id}`}
-                          style={{ textDecoration: 'none', color: 'inherit' }}
-                        >
-                          {session.activity_id}{' '}
-                        </Link>
-                      }
-                      sx={{
-                        borderBottom: `1px solid ${theme.palette.divider}`,
-                      }}
-                    />
-                    <CardContent sx={{ flexGrow: 1 }}>
-                      {/* Affichage des informations supplémentaires de la session */}
-                      <Typography variant="body2" color="textSecondary">
-                        Duration: {session.duration} minutes
-                      </Typography>
-                      <Typography variant="body2" color="textSecondary">
-                        Date: {session.date}
-                      </Typography>
-                      <Typography variant="body2" color="textSecondary">
-                        Comment: {session.comment}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              );
-            })}
+                  />
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <Typography variant="body2" color="textSecondary">
+                      Comment: {session.comment}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
           </Grid>
         </Box>
       </Container>
