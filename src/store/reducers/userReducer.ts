@@ -1,10 +1,14 @@
+/* eslint-disable import/no-cycle */
 // userReducer.ts
 import { createAction, createReducer, PayloadAction } from '@reduxjs/toolkit';
 import actionLogin from '../thunks/actionLogin';
 import actionLogout from '../thunks/actionLogout';
 import actionThunkFetchUser from '../thunks/thunkFetchUser';
 import actionCheckLogin from '../thunks/actionCheckLogin';
-import actionUserUpdate from '../thunks/actionUserUpdate';
+import {
+  actionUserUpdate,
+  actionChangePassword,
+} from '../thunks/actionUserUpdate';
 
 interface UserState {
   logged: boolean;
@@ -148,7 +152,13 @@ const userReducer = createReducer(initialState, (builder) => {
         state.credentials.pseudo = action.payload.pseudo;
         state.mail = action.payload.mail;
       }
-    );
+    )
+    .addCase(actionChangePassword.fulfilled, (state) => {
+      state.credentials.password = '';
+    })
+    .addCase(actionChangePassword.rejected, (state) => {
+      state.error = 'Failed to change password. Please try again.';
+    });
 });
 
 export default userReducer;

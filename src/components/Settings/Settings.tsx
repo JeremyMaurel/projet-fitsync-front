@@ -16,13 +16,17 @@ import {
   ListItemText,
   TextField,
   Typography,
+  Modal,
 } from '@mui/material';
 
 import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
 // Import of header, footer and menu
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
-import actionUserUpdate from '../../store/thunks/actionUserUpdate';
+import {
+  actionUserUpdate,
+  actionChangePassword,
+} from '../../store/thunks/actionUserUpdate';
 import {
   fetchWeight,
   actionWeightUpdate,
@@ -40,6 +44,17 @@ const MenuProps = {
 };
 
 const genders = ['male', 'female'];
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 4,
+};
 
 export default function Settings() {
   const dispatch = useAppDispatch();
@@ -60,6 +75,12 @@ export default function Settings() {
     new Date().toISOString().split('T')[0]
   );
   const [personName, setPersonName] = useState<string[]>([gender]);
+
+  const [openModal, setOpenModal] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [passwordMismatch, setPasswordMismatch] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     const {
@@ -121,6 +142,25 @@ export default function Settings() {
   }, [dispatch]);
 
   useEffect(() => {}, [weight, weightDate]);
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  const handlePasswordChange = async () => {
+    if (newPassword !== confirmNewPassword) {
+      setPasswordMismatch(true);
+      return;
+    }
+
+    await dispatch(actionChangePassword(newPassword));
+    setPasswordMismatch(false);
+    handleCloseModal();
+  };
 
   return (
     <>
@@ -237,6 +277,7 @@ export default function Settings() {
               type="email"
               defaultValue={mail}
             />
+            <Button onClick={handleOpenModal}>Change Password</Button>
             <Button
               type="submit"
               fullWidth
@@ -250,6 +291,65 @@ export default function Settings() {
         </Box>
       </Container>
       <Footer />
+      <Modal
+        open={openModal}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Change Password
+          </Typography>
+          {passwordMismatch && (
+            <Typography variant="body2" color="error">
+              Passwords do not match.
+            </Typography>
+          )}
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="currentPassword"
+            label="Current Password"
+            name="currentPassword"
+            type="password"
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="newPassword"
+            label="New Password"
+            name="newPassword"
+            type="password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="confirmNewPassword"
+            label="Confirm New Password"
+            name="confirmNewPassword"
+            type="password"
+            value={confirmNewPassword}
+            onChange={(e) => setConfirmNewPassword(e.target.value)}
+          />
+          <Button
+            onClick={handlePasswordChange}
+            fullWidth
+            variant="contained"
+            color="primary"
+            sx={{ mt: 3 }}
+          >
+            Save
+          </Button>
+        </Box>
+      </Modal>
     </>
   );
 }
