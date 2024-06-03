@@ -1,3 +1,4 @@
+/* eslint-disable react/function-component-definition */
 import React from 'react';
 import { ThemeProvider, createTheme, Theme } from '@mui/material/styles';
 import {

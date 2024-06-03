@@ -87,7 +87,7 @@ export default function BurgerMenu() {
           <ListItem component={Link} to="/favorites">
             <ListItemText primary="Favorites" />
           </ListItem>
-          <ListItem component={Link} to="/support">
+          <ListItem component={Link} to="/contact">
             <ListItemText primary="Contact Support" />
           </ListItem>
           <ListItem onClick={handleLogout} component={Link} to="/">

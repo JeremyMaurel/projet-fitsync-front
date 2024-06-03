@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
+import { Container, Box, Typography, Button } from '@mui/material';
 import DisconnectedHeader from '../Base/Header/DisconnectedHeader';
 import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
-import { Container, Box, Typography, Button } from '@mui/material';
 
 // Feuille de style
 import './LandingPage.scss';

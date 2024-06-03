@@ -28,6 +28,7 @@ import NewSession from '../NewSession/NewSession';
 import Login from '../Authentification/Login';
 import Signin from '../Authentification/Signin';
 import ResetPassword from '../ResetPassword/ResetPassword';
+import Contact from '../Contact/Contact';
 
 // Stylesheet
 import './App.scss';
@@ -87,6 +88,7 @@ function App() {
           {logged && <Route path="/history" element={<History />} />}
           {logged && <Route path="/new-session" element={<NewSession />} />}
           <Route path="*" element={<div>Page 404 (belle page à créer)</div>} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
       </ThemeProvider>
     </div>

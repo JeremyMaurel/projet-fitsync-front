@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { User } from 'react-feather';
 import React, { useEffect, useState } from 'react';
 import './Settings.scss';
 import {
@@ -16,11 +15,8 @@ import {
   ListItemText,
   TextField,
   Typography,
-
   Modal,
-
   Avatar,
-
 } from '@mui/material';
 
 import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
