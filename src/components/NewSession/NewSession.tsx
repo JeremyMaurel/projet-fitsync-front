@@ -234,7 +234,7 @@ const NewSession = () => {
             fullWidth
             endIcon={<AddIcon />}
             sx={{
-              marginTop: 5,
+              marginTop: 3,
               marginBottom: 10,
               bgcolor: '#adfa1d',
               '&:hover': {
