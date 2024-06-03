@@ -30,12 +30,18 @@ export default function Favorites() {
         </Link>
         <div className="tile--list">
           {favoritesList.map((favorite) => (
-            <div key={favorite.activity_id} className="tile--list--item">
-              <h2 className="tile--list--title">
-                {favorite.activity_name}
-                <br /> {favorite.activity_met}
-              </h2>
-            </div>
+            <Link
+              to={`/activity/${favorite.activity_id}`}
+              key={favorite.activity_id}
+              className="tile--list--item"
+            >
+              <div>
+                <h2 className="tile--list--title">
+                  {favorite.activity_name}
+                  <br /> {favorite.activity_met}
+                </h2>
+              </div>
+            </Link>
           ))}
         </div>
         <CtaMore />

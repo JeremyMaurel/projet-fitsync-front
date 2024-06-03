@@ -1,6 +1,9 @@
 // Import of librairies or technical components
 import { PlusCircle } from 'react-feather';
-import { useAppSelector } from '../../hooks/redux-hooks';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
+import thunkFetchFavorites from '../../store/thunks/thunkFetchFavorites';
 
 // Import of sub-components
 import Header from '../Base/Header/Header';
@@ -13,6 +16,14 @@ export default function Home() {
   // -- STATE REDUX --
   // Pickup from the state of pseudo to say hello
   const pseudo = useAppSelector((state) => state.user.credentials.pseudo);
+  const favoritesList = useAppSelector(
+    (state) => state.favorites.favoritesList
+  );
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(thunkFetchFavorites());
+  }, [dispatch]);
 
   return (
     <>
@@ -37,16 +48,27 @@ export default function Home() {
             />
           </div>
         </div>
-        <div className="tile tile--favorites">
+        <Link to="/favorites" className="tile--list--link">
+          <div className="tile tile--favorites">
+            <div className="tile--header">
+              <h2 className="tile--header--title">My Favorite Activities</h2>
+            </div>
+            {favoritesList.map((favorite) => (
+              <div key={favorite.activity_id}>
+                <li>{favorite.activity_name}</li>
+              </div>
+            ))}
+          </div>
+        </Link>
+        <div className="tile tile--history">
           <div className="tile--header">
-            <h2 className="tile--header--title">My favorite activities</h2>
-            <PlusCircle size={30} className="tile--header--button" />
+            <h2 className="tile--header--title">My Last Sessions</h2>
           </div>
           <ul>
-            <li>Favorite activity 1</li>
-            <li>Favorite activity 2</li>
-            <li>Favorite activity 3</li>
-            <li>Favorite activity 4</li>
+            <li>Placeholder session 1</li>
+            <li>Placeholder session 2</li>
+            <li>Placeholder session 3</li>
+            <li>Placeholder session 4</li>
           </ul>
         </div>
       </main>
