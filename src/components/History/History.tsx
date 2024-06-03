@@ -72,7 +72,7 @@ export default function History() {
                           to={`/history/${session.id}`}
                           style={{ textDecoration: 'none', color: 'inherit' }}
                         >
-                          {session.activity_name}{' '}
+                          {session.activity_id}{' '}
                         </Link>
                       }
                       sx={{

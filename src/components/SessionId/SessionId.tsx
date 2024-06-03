@@ -44,7 +44,7 @@ export default function SessionId() {
               <Typography variant="h5" component="div">
                 Date: {session?.date}
                 <br />
-                Activity Name: {session?.activity_name}
+                Activity Name: {session?.activity_id}
                 <br />
                 METS: {session?.activity_met}
                 <br />

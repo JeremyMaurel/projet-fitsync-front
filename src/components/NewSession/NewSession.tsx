@@ -23,27 +23,26 @@ import { DatePicker, TimePicker } from '@mui/x-date-pickers';
 
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
-import thunkAddSession from '../../store/thunks/thunkAddSession';
+import thunkAddNewSession from '../../store/thunks/thunkAddNewSession';
 import actionThunkFetchSessions from '../../store/thunks/thunkFetchSessions';
 
 const NewSession = () => {
   const dispatch = useAppDispatch();
 
   // -- NEW SESSION STATES --
-  const [comment, setComment] = useState('');
-  const [duration, setDuration] = useState('');
-  const [activityId, setActivityId] = useState('');
-  const [date, setDate] = useState('');
+  const [newSessionComment, setNewSessionComment] = useState('');
+  const [newSessionDuration, setNewSessionDuration] = useState('');
+  const [newSessionActivityId, setNewSessionActivityId] = useState('');
+  const [newSessionDate, setNewSessionDate] = useState('');
 
-  // -- STATE LIST SESSIONS --
+  // -- LIST SESSIONS SELECTOR --
   const sessionsList = useAppSelector((state) => state.sessions.sessionsList);
-  console.log(sessionsList);
 
   useEffect(() => {
     dispatch(actionThunkFetchSessions());
   }, [dispatch]);
 
-  // -- STATE LIST ACTIVITIES --
+  // -- LIST ACTIVITIES SELECTOR --
   const activitiesList = useAppSelector(
     (state) => state.activities.activitiesList
   );
@@ -54,7 +53,7 @@ const NewSession = () => {
   const [durationMinutes, setDurationMinutes] = useState('');
 
   const handleChangeComment = (event) => {
-    setComment(event.target.value);
+    setNewSessionComment(event.target.value);
   };
 
   const handleSearch = (event) => {
@@ -91,21 +90,14 @@ const NewSession = () => {
   const hoursOptions = Array.from({ length: 24 }, (_, i) => i);
   const minutesOptions = Array.from({ length: 60 }, (_, i) => i);
 
-  // List of mock sessions
-  const mockSessions = [
-    { id: 1, name: 'Yoga', date: '2024-05-28' },
-    { id: 2, name: 'Running', date: '2024-05-27' },
-    { id: 3, name: 'Cycling', date: '2024-05-26' },
-  ];
-
   // SUBMIT NEW SESSION
   const handleSubmit = () => {
     dispatch(
-      thunkAddSession({
-        duration,
-        activityId,
-        date,
-        comment,
+      thunkAddNewSession({
+        // duration,
+        // activityId,
+        // date,
+        // comment,
       })
     );
   };
@@ -171,8 +163,8 @@ const NewSession = () => {
             {filteredActivities.length > 0 && (
               <Box
                 sx={{
-                  maxHeight: '200px', // Set the maximum height of the scrollable area
-                  overflowY: 'auto', // Enable vertical scrolling
+                  maxHeight: '200px',
+                  overflowY: 'auto',
                   border: '1px solid #ccc',
                   borderRadius: '4px',
                 }}
@@ -254,7 +246,7 @@ const NewSession = () => {
             placeholder="Add a comment..."
             variant="outlined"
             margin="normal"
-            value={comment}
+            value={newSessionComment}
             onChange={handleChangeComment}
           />
           <Button
