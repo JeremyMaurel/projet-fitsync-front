@@ -16,6 +16,7 @@ import {
   ListItemText,
   TextField,
   Typography,
+  Avatar,
 } from '@mui/material';
 
 import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
@@ -50,6 +51,8 @@ export default function Settings() {
   const weight = useAppSelector((state) => state.weight.value);
   const weightDate = useAppSelector((state) => state.weight.date);
   const height = useAppSelector((state) => state.user.height);
+
+  const avatarUrl = 'public/1.jpg';
 
   const formattedBirthdate = birthdate
     ? new Date(birthdate).toISOString().split('T')[0]
@@ -129,14 +132,22 @@ export default function Settings() {
             marginTop: 10,
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center',
+            alignItems: 'left',
           }}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-            <Typography component="h1" variant="h5">
-              User Settings
+          <Box
+            sx={{
+              display: 'block',
+            }}
+          >
+            <Avatar
+              alt="User Photo"
+              src={avatarUrl}
+              sx={{ width: 70, height: 70, mb: 2 }}
+            />
+            <Typography component="h1" variant="h4">
+              {pseudo}'s Settings
             </Typography>
-            <User style={{ marginLeft: '8px' }} />
           </Box>
           <Box component="form" sx={{ mt: 1 }} onSubmit={handleSubmit}>
             <Typography component="h2" variant="h6" sx={{ mt: 2, mb: 1 }}>
