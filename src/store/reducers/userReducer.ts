@@ -70,7 +70,7 @@ const userReducer = createReducer(initialState, (builder) => {
         state,
         action: PayloadAction<{
           id: string;
-          email: string;
+          mail: string;
           pseudo: string;
           role: string;
           password: string;
@@ -83,7 +83,7 @@ const userReducer = createReducer(initialState, (builder) => {
       ) => {
         state.logged = true;
         state.id = action.payload.id;
-        state.email = action.payload.email;
+        state.email = action.payload.mail;
         state.credentials.pseudo = action.payload.pseudo;
         state.role = action.payload.role;
         state.credentials.password = action.payload.password;
@@ -115,7 +115,7 @@ const userReducer = createReducer(initialState, (builder) => {
         state,
         action: PayloadAction<{
           id: string;
-          email: string;
+          mail: string;
           pseudo: string;
           role: string;
           password: string;
@@ -127,7 +127,7 @@ const userReducer = createReducer(initialState, (builder) => {
         }>
       ) => {
         state.id = action.payload.id;
-        state.email = action.payload.email;
+        state.email = action.payload.mail;
         state.credentials.pseudo = action.payload.pseudo;
         state.role = action.payload.role;
         state.credentials.password = action.payload.password;
