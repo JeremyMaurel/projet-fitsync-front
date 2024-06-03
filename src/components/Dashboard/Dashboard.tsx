@@ -1,6 +1,6 @@
 /* eslint-disable react/function-component-definition */
 import React from 'react';
-import { ThemeProvider, createTheme, Theme } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import {
   CssBaseline,
   Container,

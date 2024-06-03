@@ -1,6 +1,4 @@
-import Header from '../Base/Header/Header';
-import Footer from '../Base/Footer/Footer';
-import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
+/* eslint-disable @typescript-eslint/no-shadow */
 import {
   Container,
   Box,
@@ -13,6 +11,9 @@ import {
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
+import Header from '../Base/Header/Header';
+import Footer from '../Base/Footer/Footer';
+import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
 import actionThunkFetchSessions from '../../store/thunks/thunkFetchSessions';
 
 export default function SessionId() {
@@ -50,10 +51,10 @@ export default function SessionId() {
                 <br />
                 Comment: {session?.comment}
               </Typography>
-              <IconButton color="primary"></IconButton>
+              <IconButton color="primary" />
             </Box>
             <Divider />
-            <Box mt={2} mb={2}></Box>
+            <Box mt={2} mb={2} />
             <Button
               variant="contained"
               color="primary"

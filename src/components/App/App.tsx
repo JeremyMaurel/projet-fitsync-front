@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // Import of librairies or technical components
 import { Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';

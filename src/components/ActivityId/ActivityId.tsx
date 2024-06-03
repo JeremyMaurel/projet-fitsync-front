@@ -1,3 +1,4 @@
+/* eslint-disable react/function-component-definition */
 import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import {
@@ -11,7 +12,7 @@ import {
   Button,
 } from '@mui/material';
 import { Add as AddIcon, Favorite as FavoriteIcon } from '@mui/icons-material';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';

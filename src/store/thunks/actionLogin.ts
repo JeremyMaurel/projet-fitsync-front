@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // Import of librairies or technical components
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';

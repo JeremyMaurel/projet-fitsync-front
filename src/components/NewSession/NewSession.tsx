@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import dayjs from 'dayjs';
 import {
   Box,
@@ -20,12 +19,13 @@ import { Add as AddIcon, Search as SearchIcon } from '@mui/icons-material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker, TimePicker } from '@mui/x-date-pickers';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 import thunkAddSession from '../../store/thunks/thunkAddSession';
 
-const NewSession = () => {
+function NewSession() {
   const dispatch = useAppDispatch();
 
   const activitiesList = useAppSelector(
@@ -265,6 +265,6 @@ const NewSession = () => {
       <Footer />
     </>
   );
-};
+}
 
 export default NewSession;
