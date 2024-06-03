@@ -2,7 +2,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import instanceAxios from '../../axios/axiosInstance';
 
-const actionUserUpdate = createAsyncThunk(
+export const actionUserUpdate = createAsyncThunk(
   'user/UPDATE_USER',
   async (
     updatedUser: {
@@ -26,4 +26,18 @@ const actionUserUpdate = createAsyncThunk(
   }
 );
 
-export default actionUserUpdate;
+export const actionChangePassword = createAsyncThunk(
+  'user/CHANGE_PASSWORD',
+  async (password: string, thunkAPI) => {
+    try {
+      const response = await instanceAxios.patch('/users', {
+        password,
+      });
+      return response.data.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        'An error occurred while updating user password'
+      );
+    }
+  }
+);

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { User } from 'react-feather';
@@ -12,18 +13,24 @@ import {
   MenuItem,
   OutlinedInput,
   Select,
-  Checkbox,
   ListItemText,
   TextField,
   Typography,
+
+  Modal,
+
   Avatar,
+
 } from '@mui/material';
 
 import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
 // Import of header, footer and menu
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
-import actionUserUpdate from '../../store/thunks/actionUserUpdate';
+import {
+  actionUserUpdate,
+  actionChangePassword,
+} from '../../store/thunks/actionUserUpdate';
 import {
   fetchWeight,
   actionWeightUpdate,
@@ -41,6 +48,17 @@ const MenuProps = {
 };
 
 const genders = ['male', 'female'];
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  boxShadow: 24,
+  p: 4,
+};
 
 export default function Settings() {
   const dispatch = useAppDispatch();
@@ -64,6 +82,12 @@ export default function Settings() {
   );
   const [personName, setPersonName] = useState<string[]>([gender]);
 
+  const [openModal, setOpenModal] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [passwordMismatch, setPasswordMismatch] = useState(false);
+
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     const {
       target: { value },
@@ -79,7 +103,6 @@ export default function Settings() {
     const formData = e.target;
     const updatedUser = {};
     const updatedWeight = parseFloat(newWeight);
-    const weightDate = newWeightDate;
 
     const newPseudo = formData.pseudo.value;
     if (newPseudo !== pseudo) {
@@ -108,13 +131,16 @@ export default function Settings() {
 
     if (!isNaN(updatedWeight)) {
       await dispatch(
-        actionWeightUpdate({ weight: updatedWeight, date: weightDate })
+        actionWeightUpdate({ weight: updatedWeight, date: newWeightDate })
       );
+      setNewWeight('');
+      setNewWeightDate(new Date().toISOString().split('T')[0]);
     }
 
     if (Object.keys(updatedUser).length > 0) {
       await dispatch(actionUserUpdate(updatedUser));
     }
+    await dispatch(fetchWeight());
   };
 
   useEffect(() => {
@@ -122,6 +148,25 @@ export default function Settings() {
   }, [dispatch]);
 
   useEffect(() => {}, [weight, weightDate]);
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  const handlePasswordChange = async () => {
+    if (newPassword !== confirmNewPassword) {
+      setPasswordMismatch(true);
+      return;
+    }
+
+    await dispatch(actionChangePassword(newPassword));
+    setPasswordMismatch(false);
+    handleCloseModal();
+  };
 
   return (
     <>
@@ -193,11 +238,14 @@ export default function Settings() {
             <Typography component="h2" variant="h6" sx={{ mt: 3, mb: 1 }}>
               User Weight
             </Typography>
-            {weight && (
+            {weight !== null && (
               <div>
                 <Typography>
                   Current Weight: {weight} kg (Date:{' '}
-                  {new Date(weightDate).toLocaleDateString()})
+                  {weightDate
+                    ? new Date(weightDate).toLocaleDateString()
+                    : 'N/A'}
+                  )
                 </Typography>
               </div>
             )}
@@ -243,6 +291,7 @@ export default function Settings() {
               type="email"
               defaultValue={mail}
             />
+            <Button onClick={handleOpenModal}>Change Password</Button>
             <Button
               type="submit"
               fullWidth
@@ -256,6 +305,65 @@ export default function Settings() {
         </Box>
       </Container>
       <Footer />
+      <Modal
+        open={openModal}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Change Password
+          </Typography>
+          {passwordMismatch && (
+            <Typography variant="body2" color="error">
+              Passwords do not match.
+            </Typography>
+          )}
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="currentPassword"
+            label="Current Password"
+            name="currentPassword"
+            type="password"
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="newPassword"
+            label="New Password"
+            name="newPassword"
+            type="password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="confirmNewPassword"
+            label="Confirm New Password"
+            name="confirmNewPassword"
+            type="password"
+            value={confirmNewPassword}
+            onChange={(e) => setConfirmNewPassword(e.target.value)}
+          />
+          <Button
+            onClick={handlePasswordChange}
+            fullWidth
+            variant="contained"
+            color="primary"
+            sx={{ mt: 3 }}
+          >
+            Save
+          </Button>
+        </Box>
+      </Modal>
     </>
   );
 }
