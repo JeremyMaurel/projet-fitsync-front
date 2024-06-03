@@ -37,7 +37,7 @@ const initialState: UserState = {
   token: '',
   error: '',
   id: '',
-  role: '',
+  role: null,
   birthdate: null,
   gender: null,
   height: null,

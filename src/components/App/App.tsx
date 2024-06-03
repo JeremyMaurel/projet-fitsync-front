@@ -1,11 +1,11 @@
 // Import of librairies or technical components
 import { Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 
 // Import of MUI Core Librairy for Darkmode
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 
 // Import of Redux store thunks
 import actionThunkFetchActivities from '../../store/thunks/thunkFetchActivities';
@@ -29,6 +29,9 @@ import Login from '../Authentification/Login';
 import Signin from '../Authentification/Signin';
 import ResetPassword from '../ResetPassword/ResetPassword';
 import Contact from '../Contact/Contact';
+import HomeAdmin from '../Home/HomeAdmin';
+import ActivityRequest from '../ActivityRequest/ActivityRequest';
+import AdminSettings from '../Settings/AdminSettings';
 
 // Stylesheet
 import './App.scss';
@@ -75,6 +78,13 @@ function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           {logged && <Route path="/home" element={<Home />} />}
+          {logged && <Route path="/home-admin" element={<HomeAdmin />} />}
+          {logged && (
+            <Route path="/activity-request" element={<ActivityRequest />} />
+          )}
+          {logged && (
+            <Route path="/admin-settings" element={<AdminSettings />} />
+          )}
           {logged && <Route path="/settings" element={<Settings />} />}
           <Route path="/category-list" element={<CategoryList />} />
           <Route path="/category-list/:categoryId" element={<CategoryId />} />
