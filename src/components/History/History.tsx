@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import actionThunkFetchSessions from '../../store/thunks/thunkFetchSessions';
+import thunkDeleteSession from '../../store/thunks/thunkDeleteSession';
+import dayjs from 'dayjs';
 
 // Import des sous-composants
 import Header from '../Base/Header/Header';
@@ -18,6 +20,7 @@ import {
   CardHeader,
   useTheme,
   Grid,
+  Button,
 } from '@mui/material';
 
 // Feuille de style
@@ -35,6 +38,11 @@ export default function History() {
 
   // Utilisation du thème pour récupérer la couleur primaire
   const theme = useTheme();
+
+  // Fonction de gestion de la suppression
+  const handleDeleteSession = (sessionId: number) => {
+    dispatch(thunkDeleteSession(sessionId));
+  };
 
   return (
     <>
@@ -72,12 +80,19 @@ export default function History() {
                         style={{ textDecoration: 'none', color: 'inherit' }}
                       >
                         <Typography variant="body2" color="primary">
-                          SESSION DATE: {session.date}
+                          DATE: {dayjs(session.date).format('DD.MM.YYYY')}
                         </Typography>
-                        <Typography variant="body2" color="textSecondary">
-                          Duration: {session.duration} mn
+                        <Typography variant="body2" color="primary">
+                          TIME: {dayjs(session.date).format('HH:mm')}
                         </Typography>
                         {session.activity_name}
+                        <Typography
+                          variant="body2"
+                          color="textSecondary"
+                          sx={{ mt: 2 }}
+                        >
+                          Duration: {session.duration} mn
+                        </Typography>
                       </Link>
                     }
                     sx={{
@@ -89,6 +104,18 @@ export default function History() {
                       Comment: {session.comment}
                     </Typography>
                   </CardContent>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    onClick={() => handleDeleteSession(session.id)}
+                    sx={{
+                      mt: 2,
+                      color: theme.palette.text.disabled,
+                      backgroundColor: theme.palette.action.hover,
+                    }}
+                  >
+                    DELETE
+                  </Button>
                 </Card>
               </Grid>
             ))}
