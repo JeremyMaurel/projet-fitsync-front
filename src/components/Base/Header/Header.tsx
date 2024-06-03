@@ -5,7 +5,7 @@ import BurgerMenu from '../BurgerMenu/BurgerMenu';
 
 export default function Header() {
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       <Toolbar>
         <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
           <IconButton

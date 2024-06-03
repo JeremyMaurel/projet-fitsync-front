@@ -43,6 +43,13 @@ const darkTheme = createTheme({
       main: '#ff1744',
     },
   },
+  typography: {
+    fontFamily: 'Inter, sans-serif',
+    // h3: {
+    //   textShadow: '0px 1px 1px #4d4d4d',
+    //   color: '#222',
+    // },
+  },
 });
 
 function App() {

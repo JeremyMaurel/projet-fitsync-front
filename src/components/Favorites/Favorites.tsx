@@ -16,7 +16,6 @@ import {
 
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
-import CtaMore from '../Base/CtaMore/CtaMore';
 
 // Gestion du style
 import './Favorites.scss';
@@ -38,7 +37,7 @@ export default function Favorites() {
         <Container
           maxWidth="md"
           sx={{
-            marginTop: 5,
+            marginTop: 10,
           }}
         >
           <Typography variant="h3" gutterBottom>

@@ -1,5 +1,6 @@
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
+import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
 import {
   Container,
   Box,
@@ -7,15 +8,29 @@ import {
   IconButton,
   Card,
   CardContent,
+  Button,
+  Divider,
 } from '@mui/material';
-import { Edit as EditIcon } from '@mui/icons-material';
+import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import actionThunkFetchSessions from '../../store/thunks/thunkFetchSessions';
 
 export default function SessionId() {
+  const dispatch = useAppDispatch();
+  const { sessionId } = useParams();
+  const idFromUrl = Number(sessionId);
+  const sessions = useAppSelector((state) => state.sessions.sessionsList);
+  const session = sessions.find((session) => session.id === idFromUrl);
+
+  useEffect(() => {
+    dispatch(actionThunkFetchSessions());
+  }, [dispatch]);
+
   return (
     <>
       <Header />
       <Container component="main" maxWidth="md" sx={{ mt: 10 }}>
-        <Typography variant="h3" color="primary" gutterBottom>
+        <Typography variant="h3" gutterBottom>
           Session
         </Typography>
         <Card sx={{ mb: 4, p: 2 }}>
@@ -24,27 +39,29 @@ export default function SessionId() {
               display="flex"
               justifyContent="space-between"
               alignItems="center"
+              mb={2}
             >
               <Typography variant="h5" component="div">
-                Date
+                Date: {session?.date}
                 <br />
-                Activity Name
+                Activity Name: {session?.activity_name}
                 <br />
-                METS
+                METS: {session?.activity_met}
                 <br />
-                Comment
+                Comment: {session?.comment}
               </Typography>
-              <IconButton color="primary">
-                <EditIcon />
-              </IconButton>
+              <IconButton color="primary"></IconButton>
             </Box>
-          </CardContent>
-        </Card>
-        <Card sx={{ p: 2 }}>
-          <CardContent>
-            <Typography variant="h5" component="div">
+            <Divider />
+            <Box mt={2} mb={2}></Box>
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{ mb: 2 }}
+            >
               Do it again?
-            </Typography>
+            </Button>
           </CardContent>
         </Card>
       </Container>

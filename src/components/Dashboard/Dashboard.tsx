@@ -38,7 +38,7 @@ const Dashboard: React.FC = () => {
         <Container
           maxWidth="md"
           sx={{
-            marginTop: 5,
+            marginTop: 10,
           }}
         >
           <Typography variant="h3" gutterBottom>

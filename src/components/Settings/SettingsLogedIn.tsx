@@ -20,7 +20,7 @@ export default function SettingsLogedIn() {
   return (
     <>
       <Header />
-      <Container component="main" maxWidth="sm" sx={{ mt: 5 }}>
+      <Container component="main" maxWidth="sm" sx={{ mt: 10 }}>
         <Box
           sx={{
             display: 'flex',
@@ -171,7 +171,7 @@ export default function SettingsLogedIn() {
               fullWidth
               variant="contained"
               color="primary"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 12 }}
             >
               Validation
             </Button>

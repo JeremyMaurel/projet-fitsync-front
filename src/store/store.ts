@@ -5,6 +5,7 @@ import activitiesReducer from './reducers/activitiesReducer';
 import categoriesReducer from './reducers/categoriesReducer';
 import userReducer from './reducers/userReducer';
 import favoritesReducer from './reducers/favoritesReducer';
+import sessionsReducer from './reducers/sessionsReducer';
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     categories: categoriesReducer,
     user: userReducer,
     favorites: favoritesReducer,
+    sessions: sessionsReducer,
   },
 });
 

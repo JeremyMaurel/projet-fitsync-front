@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { useAppSelector } from '../../hooks/redux-hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import dayjs from 'dayjs';
 import {
   Box,
@@ -23,8 +23,11 @@ import { DatePicker, TimePicker } from '@mui/x-date-pickers';
 
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
+import thunkAddSession from '../../store/thunks/thunkAddSession';
 
 const NewSession = () => {
+  const dispatch = useAppDispatch();
+
   const activitiesList = useAppSelector(
     (state) => state.activities.activitiesList
   );
@@ -33,6 +36,13 @@ const NewSession = () => {
   const [filteredActivities, setFilteredActivities] = useState([]);
   const [durationHours, setDurationHours] = useState('');
   const [durationMinutes, setDurationMinutes] = useState('');
+
+  // COMMENT STATE
+  const [comment, setComment] = useState('');
+
+  const handleChangeComment = (event) => {
+    setComment(event.target.value);
+  };
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -75,6 +85,18 @@ const NewSession = () => {
     { id: 3, name: 'Cycling', date: '2024-05-26' },
   ];
 
+  // SUBMIT NEW SESSION
+  const handleSubmit = () => {
+    dispatch(
+      thunkAddSession({
+        duration,
+        activityId,
+        date,
+        comment,
+      })
+    );
+  };
+
   return (
     <>
       <Header />
@@ -82,7 +104,7 @@ const NewSession = () => {
         <Container
           maxWidth="md"
           sx={{
-            marginTop: 5,
+            marginTop: 10,
           }}
         >
           <Typography variant="h3" component="h1" gutterBottom>
@@ -219,6 +241,8 @@ const NewSession = () => {
             placeholder="Add a comment..."
             variant="outlined"
             margin="normal"
+            value={comment}
+            onChange={handleChangeComment}
           />
           <Button
             variant="contained"
@@ -232,6 +256,7 @@ const NewSession = () => {
                 bgcolor: '#8bcc0f',
               },
             }}
+            onClick={handleSubmit}
           >
             Add Session
           </Button>
