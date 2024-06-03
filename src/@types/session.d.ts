@@ -1,8 +1,9 @@
 export default interface ISession {
   id: number;
-  date: string;
   duration: number;
-  comment: string;
+  date: string;
+  comment?: string;
+  activityId: number;
   activity_name: string;
   activity_met: number;
 }
