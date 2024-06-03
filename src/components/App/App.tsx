@@ -21,7 +21,6 @@ import SessionId from '../SessionId/SessionId';
 import Dashboard from '../Dashboard/Dashboard';
 import Favorites from '../Favorites/Favorites';
 import LandingPage from '../LandingPage/LandingPage';
-import SettingsLogedIn from '../Settings/SettingsLogedIn';
 import CategoryId from '../Category/CategoryId';
 import CategoryList from '../Category/CategoryList';
 import History from '../History/History';
@@ -76,9 +75,6 @@ function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
           {logged && <Route path="/home" element={<Home />} />}
           {logged && <Route path="/settings" element={<Settings />} />}
-          {logged && (
-            <Route path="/settings-LogedIn" element={<SettingsLogedIn />} />
-          )}
           <Route path="/category-list" element={<CategoryList />} />
           <Route path="/category-list/:categoryId" element={<CategoryId />} />
           <Route path="/activity/:activityId" element={<ActivityId />} />

@@ -1,12 +1,10 @@
-// Import of librairies or technical components
+// userReducer.ts
 import { createAction, createReducer, PayloadAction } from '@reduxjs/toolkit';
-// eslint-disable-next-line import/no-cycle
 import actionLogin from '../thunks/actionLogin';
-// eslint-disable-next-line import/no-cycle
 import actionLogout from '../thunks/actionLogout';
 import actionThunkFetchUser from '../thunks/thunkFetchUser';
-// eslint-disable-next-line import/no-cycle
 import actionCheckLogin from '../thunks/actionCheckLogin';
+import actionUserUpdate from '../thunks/actionUserUpdate';
 
 interface UserState {
   logged: boolean;
@@ -14,7 +12,7 @@ interface UserState {
     pseudo: string;
     password: string;
   };
-  email: null | string;
+  mail: null | string;
   token: null | string;
   error: null | string;
   id: null | string;
@@ -22,7 +20,6 @@ interface UserState {
   birthdate: null | string;
   gender: null | string;
   height: null | number;
-  weight: null | number;
   objective: null | number;
 }
 
@@ -32,15 +29,14 @@ const initialState: UserState = {
     pseudo: '',
     password: '',
   },
-  email: '',
+  mail: '',
   token: '',
   error: '',
   id: '',
   role: '',
-  birthdate: '',
-  gender: '',
+  birthdate: null,
+  gender: null,
   height: null,
-  weight: 70,
   objective: null,
 };
 
@@ -77,20 +73,18 @@ const userReducer = createReducer(initialState, (builder) => {
           birthdate: string;
           gender: string;
           height: number;
-          weight: number;
           objective: number;
         }>
       ) => {
         state.logged = true;
         state.id = action.payload.id;
-        state.email = action.payload.mail;
+        state.mail = action.payload.mail;
         state.credentials.pseudo = action.payload.pseudo;
         state.role = action.payload.role;
         state.credentials.password = action.payload.password;
         state.birthdate = action.payload.birthdate;
         state.gender = action.payload.gender;
         state.height = action.payload.height;
-        state.weight = action.payload.weight;
         state.objective = action.payload.objective;
       }
     )
@@ -122,20 +116,37 @@ const userReducer = createReducer(initialState, (builder) => {
           birthdate: string;
           gender: string;
           height: number;
-          weight: number;
           objective: number;
         }>
       ) => {
         state.id = action.payload.id;
-        state.email = action.payload.mail;
+        state.mail = action.payload.mail;
         state.credentials.pseudo = action.payload.pseudo;
         state.role = action.payload.role;
         state.credentials.password = action.payload.password;
         state.birthdate = action.payload.birthdate;
         state.gender = action.payload.gender;
         state.height = action.payload.height;
-        state.weight = action.payload.weight;
         state.objective = action.payload.objective;
+      }
+    )
+    .addCase(
+      actionUserUpdate.fulfilled,
+      (
+        state,
+        action: PayloadAction<{
+          birthdate: string;
+          gender: string;
+          height: number;
+          pseudo: string;
+          mail: string;
+        }>
+      ) => {
+        state.birthdate = action.payload.birthdate;
+        state.gender = action.payload.gender;
+        state.height = action.payload.height;
+        state.credentials.pseudo = action.payload.pseudo;
+        state.mail = action.payload.mail;
       }
     );
 });
