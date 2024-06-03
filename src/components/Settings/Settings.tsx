@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { User } from 'react-feather';
@@ -12,7 +13,6 @@ import {
   MenuItem,
   OutlinedInput,
   Select,
-  Checkbox,
   ListItemText,
   TextField,
   Typography,
@@ -76,7 +76,6 @@ export default function Settings() {
     const formData = e.target;
     const updatedUser = {};
     const updatedWeight = parseFloat(newWeight);
-    const weightDate = newWeightDate;
 
     const newPseudo = formData.pseudo.value;
     if (newPseudo !== pseudo) {
@@ -105,13 +104,16 @@ export default function Settings() {
 
     if (!isNaN(updatedWeight)) {
       await dispatch(
-        actionWeightUpdate({ weight: updatedWeight, date: weightDate })
+        actionWeightUpdate({ weight: updatedWeight, date: newWeightDate })
       );
+      setNewWeight('');
+      setNewWeightDate(new Date().toISOString().split('T')[0]);
     }
 
     if (Object.keys(updatedUser).length > 0) {
       await dispatch(actionUserUpdate(updatedUser));
     }
+    await dispatch(fetchWeight());
   };
 
   useEffect(() => {
@@ -182,11 +184,14 @@ export default function Settings() {
             <Typography component="h2" variant="h6" sx={{ mt: 3, mb: 1 }}>
               User Weight
             </Typography>
-            {weight && (
+            {weight !== null && (
               <div>
                 <Typography>
                   Current Weight: {weight} kg (Date:{' '}
-                  {new Date(weightDate).toLocaleDateString()})
+                  {weightDate
+                    ? new Date(weightDate).toLocaleDateString()
+                    : 'N/A'}
+                  )
                 </Typography>
               </div>
             )}
