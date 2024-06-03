@@ -8,11 +8,11 @@ import './Settings.scss';
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
+import actionUserUpdate from '../../store/thunks/actionUserUpdate';
 import {
   fetchWeight,
-  actionUserUpdate,
-  actionUserUpdateWeight,
-} from '../../store/thunks/actionUserUpdate';
+  actionWeightUpdate,
+} from '../../store/thunks/actionWeightUpdate';
 
 export default function Settings() {
   const dispatch = useAppDispatch();
@@ -20,7 +20,8 @@ export default function Settings() {
   const mail = useAppSelector((state) => state.user.mail);
   const gender = useAppSelector((state) => state.user.gender);
   const birthdate = useAppSelector((state) => state.user.birthdate);
-  const weight = useAppSelector((state) => state.user.weight);
+  const weight = useAppSelector((state) => state.weight.value);
+  const weightDate = useAppSelector((state) => state.weight.date);
   const height = useAppSelector((state) => state.user.height);
 
   const formattedBirthdate = birthdate
@@ -67,7 +68,7 @@ export default function Settings() {
 
     if (!isNaN(updatedWeight)) {
       await dispatch(
-        actionUserUpdateWeight({ weight: updatedWeight, date: weightDate })
+        actionWeightUpdate({ weight: updatedWeight, date: weightDate })
       );
     }
 
@@ -80,9 +81,7 @@ export default function Settings() {
     dispatch(fetchWeight());
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log('Weight data in component:', weight);
-  }, [weight]);
+  useEffect(() => {}, [weight, weightDate]);
   return (
     <>
       <Header />
@@ -124,7 +123,6 @@ export default function Settings() {
                 Female
               </label>
             </div>
-
             <label className="form--label">Height (cm)</label>
             <input
               className="form--input"
@@ -137,9 +135,10 @@ export default function Settings() {
             <h2 className="form--subtitle">User Weight</h2>
             {weight && weight.length > 0 && (
               <div>
+                {console.log('Données de poids:', weight)}
                 <label>
-                  Current Weight: {weight[0].value} kg (Date:{' '}
-                  {new Date(weight[0].date).toLocaleDateString()})
+                  Current Weight: {weight} kg (Date:{' '}
+                  {new Date(weight).toLocaleDateString()})
                 </label>
               </div>
             )}
@@ -188,7 +187,7 @@ export default function Settings() {
           </form>
         </div>
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

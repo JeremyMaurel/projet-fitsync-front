@@ -1,15 +1,10 @@
-/* eslint-disable import/no-cycle */
-// Import of librairies or technical components
+// userReducer.ts
 import { createAction, createReducer, PayloadAction } from '@reduxjs/toolkit';
 import actionLogin from '../thunks/actionLogin';
 import actionLogout from '../thunks/actionLogout';
 import actionThunkFetchUser from '../thunks/thunkFetchUser';
 import actionCheckLogin from '../thunks/actionCheckLogin';
-import {
-  fetchWeight,
-  actionUserUpdate,
-  actionUserUpdateWeight,
-} from '../thunks/actionUserUpdate';
+import actionUserUpdate from '../thunks/actionUserUpdate';
 
 interface UserState {
   logged: boolean;
@@ -25,7 +20,6 @@ interface UserState {
   birthdate: null | string;
   gender: null | string;
   height: null | number;
-  weight: null | number;
   objective: null | number;
 }
 
@@ -43,7 +37,6 @@ const initialState: UserState = {
   birthdate: null,
   gender: null,
   height: null,
-  weight: 70,
   objective: null,
 };
 
@@ -80,7 +73,6 @@ const userReducer = createReducer(initialState, (builder) => {
           birthdate: string;
           gender: string;
           height: number;
-          weight: number;
           objective: number;
         }>
       ) => {
@@ -93,7 +85,6 @@ const userReducer = createReducer(initialState, (builder) => {
         state.birthdate = action.payload.birthdate;
         state.gender = action.payload.gender;
         state.height = action.payload.height;
-        state.weight = action.payload.weight;
         state.objective = action.payload.objective;
       }
     )
@@ -125,7 +116,6 @@ const userReducer = createReducer(initialState, (builder) => {
           birthdate: string;
           gender: string;
           height: number;
-          weight: number;
           objective: number;
         }>
       ) => {
@@ -137,7 +127,6 @@ const userReducer = createReducer(initialState, (builder) => {
         state.birthdate = action.payload.birthdate;
         state.gender = action.payload.gender;
         state.height = action.payload.height;
-        state.weight = action.payload.weight;
         state.objective = action.payload.objective;
       }
     )
@@ -148,7 +137,6 @@ const userReducer = createReducer(initialState, (builder) => {
         action: PayloadAction<{
           birthdate: string;
           gender: string;
-          weight: number;
           height: number;
           pseudo: string;
           mail: string;
@@ -156,22 +144,11 @@ const userReducer = createReducer(initialState, (builder) => {
       ) => {
         state.birthdate = action.payload.birthdate;
         state.gender = action.payload.gender;
-        state.weight = action.payload.weight;
         state.height = action.payload.height;
         state.credentials.pseudo = action.payload.pseudo;
         state.mail = action.payload.mail;
       }
-    )
-    .addCase(
-      actionUserUpdateWeight.fulfilled,
-      (state, action: PayloadAction<{ weight: number }>) => {
-        state.weight = action.payload.weight;
-      }
-    )
-    .addCase(fetchWeight.fulfilled, (state, action) => {
-      console.log('Weight data stored in state:', action.payload.value);
-      state.weight = action.payload.value;
-    });
+    );
 });
 
 export default userReducer;
