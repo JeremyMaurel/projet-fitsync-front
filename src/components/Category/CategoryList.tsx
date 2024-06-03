@@ -1,12 +1,5 @@
 // Import of libraries or technical components
 import { Link } from 'react-router-dom';
-import { useAppSelector } from '../../hooks/redux-hooks';
-
-// Import of sub-components
-import Header from '../Base/Header/Header';
-import Footer from '../Base/Footer/Footer';
-
-// Import of MUI components
 import {
   Container,
   Box,
@@ -14,13 +7,10 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Divider,
   IconButton,
   useTheme,
   Grid,
 } from '@mui/material';
-
-// Import of MUI icons
 import {
   Spa,
   DirectionsRun,
@@ -29,6 +19,15 @@ import {
   FitnessCenter,
   Terrain,
 } from '@mui/icons-material';
+import { useAppSelector } from '../../hooks/redux-hooks';
+
+// Import of sub-components
+import Header from '../Base/Header/Header';
+import Footer from '../Base/Footer/Footer';
+
+// Import of MUI components
+
+// Import of MUI icons
 
 // Stylesheet
 import './CategoryList.scss';
