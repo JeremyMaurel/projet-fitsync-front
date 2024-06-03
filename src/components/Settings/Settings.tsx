@@ -1,19 +1,45 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { User } from 'react-feather';
-import { React, useEffect, useState } from 'react';
-import { Box, Button, Container, TextField, Typography } from '@mui/material';
-import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
+import React, { useEffect, useState } from 'react';
+import './Settings.scss';
+import {
+  Box,
+  Button,
+  Container,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  Checkbox,
+  ListItemText,
+  TextField,
+  Typography,
+} from '@mui/material';
 
+import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
 // Import of header, footer and menu
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
-
 import actionUserUpdate from '../../store/thunks/actionUserUpdate';
 import {
   fetchWeight,
   actionWeightUpdate,
 } from '../../store/thunks/actionWeightUpdate';
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+const genders = ['male', 'female'];
 
 export default function Settings() {
   const dispatch = useAppDispatch();
@@ -33,6 +59,16 @@ export default function Settings() {
   const [newWeightDate, setNewWeightDate] = useState(
     new Date().toISOString().split('T')[0]
   );
+  const [personName, setPersonName] = useState<string[]>([gender]);
+
+  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const {
+      target: { value },
+    } = event;
+    setPersonName(
+      typeof value === 'string' ? value.split(',') : (value as string[])
+    );
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -57,7 +93,7 @@ export default function Settings() {
       updatedUser.height = newHeight;
     }
 
-    const newGender = formData.gender.value;
+    const newGender = personName[0];
     if (newGender !== gender) {
       updatedUser.gender = newGender;
     }
@@ -83,6 +119,7 @@ export default function Settings() {
   }, [dispatch]);
 
   useEffect(() => {}, [weight, weightDate]);
+
   return (
     <>
       <Header />
@@ -101,7 +138,7 @@ export default function Settings() {
             </Typography>
             <User style={{ marginLeft: '8px' }} />
           </Box>
-          <Box component="form" sx={{ mt: 1 }}>
+          <Box component="form" sx={{ mt: 1 }} onSubmit={handleSubmit}>
             <Typography component="h2" variant="h6" sx={{ mt: 2, mb: 1 }}>
               User Infos
             </Typography>
@@ -109,40 +146,69 @@ export default function Settings() {
               margin="normal"
               required
               fullWidth
-              id="age"
-              label="Age"
-              name="age"
-              type="number"
-              autoComplete="age"
+              id="birthdate"
+              label="Birthdate"
+              name="birthdate"
+              type="date"
+              defaultValue={formattedBirthdate}
             />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="gender"
-              label="Gender"
-              name="gender"
-              autoComplete="gender"
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="weight"
-              label="Weight (pounds/kg)"
-              name="weight"
-              type="number"
-              autoComplete="weight"
-            />
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="gender-label">Gender</InputLabel>
+              <Select
+                labelId="gender-label"
+                id="gender"
+                value={personName}
+                onChange={handleChange}
+                input={<OutlinedInput label="Gender" />}
+                MenuProps={MenuProps}
+              >
+                {genders.map((gender) => (
+                  <MenuItem key={gender} value={gender}>
+                    <ListItemText primary={gender} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <TextField
               margin="normal"
               required
               fullWidth
               id="height"
-              label="Height (inches/cm)"
+              label="Height (cm)"
               name="height"
               type="number"
-              autoComplete="height"
+              defaultValue={height}
+            />
+            <Typography component="h2" variant="h6" sx={{ mt: 3, mb: 1 }}>
+              User Weight
+            </Typography>
+            {weight && (
+              <div>
+                <Typography>
+                  Current Weight: {weight} kg (Date:{' '}
+                  {new Date(weightDate).toLocaleDateString()})
+                </Typography>
+              </div>
+            )}
+            <TextField
+              margin="normal"
+              fullWidth
+              id="newWeight"
+              label="New Weight (kg)"
+              name="newWeight"
+              type="number"
+              value={newWeight}
+              onChange={(e) => setNewWeight(e.target.value)}
+            />
+            <TextField
+              margin="normal"
+              fullWidth
+              id="newWeightDate"
+              label="New Weight Date"
+              name="newWeightDate"
+              type="date"
+              value={newWeightDate}
+              onChange={(e) => setNewWeightDate(e.target.value)}
             />
             <Typography component="h2" variant="h6" sx={{ mt: 3, mb: 1 }}>
               User Account
@@ -154,34 +220,24 @@ export default function Settings() {
               id="pseudo"
               label="Pseudo"
               name="pseudo"
-              autoComplete="pseudo"
+              defaultValue={pseudo}
             />
             <TextField
               margin="normal"
               required
               fullWidth
-              id="email"
+              id="mail"
               label="Email"
-              name="email"
+              name="mail"
               type="email"
-              autoComplete="email"
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="password"
-              label="Password"
-              name="password"
-              type="password"
-              autoComplete="current-password"
+              defaultValue={mail}
             />
             <Button
               type="submit"
               fullWidth
               variant="contained"
               color="primary"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 13 }}
             >
               Validation
             </Button>
