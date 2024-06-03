@@ -23,7 +23,7 @@ export default function Header() {
           </IconButton>
         </Box>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <IconButton color="inherit" component={Link} to="/settings-LogedIn">
+          <IconButton color="inherit" component={Link} to="/settings">
             <SettingsIcon />
           </IconButton>
           <BurgerMenu />
