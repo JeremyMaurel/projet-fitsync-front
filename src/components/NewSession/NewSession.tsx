@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import dayjs from 'dayjs';
 import {
@@ -24,10 +24,26 @@ import { DatePicker, TimePicker } from '@mui/x-date-pickers';
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 import thunkAddSession from '../../store/thunks/thunkAddSession';
+import actionThunkFetchSessions from '../../store/thunks/thunkFetchSessions';
 
 const NewSession = () => {
   const dispatch = useAppDispatch();
 
+  // -- NEW SESSION STATES --
+  const [comment, setComment] = useState('');
+  const [duration, setDuration] = useState('');
+  const [activityId, setActivityId] = useState('');
+  const [date, setDate] = useState('');
+
+  // -- STATE LIST SESSIONS --
+  const sessionsList = useAppSelector((state) => state.sessions.sessionsList);
+  console.log(sessionsList);
+
+  useEffect(() => {
+    dispatch(actionThunkFetchSessions());
+  }, [dispatch]);
+
+  // -- STATE LIST ACTIVITIES --
   const activitiesList = useAppSelector(
     (state) => state.activities.activitiesList
   );
@@ -36,9 +52,6 @@ const NewSession = () => {
   const [filteredActivities, setFilteredActivities] = useState([]);
   const [durationHours, setDurationHours] = useState('');
   const [durationMinutes, setDurationMinutes] = useState('');
-
-  // COMMENT STATE
-  const [comment, setComment] = useState('');
 
   const handleChangeComment = (event) => {
     setComment(event.target.value);
@@ -117,7 +130,7 @@ const NewSession = () => {
                 My Last Sessions
               </Typography>
               <List>
-                {mockSessions.map((session, index) => (
+                {sessionsList.map((session, index) => (
                   <React.Fragment key={session.id}>
                     <ListItem>
                       <Box
@@ -126,14 +139,14 @@ const NewSession = () => {
                         width="100%"
                       >
                         <Typography variant="body1" color="primary">
-                          {session.name}
+                          {session.activity_name}
                         </Typography>
                         <Typography variant="body2" color="textSecondary">
                           {session.date}
                         </Typography>
                       </Box>
                     </ListItem>
-                    {index < mockSessions.length - 1 && <Divider />}
+                    {index < sessionsList.length - 1 && <Divider />}
                   </React.Fragment>
                 ))}
               </List>
