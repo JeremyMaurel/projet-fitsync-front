@@ -93,4 +93,9 @@
   &--plusbtn {
     margin-left: 0.8rem;
   }
+
+  &--activity-list {
+    max-height: 100px;
+    overflow-y: auto;
+  }
 }

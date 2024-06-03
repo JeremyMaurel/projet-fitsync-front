@@ -1,13 +1,25 @@
-import { Plus } from 'react-feather';
-import './CtaAdd.scss';
+import React from 'react';
+import { Box, Typography, IconButton } from '@mui/material';
+import { Add as PlusIcon } from '@mui/icons-material';
 
 export default function CtaAdd() {
   return (
-    <div className="cta">
-      <div className="cta--container">
-        <h2 className="cta--title">Add Activity</h2>
-      </div>
-      <Plus size={30} className="cta--action-icon" />
-    </div>
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="space-between"
+      sx={{
+        p: 2,
+        borderRadius: 2,
+        boxShadow: 3,
+        bgcolor: 'primary.main',
+        color: 'primary.contrastText',
+      }}
+    >
+      <Typography variant="h5">Add Activity</Typography>
+      <IconButton color="inherit">
+        <PlusIcon fontSize="large" />
+      </IconButton>
+    </Box>
   );
 }

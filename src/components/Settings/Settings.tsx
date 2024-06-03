@@ -1,8 +1,9 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable jsx-a11y/label-has-associated-control */
+import React from 'react';
 import { User } from 'react-feather';
 import React, { useEffect, useState } from 'react';
-import './Settings.scss';
+import { Box, Button, Container, TextField, Typography } from '@mui/material';
 
 // Import of header, footer and menu
 import Header from '../Base/Header/Header';
@@ -85,109 +86,109 @@ export default function Settings() {
   return (
     <>
       <Header />
-      <main className="main">
-        <div className="container">
-          <form className="form" onSubmit={handleSubmit}>
-            <div className="form--header">
-              <h1 className="form--header--title">User Settings</h1>
-              <User className="form--header--logo" />
-            </div>
-            <h2 className="form--subtitle">User Infos</h2>
-            <label className="form--label">Date of Birth</label>
-            <input
-              className="form--input"
-              type="date"
-              id="birthdate"
-              name="birthdate"
-              placeholder="Date of Birth"
-              defaultValue={formattedBirthdate}
-            />
-            <label className="form--label">Gender</label>
-            <div className="form--input-group">
-              <label>
-                <input
-                  type="radio"
-                  name="gender"
-                  value="male"
-                  defaultChecked={gender === 'male'}
-                />
-                Male
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="gender"
-                  value="female"
-                  defaultChecked={gender === 'female'}
-                />
-                Female
-              </label>
-            </div>
-            <label className="form--label">Height (cm)</label>
-            <input
-              className="form--input"
+      <Container component="main" maxWidth="sm" sx={{ mt: 10 }}>
+        <Box
+          sx={{
+            marginTop: 10,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+            <Typography component="h1" variant="h5">
+              User Settings
+            </Typography>
+            <User style={{ marginLeft: '8px' }} />
+          </Box>
+          <Box component="form" sx={{ mt: 1 }}>
+            <Typography component="h2" variant="h6" sx={{ mt: 2, mb: 1 }}>
+              User Infos
+            </Typography>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="age"
+              label="Age"
+              name="age"
               type="number"
+              autoComplete="age"
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="gender"
+              label="Gender"
+              name="gender"
+              autoComplete="gender"
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="weight"
+              label="Weight (pounds/kg)"
+              name="weight"
+              type="number"
+              autoComplete="weight"
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
               id="height"
+              label="Height (inches/cm)"
               name="height"
-              placeholder="Height (cm)"
-              defaultValue={height}
-            />
-            <h2 className="form--subtitle">User Weight</h2>
-            {weight && weight.length > 0 && (
-              <div>
-                {console.log('Données de poids:', weight)}
-                <label>
-                  Current Weight: {weight} kg (Date:{' '}
-                  {new Date(weight).toLocaleDateString()})
-                </label>
-              </div>
-            )}
-            <label className="form--label">New Weight (kg)</label>
-            <input
-              className="form--input"
               type="number"
-              id="newWeight"
-              name="newWeight"
-              placeholder="New Weight (kg)"
-              value={newWeight}
-              onChange={(e) => setNewWeight(e.target.value)}
+              autoComplete="height"
             />
-            <label className="form--label">New Weight Date</label>
-            <input
-              className="form--input"
-              type="date"
-              id="newWeightDate"
-              name="newWeightDate"
-              placeholder="New Weight Date"
-              value={newWeightDate}
-              onChange={(e) => setNewWeightDate(e.target.value)}
-            />
-            <h2 className="form--subtitle">User Account</h2>
-            <label className="form--label">Pseudo</label>
-            <input
-              className="form--input"
-              type="text"
+            <Typography component="h2" variant="h6" sx={{ mt: 3, mb: 1 }}>
+              User Account
+            </Typography>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
               id="pseudo"
+              label="Pseudo"
               name="pseudo"
-              placeholder="Pseudo"
-              defaultValue={pseudo}
+              autoComplete="pseudo"
             />
-            <label className="form--label">Email</label>
-            <input
-              className="form--input"
-              type="email"
+            <TextField
+              margin="normal"
+              required
+              fullWidth
               id="email"
-              name="mail"
-              placeholder="Email"
-              defaultValue={mail}
+              label="Email"
+              name="email"
+              type="email"
+              autoComplete="email"
             />
-            <button className="form--btn" type="submit">
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="password"
+              label="Password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              sx={{ mt: 3, mb: 2 }}
+            >
               Validation
-            </button>
-          </form>
-        </div>
-      </main>
-      {/* <Footer /> */}
+            </Button>
+          </Box>
+        </Box>
+      </Container>
+      <Footer />
     </>
   );
 }

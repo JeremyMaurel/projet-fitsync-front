@@ -75,3 +75,8 @@ Note: Beware of modifying this element as it can break the animations - you shou
 .bm-item:hover {
   color: grey;
 }
+
+.burger-menu {
+  position: fixed;
+  z-index: 9999;
+}

@@ -6,7 +6,6 @@ import { useAppSelector } from '../../hooks/redux-hooks';
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 import CtaAdd from '../Base/CtaAdd/CtaAdd';
-import CtaMore from '../Base/CtaMore/CtaMore';
 
 // Stylesheet
 import './CategoryId.scss';
@@ -50,7 +49,6 @@ export default function CategoryId() {
             </div>
           ))}
         </div>
-        <CtaMore />
         <CtaAdd />
       </main>
       <Footer />

@@ -1,34 +1,42 @@
 import DisconnectedHeader from '../Base/Header/DisconnectedHeader';
 import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
-
-// Gestion du style
-import './ResetPassword.scss';
+import { Container, Box, Typography, TextField, Button } from '@mui/material';
 
 export default function ResetPassword() {
   return (
     <>
       <DisconnectedHeader />
-      <main className="main">
-        <h1 className="main--title">Reset password</h1>
-        <p className="main--text">
+      <Container component="main" maxWidth="sm" sx={{ mt: 10 }}>
+        <Typography variant="h3" gutterBottom>
+          Reset Password
+        </Typography>
+        <Typography variant="body1" paragraph>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur qui
           quos ut modi accusantium ab. Itaque voluptas harum officia molestias
           consequatur possimus atque quas aliquid.
-        </p>
-        <form className="form">
-          <input
-            className="form--input"
+        </Typography>
+        <Box component="form" sx={{ mt: 2 }}>
+          <TextField
+            fullWidth
+            label="Email"
             type="email"
             name="email"
             id="email"
-            placeholder="Email"
+            variant="outlined"
+            margin="normal"
+            required
           />
-
-          <button className="form--btn" type="submit">
-            Reset password
-          </button>
-        </form>
-      </main>
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            type="submit"
+            sx={{ mt: 2 }}
+          >
+            Reset Password
+          </Button>
+        </Box>
+      </Container>
       <DisconnectedFooter />
     </>
   );

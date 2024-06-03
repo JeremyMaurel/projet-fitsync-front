@@ -1,11 +1,21 @@
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import thunkFetchFavorites from '../../store/thunks/thunkFetchFavorites';
 
+import {
+  Box,
+  Button,
+  Container,
+  Link,
+  Typography,
+  Card,
+  CardContent,
+  Grid,
+} from '@mui/material';
+
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
-import CtaMore from '../Base/CtaMore/CtaMore';
 
 // Gestion du style
 import './Favorites.scss';
@@ -23,28 +33,52 @@ export default function Favorites() {
   return (
     <>
       <Header />
-      <main className="main">
-        <h1 className="main--title">Favorites</h1>
-        <Link to="/category-list" className="form--btn--link">
-          <button className="form--btn">Add New Activity</button>
-        </Link>
-        <div className="tile--list">
-          {favoritesList.map((favorite) => (
-            <Link
-              to={`/activity/${favorite.activity_id}`}
-              key={favorite.activity_id}
-              className="tile--list--item"
+      <main>
+        <Container
+          maxWidth="md"
+          sx={{
+            marginTop: 10,
+          }}
+        >
+          <Typography variant="h3" gutterBottom>
+            Favorites
+          </Typography>
+          <Box display="flex" justifyContent="flex-end" mb={3}>
+            <Button
+              fullWidth
+              variant="contained"
+              color="primary"
+              component={RouterLink}
+              to="/category-list"
             >
-              <div>
-                <h2 className="tile--list--title">
-                  {favorite.activity_name}
-                  <br /> {favorite.activity_met}
-                </h2>
-              </div>
-            </Link>
-          ))}
-        </div>
-        <CtaMore />
+              Add New Activity
+            </Button>
+          </Box>
+          <Grid container spacing={3}>
+            {favoritesList.map((favorite) => (
+              <Grid item xs={12} sm={6} md={4} key={favorite.activity_id}>
+                <Card>
+                  <CardContent>
+                    <Link
+                      component={RouterLink}
+                      to={`/activity/${favorite.activity_id}`}
+                      underline="none"
+                      color="inherit"
+                    >
+                      <Typography variant="h6">
+                        {favorite.activity_name}
+                      </Typography>
+                      <Typography variant="body2" color="primary">
+                        MET: {favorite.activity_met}
+                      </Typography>
+                    </Link>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+          <Box mt={5}></Box>
+        </Container>
       </main>
       <Footer />
     </>

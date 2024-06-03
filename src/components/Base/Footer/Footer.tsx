@@ -1,22 +1,45 @@
-// Import of React libraries
+import * as React from 'react';
+import { Home, Dashboard, Add } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import { Plus } from 'react-feather';
+import { styled } from '@mui/material/styles';
+import { BottomNavigation, BottomNavigationAction } from '@mui/material';
 
-// Stylesheet
-import './Footer.scss';
+const FixedBottomNavigation = styled(BottomNavigation)(({ theme }) => ({
+  position: 'fixed',
+  bottom: 0,
+  width: '100%',
+  zIndex: theme.zIndex.drawer + 1,
+}));
 
 export default function Footer() {
+  const [value, setValue] = React.useState(0);
+
   return (
-    <footer className="footer">
-      <Link className="footer--btn" to="/home">
-        Home
-      </Link>
-      <Link className="footer--btn" to="/dashboard">
-        Dashboard
-      </Link>
-      <Link className="footer--btn" to="/new-session">
-        <Plus className="footer--btn--plus" />
-      </Link>
-    </footer>
+    <FixedBottomNavigation
+      value={value}
+      onChange={(event, newValue) => {
+        setValue(newValue);
+      }}
+      showLabels
+    >
+      <BottomNavigationAction
+        label="Home"
+        icon={<Home />}
+        component={Link}
+        to="/home"
+      />
+      <BottomNavigationAction
+        label="Dashboard"
+        icon={<Dashboard />}
+        component={Link}
+        to="/dashboard"
+      />
+      <BottomNavigationAction
+        label="Session"
+        icon={<Add />}
+        component={Link}
+        to="/new-session"
+      />
+    </FixedBottomNavigation>
   );
 }

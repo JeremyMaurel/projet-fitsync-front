@@ -1,11 +1,14 @@
 import React, { FormEvent, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Send } from 'react-feather';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import { actionChangeCredential } from '../../store/reducers/userReducer';
 import actionLogin from '../../store/thunks/actionLogin';
 import DisconnectedHeader from '../Base/Header/DisconnectedHeader';
 import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
+
+import { TextField, Button, Container, Typography, Box } from '@mui/material';
+import LoginIcon from '@mui/icons-material/Login';
+
 import './Authentification.scss';
 
 export default function Login() {
@@ -43,48 +46,73 @@ export default function Login() {
   return (
     <>
       <DisconnectedHeader />
-      <main className="main">
-        <h1 className="main--title">Hello dear user !</h1>
-        <p className="main--subtitle">Please login to access the app</p>
-        {loginError && <p className="error">{loginError}</p>}
-        <form className="form" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            required
-            className="form--input"
-            name="pseudo"
-            placeholder="Your pseudo"
-            onChange={handleInputChange}
-          />
-          <input
-            type="password"
-            required
-            className="form--input"
-            name="password"
-            placeholder="Your password"
-            onChange={handleInputChange}
-          />
-          <p>
-            I forgot my password, &nbsp;
-            <Link className="form--link" to="/reset-password">
-              Let&lsquo;s reset it
+      <Container component="main" maxWidth="xs">
+        <Box
+          sx={{
+            marginTop: 15,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Typography component="h1" variant="h5">
+            Hello dear user !
+          </Typography>
+          <Typography component="p">Please login to access the app</Typography>
+          {loginError && <Typography color="error">{loginError}</Typography>}
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="pseudo"
+              label="Your pseudo"
+              name="pseudo"
+              autoComplete="pseudo"
+              autoFocus
+              onChange={handleInputChange}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Your password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              onChange={handleInputChange}
+            />
+            <Link to="/reset-password">
+              <Typography variant="body2">
+                I forgot my password, let&lsquo;s reset it
+              </Typography>
             </Link>
-          </p>
-          <div>
-            <button type="submit" className="form--cta">
-              Connect &nbsp; <Send />
-            </button>
-
-            <p>
-              You don&lsquo;t have an account yet ? &nbsp;
-              <Link className="form--link" to="/signin">
-                Register here
-              </Link>
-            </p>
-          </div>
-        </form>
-      </main>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              sx={{ mt: 3, mb: 2 }}
+              endIcon={<LoginIcon />}
+            >
+              Login
+            </Button>
+            <Link to="/signin">
+              <Typography variant="body2">
+                You don&lsquo;t have an account yet? Register here
+              </Typography>
+            </Link>
+          </Box>
+        </Box>
+      </Container>
       <DisconnectedFooter />
     </>
   );
 }
+
+<Typography variant="h5" gutterBottom>
+  My last sessions
+</Typography>;
