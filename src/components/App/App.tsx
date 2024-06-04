@@ -33,6 +33,7 @@ import Contact from '../Contact/Contact';
 import HomeAdmin from '../Home/HomeAdmin';
 import ActivityRequest from '../ActivityRequest/ActivityRequest';
 import AdminSettings from '../Settings/AdminSettings';
+import ErrorPage from '../Base/ErrorPage/ErrorPage';
 
 // Stylesheet
 import './App.scss';
@@ -98,7 +99,7 @@ function App() {
           {/* <Route path="/favorites" element={<Favorites />} /> */}
           {logged && <Route path="/history" element={<History />} />}
           {logged && <Route path="/new-session" element={<NewSession />} />}
-          <Route path="*" element={<div>Page 404 (belle page à créer)</div>} />
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
       </ThemeProvider>
     </div>
