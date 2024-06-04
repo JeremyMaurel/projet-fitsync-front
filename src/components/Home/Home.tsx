@@ -1,8 +1,8 @@
+
 // Import of librairies or technical components
+/* eslint-disable react/function-component-definition */
 import React, { useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
-import thunkFetchFavorites from '../../store/thunks/thunkFetchFavorites';
 import {
   Avatar,
   Container,
@@ -15,11 +15,17 @@ import {
   ListItem,
   Link as MuiLink,
   Divider,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
+import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
+import thunkFetchFavorites from '../../store/thunks/thunkFetchFavorites';
 
 // Import of sub-components
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
+import DesktopHeader from '../Base/Header/DesktopHeader';
+import DesktopFooter from '../Base/Footer/DesktopFooter';
 
 const Home: React.FC = () => {
   // Pickup from the state of pseudo to say hello
@@ -30,6 +36,10 @@ const Home: React.FC = () => {
   );
   const dispatch = useAppDispatch();
 
+  const theme = useTheme();
+
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+
   useEffect(() => {
     dispatch(thunkFetchFavorites());
   }, [dispatch]);
@@ -39,7 +49,7 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <Header />
+      {isDesktop ? <DesktopHeader /> : <Header />}
       <Container component="main" maxWidth="md" sx={{ mt: 10, pb: 10 }}>
         <Box
           sx={{
@@ -124,7 +134,7 @@ const Home: React.FC = () => {
           </CardContent>
         </Card>
       </Container>
-      <Footer />
+      {isDesktop ? <DesktopFooter /> : <Footer />}
     </>
   );
 };

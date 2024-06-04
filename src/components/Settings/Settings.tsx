@@ -17,12 +17,15 @@ import {
   Typography,
   Modal,
   Avatar,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 
 import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
 // Import of header, footer and menu
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
+import DesktopHeader from '../Base/Header/DesktopHeader';
 import {
   actionUserUpdate,
   actionChangePassword,
@@ -31,6 +34,7 @@ import {
   fetchWeight,
   actionWeightUpdate,
 } from '../../store/thunks/actionWeightUpdate';
+import DesktopFooter from '../Base/Footer/DesktopFooter';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -67,6 +71,8 @@ export default function Settings() {
   const height = useAppSelector((state) => state.user.height);
 
   const avatarUrl = 'public/1.jpg';
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
   const formattedBirthdate = birthdate
     ? new Date(birthdate).toISOString().split('T')[0]
@@ -166,7 +172,7 @@ export default function Settings() {
 
   return (
     <>
-      <Header />
+      {isDesktop ? <DesktopHeader /> : <Header />}
       <Container component="main" maxWidth="sm" sx={{ mt: 10 }}>
         <Box
           sx={{
@@ -300,7 +306,7 @@ export default function Settings() {
           </Box>
         </Box>
       </Container>
-      <Footer />
+      {isDesktop ? <DesktopFooter /> : <Footer />}
       <Modal
         open={openModal}
         onClose={handleCloseModal}

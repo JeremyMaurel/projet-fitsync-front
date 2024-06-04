@@ -1,3 +1,5 @@
+import { TextField, Button, Container, Typography, Box } from '@mui/material';
+import LoginIcon from '@mui/icons-material/Login';
 import React, { FormEvent, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
@@ -6,21 +8,16 @@ import actionLogin from '../../store/thunks/actionLogin';
 import DisconnectedHeader from '../Base/Header/DisconnectedHeader';
 import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
 
-import { TextField, Button, Container, Typography, Box } from '@mui/material';
-import LoginIcon from '@mui/icons-material/Login';
-
 import './Authentification.scss';
 
 export default function Login() {
   const pseudo = useAppSelector((state) => state.user.credentials.pseudo ?? '');
-  const password = useAppSelector(
-    (state) => state.user.credentials.password ?? ''
-  );
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const loginError = useAppSelector((state) => state.user.error);
   const logged = useAppSelector((state) => state.user.logged);
+  const role = useAppSelector((state) => state.user.role);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -33,16 +30,24 @@ export default function Login() {
     e.preventDefault();
     dispatch(actionLogin()).then((result) => {
       if (actionLogin.fulfilled.match(result)) {
-        navigate('/home');
+        if (role === 'user') {
+          navigate('/home');
+        } else if (role === 'admin') {
+          navigate('/home-admin');
+        }
       }
     });
   };
 
   useEffect(() => {
     if (logged) {
-      navigate('/home');
+      if (role === 'user') {
+        navigate('/home');
+      } else if (role === 'admin') {
+        navigate('/home-admin');
+      }
     }
-  }, [logged, navigate, pseudo]);
+  }, [logged, navigate, role]);
   return (
     <>
       <DisconnectedHeader />

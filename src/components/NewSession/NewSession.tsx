@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import dayjs from 'dayjs';
 import {
   Box,
@@ -15,18 +14,23 @@ import {
   InputAdornment,
   Container,
   OutlinedInput,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { Add as AddIcon, Search as SearchIcon } from '@mui/icons-material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
+import DesktopHeader from '../Base/Header/DesktopHeader';
 import thunkAddNewSession from '../../store/thunks/thunkAddNewSession';
 import actionThunkFetchSessions from '../../store/thunks/thunkFetchSessions';
+import DesktopFooter from '../Base/Footer/DesktopFooter';
 
-const NewSession = () => {
+function NewSession() {
   const dispatch = useAppDispatch();
 
   // -- NEW SESSION STATES --
@@ -46,7 +50,9 @@ const NewSession = () => {
   const activitiesList = useAppSelector(
     (state) => state.activities.activitiesList
   );
+  const theme = useTheme();
 
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   // -- LOCAL UTILS STATES --
   const [activityName, setActivityName] = useState('');
   const [searchActivities, setSearchActivities] = useState('');
@@ -65,7 +71,6 @@ const NewSession = () => {
       );
     }
   };
-
   const handleNewSessionDuration = (event) => {
     setNewSessionDuration(event.target.value);
   };
@@ -104,7 +109,7 @@ const NewSession = () => {
 
   return (
     <>
-      <Header />
+      {isDesktop ? <DesktopHeader /> : <Header />}
       <main>
         <Container
           maxWidth="md"
@@ -245,9 +250,9 @@ const NewSession = () => {
           </Button>
         </Container>
       </main>
-      <Footer />
+      {isDesktop ? <DesktopFooter /> : <Footer />}
     </>
   );
-};
+}
 
 export default NewSession;

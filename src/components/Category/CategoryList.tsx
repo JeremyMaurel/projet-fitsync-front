@@ -9,6 +9,7 @@ import {
   CardHeader,
   useTheme,
   Grid,
+  useMediaQuery,
 } from '@mui/material';
 import {
   Bed,
@@ -39,9 +40,11 @@ import { useAppSelector } from '../../hooks/redux-hooks';
 // Import of sub-components
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
+import DesktopHeader from '../Base/Header/DesktopHeader';
 
 // Stylesheet
 import './CategoryList.scss';
+import DesktopFooter from '../Base/Footer/DesktopFooter';
 
 // Mapping of activity names to icons
 const activityIcons = {
@@ -78,10 +81,10 @@ export default function CategoryList() {
 
   // Utilisation du thème pour récupérer la couleur primaire
   const theme = useTheme();
-
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   return (
     <>
-      <Header />
+      {isDesktop ? <DesktopHeader /> : <Header />}
       <Container
         component="main"
         maxWidth="md"
@@ -135,7 +138,7 @@ export default function CategoryList() {
           </Grid>
         </Box>
       </Container>
-      <Footer />
+      {isDesktop ? <DesktopFooter /> : <Footer />}
     </>
   );
 }

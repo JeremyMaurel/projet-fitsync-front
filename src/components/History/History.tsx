@@ -1,16 +1,9 @@
-// Import des bibliothèques ou des composants techniques
+/* eslint-disable no-console */
+// Import of libraries or technical components
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
-import actionThunkFetchSessions from '../../store/thunks/thunkFetchSessions';
-import thunkDeleteSession from '../../store/thunks/thunkDeleteSession';
-import dayjs from 'dayjs';
+// Import des bibliothèques ou des composants techniques
 
-// Import des sous-composants
-import Header from '../Base/Header/Header';
-import Footer from '../Base/Footer/Footer';
-
-// Import des composants MUI
 import {
   Container,
   Box,
@@ -21,10 +14,21 @@ import {
   useTheme,
   Grid,
   Button,
+  useMediaQuery,
 } from '@mui/material';
+import dayjs from 'dayjs';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
+import actionThunkFetchSessions from '../../store/thunks/thunkFetchSessions';
+import thunkDeleteSession from '../../store/thunks/thunkDeleteSession';
+
+// Import des sous-composants
+import Header from '../Base/Header/Header';
+import Footer from '../Base/Footer/Footer';
+import DesktopHeader from '../Base/Header/DesktopHeader';
 
 // Feuille de style
 import './History.scss';
+import DesktopFooter from '../Base/Footer/DesktopFooter';
 
 export default function History() {
   // -- STATE REDUX --
@@ -39,6 +43,8 @@ export default function History() {
   // Utilisation du thème pour récupérer la couleur primaire
   const theme = useTheme();
 
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+
   // Fonction de gestion de la suppression
   const handleDeleteSession = (sessionId: number) => {
     dispatch(thunkDeleteSession(sessionId));
@@ -46,7 +52,7 @@ export default function History() {
 
   return (
     <>
-      <Header />
+      {isDesktop ? <DesktopHeader /> : <Header />}
       <Container
         component="main"
         maxWidth="md"
@@ -123,7 +129,7 @@ export default function History() {
           </Grid>
         </Box>
       </Container>
-      <Footer />
+      {isDesktop ? <DesktopFooter /> : <Footer />}
     </>
   );
 }
