@@ -1,3 +1,7 @@
+/* eslint-disable no-console */
+// Import of libraries or technical components
+import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 // Import des bibliothèques ou des composants techniques
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -22,6 +26,14 @@ import {
   Grid,
   Button,
 } from '@mui/material';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
+import actionThunkFetchSessions from '../../store/thunks/thunkFetchSessions';
+
+// Import of sub-components
+import Header from '../Base/Header/Header';
+import Footer from '../Base/Footer/Footer';
+
+// Import of MUI components
 
 // Feuille de style
 import './History.scss';

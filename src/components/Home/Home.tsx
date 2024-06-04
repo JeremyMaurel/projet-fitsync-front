@@ -1,7 +1,6 @@
+/* eslint-disable react/function-component-definition */
 import React, { useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
-import thunkFetchFavorites from '../../store/thunks/thunkFetchFavorites';
 import {
   Avatar,
   Container,
@@ -15,6 +14,8 @@ import {
   Link as MuiLink,
   Divider,
 } from '@mui/material';
+import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
+import thunkFetchFavorites from '../../store/thunks/thunkFetchFavorites';
 
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';

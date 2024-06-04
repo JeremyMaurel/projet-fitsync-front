@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // Import of librairies or technical components
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
@@ -15,7 +16,6 @@ const actionLogin = createAsyncThunk('user/LOGIN', async (_, thunkAPI) => {
       password: state.user.credentials.password,
     });
     console.log('API login response: ', response.data);
-
     return response.data;
   } catch (error) {
     console.error('Login error:', error);

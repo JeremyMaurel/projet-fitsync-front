@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import dayjs from 'dayjs';
@@ -19,6 +20,8 @@ import {
 import { Add as AddIcon, Search as SearchIcon } from '@mui/icons-material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker, TimePicker } from '@mui/x-date-pickers';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import { DateTimePicker } from '@mui/x-date-pickers';
 
 import Header from '../Base/Header/Header';
@@ -26,7 +29,7 @@ import Footer from '../Base/Footer/Footer';
 import thunkAddNewSession from '../../store/thunks/thunkAddNewSession';
 import actionThunkFetchSessions from '../../store/thunks/thunkFetchSessions';
 
-const NewSession = () => {
+function NewSession() {
   const dispatch = useAppDispatch();
 
   // -- NEW SESSION STATES --
@@ -251,6 +254,6 @@ const NewSession = () => {
       <Footer />
     </>
   );
-};
+}
 
 export default NewSession;

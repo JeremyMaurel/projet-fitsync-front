@@ -1,6 +1,6 @@
+import { Container, Box, Typography, TextField, Button } from '@mui/material';
 import DisconnectedHeader from '../Base/Header/DisconnectedHeader';
 import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
-import { Container, Box, Typography, TextField, Button } from '@mui/material';
 
 export default function ResetPassword() {
   return (

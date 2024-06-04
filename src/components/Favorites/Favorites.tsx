@@ -3,7 +3,6 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import thunkFetchFavorites from '../../store/thunks/thunkFetchFavorites';
 import thunkDeleteFavorite from '../../store/thunks/thunkDeleteFavorite';
-
 import {
   Box,
   Button,
@@ -15,6 +14,8 @@ import {
   Grid,
   useTheme,
 } from '@mui/material';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
+import thunkFetchFavorites from '../../store/thunks/thunkFetchFavorites';
 
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
@@ -101,7 +102,7 @@ export default function Favorites() {
               </Grid>
             ))}
           </Grid>
-          <Box mt={5}></Box>
+          <Box mt={5} />
         </Container>
       </main>
       <Footer />
