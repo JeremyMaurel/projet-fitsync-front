@@ -7,18 +7,33 @@ import {
   Card,
   CardContent,
   CardHeader,
-  IconButton,
   useTheme,
   Grid,
   useMediaQuery,
 } from '@mui/material';
 import {
-  Spa,
+  Bed,
+  DirectionsBike,
+  DirectionsCar,
   DirectionsRun,
-  PedalBike,
-  Pool,
+  DirectionsWalk,
   FitnessCenter,
-  Terrain,
+  Handyman,
+  Home as HomeIcon,
+  LocalFlorist,
+  MoreHoriz,
+  Pool,
+  Radar,
+  Snowboarding,
+  Spa,
+  SpatialAudio,
+  SportsGymnastics,
+  SportsHandball,
+  TempleHindu,
+  VideogameAsset,
+  VolunteerActivism,
+  Weekend,
+  Work,
 } from '@mui/icons-material';
 import { useAppSelector } from '../../hooks/redux-hooks';
 
@@ -27,22 +42,34 @@ import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 import DesktopHeader from '../Base/Header/DesktopHeader';
 
-// Import of MUI components
-
-// Import of MUI icons
-
 // Stylesheet
 import './CategoryList.scss';
 import DesktopFooter from '../Base/Footer/DesktopFooter';
 
 // Mapping of activity names to icons
 const activityIcons = {
-  Yoga: Spa,
+  Bicycling: DirectionsBike,
+  'Conditionning Exercise': FitnessCenter,
+  Dancing: SportsGymnastics,
+  'Fishing & Hunting': Radar,
+  'Home Activities': HomeIcon,
+  'Home Repair': Handyman,
+  Inactivity: Weekend,
+  'Lawn & Garden': LocalFlorist,
+  Miscellaneous: MoreHoriz,
+  'Music Playing': SpatialAudio,
+  Occupation: Work,
   Running: DirectionsRun,
-  Cycling: PedalBike,
-  Swimming: Pool,
-  Weightlifting: FitnessCenter,
-  Hiking: Terrain,
+  'Self Care': Spa,
+  'Sexual Activity': Bed,
+  Sports: SportsHandball,
+  Transportation: DirectionsCar,
+  Walking: DirectionsWalk,
+  'Water Activities': Pool,
+  'Winter Activities': Snowboarding,
+  'Religious Activities': TempleHindu,
+  'Volunteer Activities': VolunteerActivism,
+  'Video Games': VideogameAsset,
 };
 
 export default function CategoryList() {
@@ -50,6 +77,7 @@ export default function CategoryList() {
   const categoriesList = useAppSelector(
     (state) => state.categories.categoriesList
   );
+  console.log(categoriesList);
 
   // Utilisation du thème pour récupérer la couleur primaire
   const theme = useTheme();
@@ -77,36 +105,33 @@ export default function CategoryList() {
               const IconComponent = activityIcons[category.name] || Spa;
               return (
                 <Grid item xs={12} sm={6} key={category.id}>
-                  <Card
-                    sx={{
-                      boxShadow: 3,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      height: '100%',
-                    }}
+                  <Link
+                    to={`/category-list/${category.id}`}
+                    style={{ textDecoration: 'none' }}
                   >
-                    <CardHeader
-                      title={
-                        <Link
-                          to={`/category-list/${category.id}`}
-                          style={{ textDecoration: 'none', color: 'inherit' }}
-                        >
-                          {category.name}
-                        </Link>
-                      }
-                      action={
-                        <IconButton>
-                          <IconComponent color="primary" />
-                        </IconButton>
-                      }
+                    <Card
                       sx={{
-                        borderBottom: `1px solid ${theme.palette.divider}`,
+                        boxShadow: 3,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        height: '100%',
                       }}
-                    />
-                    <CardContent sx={{ flexGrow: 1 }}>
-                      {/* Additional content can go here */}
-                    </CardContent>
-                  </Card>
+                    >
+                      <CardHeader
+                        title={category.name}
+                        action={
+                          <IconComponent
+                            color="primary"
+                            sx={{ fontSize: 28 }}
+                          />
+                        }
+                        sx={{
+                          borderBottom: `1px solid ${theme.palette.divider}`,
+                        }}
+                      />
+                      <CardContent sx={{ flexGrow: 1 }}></CardContent>
+                    </Card>
+                  </Link>
                 </Grid>
               );
             })}

@@ -24,6 +24,7 @@ import Favorites from '../Favorites/Favorites';
 import LandingPage from '../LandingPage/LandingPage';
 import CategoryId from '../Category/CategoryId';
 import CategoryList from '../Category/CategoryList';
+import Contact from '../Contact/Contact';
 import History from '../History/History';
 import NewSession from '../NewSession/NewSession';
 import Login from '../Authentification/Login';
@@ -91,6 +92,7 @@ function App() {
           {logged && <Route path="/settings" element={<Settings />} />}
           <Route path="/category-list" element={<CategoryList />} />
           <Route path="/category-list/:categoryId" element={<CategoryId />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/activity/:activityId" element={<ActivityId />} />
           {logged && (
             <Route path="/history/:sessionId" element={<SessionId />} />

@@ -86,7 +86,7 @@ export default function History() {
                         style={{ textDecoration: 'none', color: 'inherit' }}
                       >
                         <Typography variant="body2" color="primary">
-                          DATE: {dayjs(session.date).format('DD.MM.YYYY')}
+                          DATE: {dayjs(session.date).format('MM.DD.YYYY')}
                         </Typography>
                         <Typography variant="body2" color="primary">
                           TIME: {dayjs(session.date).format('HH:mm')}
