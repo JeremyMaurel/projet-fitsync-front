@@ -78,6 +78,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/contact" element={<Contact />} />
           {logged && <Route path="/home" element={<Home />} />}
           {logged && <Route path="/home-admin" element={<HomeAdmin />} />}
           {logged && (

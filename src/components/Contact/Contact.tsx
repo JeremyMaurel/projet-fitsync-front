@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react/no-unescaped-entities */
 import {
   Container,
@@ -6,19 +7,33 @@ import {
   Button,
   TextField,
   FormControl,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
 import DisconnectedHeader from '../Base/Header/DisconnectedHeader';
 import Header from '../Base/Header/Header';
+import DesktopHeader from '../Base/Header/DesktopHeader';
 
 import { useAppSelector } from '../../hooks/redux-hooks';
 import Footer from '../Base/Footer/Footer';
 
 export default function Contact() {
   const logged = useAppSelector((state) => state.user.logged);
+  const theme = useTheme();
+
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   return (
     <>
-      {logged ? <Header /> : <DisconnectedHeader />}
+      {logged ? (
+        isDesktop ? (
+          <DesktopHeader />
+        ) : (
+          <Header />
+        )
+      ) : (
+        <DisconnectedHeader />
+      )}
       <Container component="main" maxWidth="md" sx={{ mt: 10 }}>
         <Typography variant="h3" color="primary" gutterBottom>
           Admin support

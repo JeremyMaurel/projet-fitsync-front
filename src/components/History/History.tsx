@@ -14,6 +14,7 @@ import {
   useTheme,
   Grid,
   Button,
+  useMediaQuery,
 } from '@mui/material';
 import dayjs from 'dayjs';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
@@ -23,15 +24,11 @@ import thunkDeleteSession from '../../store/thunks/thunkDeleteSession';
 // Import des sous-composants
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
-
-// Import des composants MUI
-
-// Import of sub-components
-
-// Import of MUI components
+import DesktopHeader from '../Base/Header/DesktopHeader';
 
 // Feuille de style
 import './History.scss';
+import DesktopFooter from '../Base/Footer/DesktopFooter';
 
 export default function History() {
   // -- STATE REDUX --
@@ -46,6 +43,8 @@ export default function History() {
   // Utilisation du thème pour récupérer la couleur primaire
   const theme = useTheme();
 
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+
   // Fonction de gestion de la suppression
   const handleDeleteSession = (sessionId: number) => {
     dispatch(thunkDeleteSession(sessionId));
@@ -53,7 +52,7 @@ export default function History() {
 
   return (
     <>
-      <Header />
+      {isDesktop ? <DesktopHeader /> : <Header />}
       <Container
         component="main"
         maxWidth="md"
@@ -130,7 +129,7 @@ export default function History() {
           </Grid>
         </Box>
       </Container>
-      <Footer />
+      {isDesktop ? <DesktopFooter /> : <Footer />}
     </>
   );
 }

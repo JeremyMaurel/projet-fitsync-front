@@ -14,6 +14,8 @@ import {
   InputAdornment,
   Container,
   OutlinedInput,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { Add as AddIcon, Search as SearchIcon } from '@mui/icons-material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -23,8 +25,10 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
+import DesktopHeader from '../Base/Header/DesktopHeader';
 import thunkAddNewSession from '../../store/thunks/thunkAddNewSession';
 import actionThunkFetchSessions from '../../store/thunks/thunkFetchSessions';
+import DesktopFooter from '../Base/Footer/DesktopFooter';
 
 function NewSession() {
   const dispatch = useAppDispatch();
@@ -46,7 +50,9 @@ function NewSession() {
   const activitiesList = useAppSelector(
     (state) => state.activities.activitiesList
   );
+  const theme = useTheme();
 
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   // -- LOCAL UTILS STATES --
   const [activityName, setActivityName] = useState('');
   const [searchActivities, setSearchActivities] = useState('');
@@ -65,7 +71,6 @@ function NewSession() {
       );
     }
   };
-
   const handleNewSessionDuration = (event) => {
     setNewSessionDuration(event.target.value);
   };
@@ -103,7 +108,7 @@ function NewSession() {
 
   return (
     <>
-      <Header />
+      {isDesktop ? <DesktopHeader /> : <Header />}
       <main>
         <Container
           maxWidth="md"
@@ -248,7 +253,7 @@ function NewSession() {
           </Button>
         </Container>
       </main>
-      <Footer />
+      {isDesktop ? <DesktopFooter /> : <Footer />}
     </>
   );
 }
