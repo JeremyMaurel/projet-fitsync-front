@@ -1,3 +1,4 @@
+// Import of librairies or technical components
 import React, { useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
@@ -16,10 +17,12 @@ import {
   Divider,
 } from '@mui/material';
 
+// Import of sub-components
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 
 const Home: React.FC = () => {
+  // Pickup from the state of pseudo to say hello
   const pseudo = useAppSelector((state) => state.user.credentials.pseudo);
   const avatarUrl = 'public/1.jpg';
   const favoritesList = useAppSelector(

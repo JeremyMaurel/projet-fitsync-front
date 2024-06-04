@@ -90,7 +90,7 @@ const NewSession = () => {
       comment: newSessionComment,
     };
 
-    console.log(newSessionDateTime);
+    // console.log(newSessionDateTime);
 
     // Envoyer la nouvelle session à la base de données en utilisant le thunkAddNewSession
     dispatch(thunkAddNewSession(newSession));
@@ -99,6 +99,7 @@ const NewSession = () => {
     setNewSessionDuration('');
     setNewSessionComment('');
     setNewSessionActivityId('');
+    setSearchActivities('');
   };
 
   return (
@@ -122,23 +123,19 @@ const NewSession = () => {
               </Typography>
               <List>
                 {sessionsList.map((session, index) => (
-                  <React.Fragment key={session.id}>
+                  <Box key={session.id}>
                     <ListItem>
-                      <Box
-                        display="flex"
-                        justifyContent="space-between"
-                        width="100%"
-                      >
+                      <Box width="100%">
                         <Typography variant="body1" color="primary">
                           {session.activity_name}
                         </Typography>
                         <Typography variant="body2" color="textSecondary">
-                          {session.date}
+                          {dayjs(session.date).format('MM-DD-YYYY HH:mm')}
                         </Typography>
                       </Box>
                     </ListItem>
                     {index < sessionsList.length - 1 && <Divider />}
-                  </React.Fragment>
+                  </Box>
                 ))}
               </List>
             </CardContent>

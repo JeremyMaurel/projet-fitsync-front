@@ -25,10 +25,6 @@ import { useAppSelector } from '../../hooks/redux-hooks';
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 
-// Import of MUI components
-
-// Import of MUI icons
-
 // Stylesheet
 import './CategoryList.scss';
 
