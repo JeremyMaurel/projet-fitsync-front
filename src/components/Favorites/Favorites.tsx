@@ -47,16 +47,20 @@ export default function Favorites() {
       {isDesktop ? <DesktopHeader /> : <Header />}
       <main>
         <Container
+          component="main"
           maxWidth="md"
-          sx={{
-            marginTop: 10,
-            paddingBottom: 10,
-          }}
+          sx={{ mt: 10, paddingBottom: 10, color: theme.palette.text.primary }}
         >
-          <Typography variant="h3" gutterBottom>
+          <Typography variant="h3" color="action.selected" gutterBottom>
             Favorites
           </Typography>
-          <Box display="flex" justifyContent="flex-end" mb={3}>
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            mb={4}
+            width="100%"
+          >
             <Button
               fullWidth
               variant="contained"
@@ -67,9 +71,9 @@ export default function Favorites() {
               Add New Activity
             </Button>
           </Box>
-          <Grid container spacing={3}>
+          <Grid container spacing={2}>
             {favoritesList.map((favorite) => (
-              <Grid item xs={12} sm={6} md={4} key={favorite.activity_id}>
+              <Grid item xs={12} sm={6} key={favorite.activity_id}>
                 <Card>
                   <CardContent>
                     <Link
@@ -78,7 +82,7 @@ export default function Favorites() {
                       underline="none"
                       color="inherit"
                     >
-                      <Typography variant="h6">
+                      <Typography variant="h6" gutterBottom>
                         {favorite.activity_name}
                       </Typography>
                       <Typography variant="body2" color="primary">

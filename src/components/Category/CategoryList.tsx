@@ -90,7 +90,7 @@ export default function CategoryList() {
         maxWidth="md"
         sx={{ mt: 10, pb: 5, color: theme.palette.text.primary }}
       >
-        <Typography variant="h3" component="h1" gutterBottom>
+        <Typography variant="h3" color="action.selected" gutterBottom>
           Categories
         </Typography>
         <Box
@@ -102,7 +102,7 @@ export default function CategoryList() {
         >
           <Grid container spacing={2}>
             {categoriesList.map((category) => {
-              const IconComponent = activityIcons[category.name] || Spa;
+              const IconComponent = activityIcons[category.name];
               return (
                 <Grid item xs={12} sm={6} key={category.id}>
                   <Link

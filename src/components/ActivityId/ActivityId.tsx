@@ -40,6 +40,10 @@ const ActivityId: React.FC = () => {
   const activityToDisplay = activities.find(
     (activity) => activity.id === idFromUrl
   );
+  const categories = useAppSelector((state) => state.categories.categoriesList);
+  const categoryToDisplay = categories.find(
+    (category) => category.id === activityToDisplay?.category_id
+  );
 
   const handleAddToFavorites = async () => {
     await dispatch(thunkAddFavorite(Number(activityId)));
@@ -57,8 +61,8 @@ const ActivityId: React.FC = () => {
             marginTop: 10,
           }}
         >
-          <Typography variant="h3" gutterBottom>
-            Activity
+          <Typography variant="h3" color="action.selected" gutterBottom>
+            {categoryToDisplay?.name}
           </Typography>
           <Card sx={{ mb: 2, boxShadow: 3, borderRadius: 2 }}>
             <CardContent>

@@ -1,4 +1,3 @@
-
 // Import of librairies or technical components
 /* eslint-disable react/function-component-definition */
 import React, { useEffect } from 'react';
@@ -62,7 +61,7 @@ const Home: React.FC = () => {
             src={avatarUrl}
             sx={{ width: 70, height: 70, mb: 2 }}
           />
-          <Typography component="h1" variant="h4" sx={{ mb: 5 }}>
+          <Typography variant="h3" gutterBottom>
             Hello {pseudo}!
           </Typography>
         </Box>

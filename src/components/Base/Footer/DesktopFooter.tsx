@@ -27,7 +27,7 @@ export default function DesktopFooter() {
       >
         Contact Support
       </Button>
-      <Typography variant="body2" color="textSecondary">
+      <Typography variant="body2" color="action.disabled">
         Copyright © 2024 FitSync. All rights reserved.
       </Typography>
       <Box>

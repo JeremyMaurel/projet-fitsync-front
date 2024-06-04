@@ -117,7 +117,7 @@ function NewSession() {
             marginTop: 10,
           }}
         >
-          <Typography variant="h3" component="h1" gutterBottom>
+          <Typography variant="h3" color="action.selected" gutterBottom>
             New Session
           </Typography>
 

@@ -58,7 +58,7 @@ export default function History() {
         maxWidth="md"
         sx={{ mt: 10, paddingBottom: 10, color: theme.palette.text.primary }}
       >
-        <Typography variant="h3" component="h1" gutterBottom>
+        <Typography variant="h3" color="action.selected" gutterBottom>
           History
         </Typography>
         <Box
@@ -81,35 +81,45 @@ export default function History() {
                 >
                   <CardHeader
                     title={
-                      <Link
-                        to={`/history/${session.id}`}
-                        style={{ textDecoration: 'none', color: 'inherit' }}
-                      >
-                        <Typography variant="body2" color="primary">
-                          DATE: {dayjs(session.date).format('MM.DD.YYYY')}
-                        </Typography>
-                        <Typography variant="body2" color="primary">
-                          TIME: {dayjs(session.date).format('HH:mm')}
-                        </Typography>
-                        {session.activity_name}
+                      <div>
+                        <Link
+                          to={`/history/${session.id}`}
+                          style={{ textDecoration: 'none', color: 'inherit' }}
+                        >
+                          <Typography variant="body2" color="primary">
+                            {dayjs(session.date).format('MM.DD.YYYY')}
+                          </Typography>
+                          <Typography variant="body2" color="primary">
+                            {dayjs(session.date).format('HH:mm')}
+                          </Typography>
+                          {session.activity_name}
+                          <Typography
+                            variant="body2"
+                            color="textSecondary"
+                            sx={{ mt: 2 }}
+                          >
+                            Duration: {session.duration} mn
+                          </Typography>
+                        </Link>
+                        <hr
+                          style={{
+                            width: '100%',
+                            border: `none`,
+                            borderTop: `1px solid ${theme.palette.divider}`,
+                            margin: `16px 0 8px`,
+                          }}
+                        />
                         <Typography
                           variant="body2"
                           color="textSecondary"
-                          sx={{ mt: 2 }}
+                          sx={{ mt: 1 }}
                         >
-                          Duration: {session.duration} mn
+                          {' '}
+                          Comment: {session.comment}
                         </Typography>
-                      </Link>
+                      </div>
                     }
-                    sx={{
-                      borderBottom: `1px solid ${theme.palette.divider}`,
-                    }}
                   />
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography variant="body2" color="textSecondary">
-                      Comment: {session.comment}
-                    </Typography>
-                  </CardContent>
                   <Box mt={2} mb={2} ml={2} mr={2}>
                     <Button
                       fullWidth
