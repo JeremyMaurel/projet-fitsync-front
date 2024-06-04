@@ -97,8 +97,8 @@ const userReducer = createReducer(initialState, (builder) => {
     })
     .addCase(actionLogin.fulfilled, (state, action) => {
       state.logged = true;
-      state.token = action.payload.token;
       state.error = null;
+      state.role = action.payload.role;
     })
     .addCase(actionLogin.rejected, (state) => {
       state.error =
