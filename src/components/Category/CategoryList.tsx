@@ -12,12 +12,28 @@ import {
   Grid,
 } from '@mui/material';
 import {
-  Spa,
+  Bed,
+  DirectionsBike,
+  DirectionsCar,
   DirectionsRun,
-  PedalBike,
-  Pool,
+  DirectionsWalk,
   FitnessCenter,
-  Terrain,
+  Handyman,
+  Home as HomeIcon,
+  LocalFlorist,
+  MoreHoriz,
+  Pool,
+  Radar,
+  Snowboarding,
+  Spa,
+  SpatialAudio,
+  SportsGymnastics,
+  SportsHandball,
+  TempleHindu,
+  VideogameAsset,
+  VolunteerActivism,
+  Weekend,
+  Work,
 } from '@mui/icons-material';
 import { useAppSelector } from '../../hooks/redux-hooks';
 
@@ -30,12 +46,28 @@ import './CategoryList.scss';
 
 // Mapping of activity names to icons
 const activityIcons = {
-  Yoga: Spa,
+  Bicycling: DirectionsBike,
+  'Conditionning Exercise': FitnessCenter,
+  Dancing: SportsGymnastics,
+  'Fishing & Hunting': Radar,
+  'Home Activities': HomeIcon,
+  'Home Repair': Handyman,
+  Inactivity: Weekend,
+  'Lawn & Garden': LocalFlorist,
+  Miscellaneous: MoreHoriz,
+  'Music Playing': SpatialAudio,
+  Occupation: Work,
   Running: DirectionsRun,
-  Cycling: PedalBike,
-  Swimming: Pool,
-  Weightlifting: FitnessCenter,
-  Hiking: Terrain,
+  'Self Care': Spa,
+  'Sexual Activity': Bed,
+  Sports: SportsHandball,
+  Transportation: DirectionsCar,
+  Walking: DirectionsWalk,
+  'Water Activities': Pool,
+  'Winter Activities': Snowboarding,
+  'Religious Activities': TempleHindu,
+  'Volunteer Activities': VolunteerActivism,
+  'Video Games': VideogameAsset,
 };
 
 export default function CategoryList() {
@@ -43,6 +75,7 @@ export default function CategoryList() {
   const categoriesList = useAppSelector(
     (state) => state.categories.categoriesList
   );
+  console.log(categoriesList);
 
   // Utilisation du thème pour récupérer la couleur primaire
   const theme = useTheme();
