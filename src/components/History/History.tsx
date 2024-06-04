@@ -50,7 +50,7 @@ export default function History() {
       <Container
         component="main"
         maxWidth="md"
-        sx={{ mt: 10, color: theme.palette.text.primary }}
+        sx={{ mt: 10, paddingBottom: 10, color: theme.palette.text.primary }}
       >
         <Typography variant="h3" component="h1" gutterBottom>
           History
@@ -104,18 +104,19 @@ export default function History() {
                       Comment: {session.comment}
                     </Typography>
                   </CardContent>
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    onClick={() => handleDeleteSession(session.id)}
-                    sx={{
-                      mt: 2,
-                      color: theme.palette.text.disabled,
-                      backgroundColor: theme.palette.action.hover,
-                    }}
-                  >
-                    DELETE
-                  </Button>
+                  <Box mt={2} mb={2} ml={2} mr={2}>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      onClick={() => handleDeleteSession(session.id)}
+                      sx={{
+                        color: theme.palette.text.disabled,
+                        backgroundColor: theme.palette.action.hover,
+                      }}
+                    >
+                      DELETE
+                    </Button>
+                  </Box>
                 </Card>
               </Grid>
             ))}

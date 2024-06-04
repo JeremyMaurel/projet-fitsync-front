@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import thunkFetchFavorites from '../../store/thunks/thunkFetchFavorites';
+import thunkDeleteFavorite from '../../store/thunks/thunkDeleteFavorite';
 
 import {
   Box,
@@ -12,6 +13,7 @@ import {
   Card,
   CardContent,
   Grid,
+  useTheme,
 } from '@mui/material';
 
 import Header from '../Base/Header/Header';
@@ -30,6 +32,14 @@ export default function Favorites() {
     dispatch(thunkFetchFavorites());
   }, [dispatch]);
 
+  // Utilisation du thème pour récupérer la couleur primaire
+  const theme = useTheme();
+
+  // Fonction de gestion de la suppression
+  const handleDeleteFavorite = (activityId: number) => {
+    dispatch(thunkDeleteFavorite(activityId));
+  };
+
   return (
     <>
       <Header />
@@ -38,6 +48,7 @@ export default function Favorites() {
           maxWidth="md"
           sx={{
             marginTop: 10,
+            paddingBottom: 10,
           }}
         >
           <Typography variant="h3" gutterBottom>
@@ -73,6 +84,19 @@ export default function Favorites() {
                       </Typography>
                     </Link>
                   </CardContent>
+                  <Box mt={2} mb={2} ml={2} mr={2}>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      onClick={() => handleDeleteFavorite(favorite.activity_id)}
+                      sx={{
+                        color: theme.palette.text.disabled,
+                        backgroundColor: theme.palette.action.hover,
+                      }}
+                    >
+                      DELETE
+                    </Button>
+                  </Box>
                 </Card>
               </Grid>
             ))}

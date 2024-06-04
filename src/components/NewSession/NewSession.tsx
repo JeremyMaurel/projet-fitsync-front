@@ -32,7 +32,6 @@ const NewSession = () => {
   // -- NEW SESSION STATES --
   const [newSessionComment, setNewSessionComment] = useState('');
   const [newSessionDuration, setNewSessionDuration] = useState('');
-  const [newSessionActivityName, setNewSessionActivityName] = useState('');
   const [newSessionActivityId, setNewSessionActivityId] = useState('');
   const [newSessionDateTime, setNewSessionDateTime] = useState('');
 
@@ -48,6 +47,8 @@ const NewSession = () => {
     (state) => state.activities.activitiesList
   );
 
+  // -- LOCAL UTILS STATES --
+  const [activityName, setActivityName] = useState('');
   const [searchActivities, setSearchActivities] = useState('');
   const [filteredActivities, setFilteredActivities] = useState([]);
   const currentDateTime = dayjs();
@@ -150,13 +151,13 @@ const NewSession = () => {
               value={searchActivities}
               onChange={(event) => {
                 handleSearch(event);
-                setNewSessionActivityName(event.target.value);
+                setActivityName(event.target.value);
               }}
               sx={{ mb: 2 }}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <SearchIcon color="primary" />
+                    <SearchIcon />
                   </InputAdornment>
                 ),
               }}
@@ -210,7 +211,7 @@ const NewSession = () => {
             <OutlinedInput
               fullWidth
               type="number"
-              placeholder="Enter duration in minutes"
+              placeholder="Enter duration"
               value={newSessionDuration}
               onChange={handleNewSessionDuration}
               endAdornment={
