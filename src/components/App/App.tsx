@@ -28,7 +28,7 @@ import Contact from '../Contact/Contact';
 import History from '../History/History';
 import NewSession from '../NewSession/NewSession';
 import Login from '../Authentification/Login';
-import Signin from '../Authentification/Signin';
+import Signup from '../Authentification/Signup';
 import ResetPassword from '../ResetPassword/ResetPassword';
 import Contact from '../Contact/Contact';
 import HomeAdmin from '../Home/HomeAdmin';
@@ -78,7 +78,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/signin" element={<Signin />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/contact" element={<Contact />} />
           {logged && <Route path="/home" element={<Home />} />}
