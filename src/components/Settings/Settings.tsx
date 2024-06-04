@@ -203,6 +203,9 @@ export default function Settings() {
               name="birthdate"
               type="date"
               defaultValue={formattedBirthdate}
+              InputLabelProps={{
+                shrink: true,
+              }}
             />
             <FormControl fullWidth margin="normal">
               <InputLabel id="gender-label">Gender</InputLabel>

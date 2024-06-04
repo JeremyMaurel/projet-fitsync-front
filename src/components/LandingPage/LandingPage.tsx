@@ -21,7 +21,7 @@ export default function LandingPage() {
         <Box textAlign="center" sx={{ mt: 4 }}>
           <Button
             component={Link}
-            to="/signin"
+            to="/signup"
             variant="contained"
             color="primary"
             size="large"
