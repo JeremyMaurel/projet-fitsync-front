@@ -13,13 +13,8 @@ import {
 } from '@mui/material';
 import { useAppDispatch } from '../../hooks/redux-hooks';
 import actionUserSignin from '../../store/thunks/actionUserSignin';
-
-// Import of components
 import DisconnectedHeader from '../Base/Header/DisconnectedHeader';
 import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
-
-// Stylesheet
-import './Authentification.scss';
 
 export default function Signup() {
   const dispatch = useAppDispatch();

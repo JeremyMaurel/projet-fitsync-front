@@ -2,7 +2,6 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useState } from 'react';
-import './Settings.scss';
 import {
   Box,
   Button,
@@ -22,7 +21,6 @@ import {
 } from '@mui/material';
 
 import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
-// Import of header, footer and menu
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 import DesktopHeader from '../Base/Header/DesktopHeader';
@@ -202,7 +200,6 @@ export default function Settings() {
             </Typography>
             <TextField
               margin="normal"
-              required
               fullWidth
               id="birthdate"
               label="Birthdate"
@@ -232,7 +229,6 @@ export default function Settings() {
             </FormControl>
             <TextField
               margin="normal"
-              required
               fullWidth
               id="height"
               label="Height (cm)"

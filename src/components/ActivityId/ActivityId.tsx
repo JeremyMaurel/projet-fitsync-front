@@ -1,5 +1,6 @@
 /* eslint-disable react/function-component-definition */
 import React from 'react';
+
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import {
   CssBaseline,
@@ -12,13 +13,16 @@ import {
   Button,
 } from '@mui/material';
 import { Add as AddIcon, Favorite as FavoriteIcon } from '@mui/icons-material';
+
 import { useParams, useNavigate } from 'react-router-dom';
+
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
+
 import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
+
 import thunkAddFavorite from '../../store/thunks/thunkAddFavorite';
 
-// Définition du thème personnalisé
 const theme = createTheme({
   palette: {
     mode: 'dark',
@@ -51,12 +55,7 @@ const ActivityId: React.FC = () => {
       <CssBaseline />
       <Header />
       <main>
-        <Container
-          maxWidth="md"
-          sx={{
-            marginTop: 10,
-          }}
-        >
+        <Container maxWidth="md" sx={{ marginTop: 10 }}>
           <Typography variant="h3" gutterBottom>
             Activity
           </Typography>

@@ -25,9 +25,6 @@ import thunkDeleteSession from '../../store/thunks/thunkDeleteSession';
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 import DesktopHeader from '../Base/Header/DesktopHeader';
-
-// Feuille de style
-import './History.scss';
 import DesktopFooter from '../Base/Footer/DesktopFooter';
 
 export default function History() {

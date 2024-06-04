@@ -1,3 +1,4 @@
+// Import of librairies or technical components
 import { Typography, Button, Container, Box } from '@mui/material';
 
 import AdminFooter from '../Base/Footer/AdminFooter';

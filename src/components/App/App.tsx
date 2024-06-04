@@ -1,20 +1,15 @@
 /* eslint-disable no-console */
-// Import of librairies or technical components
 import { Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 
-// Import of MUI Core Librairy for Darkmode
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 
-// Import of Redux store thunks
 import actionThunkFetchActivities from '../../store/thunks/thunkFetchActivities';
 import actionThunkFetchCategories from '../../store/thunks/thunkFetchCategories';
-// import actionThunkFetchUser from '../../store/thunks/thunkFetchUser';
 import actionCheckLogin from '../../store/thunks/actionCheckLogin';
 
-// Import of sub-components
 import Home from '../Home/Home';
 import Settings from '../Settings/Settings';
 import ActivityId from '../ActivityId/ActivityId';
@@ -35,9 +30,6 @@ import ActivityRequest from '../ActivityRequest/ActivityRequest';
 import AdminSettings from '../Settings/AdminSettings';
 import ErrorPage from '../Base/ErrorPage/ErrorPage';
 
-// Stylesheet
-import './App.scss';
-
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
@@ -50,10 +42,6 @@ const darkTheme = createTheme({
   },
   typography: {
     fontFamily: 'Inter, sans-serif',
-    // h3: {
-    //   textShadow: '0px 1px 1px #4d4d4d',
-    //   color: '#222',
-    // },
   },
 });
 
@@ -65,7 +53,6 @@ function App() {
     dispatch(actionThunkFetchCategories());
     dispatch(actionThunkFetchActivities());
     dispatch(actionCheckLogin());
-    // dispatch(actionThunkFetchUser());
   }, [dispatch]);
 
   console.log('Is user connected?', logged);
@@ -97,7 +84,6 @@ function App() {
           )}
           {logged && <Route path="/dashboard" element={<Dashboard />} />}
           {logged && <Route path="/favorites" element={<Favorites />} />}
-          {/* <Route path="/favorites" element={<Favorites />} /> */}
           {logged && <Route path="/history" element={<History />} />}
           {logged && <Route path="/new-session" element={<NewSession />} />}
           <Route path="*" element={<ErrorPage />} />
