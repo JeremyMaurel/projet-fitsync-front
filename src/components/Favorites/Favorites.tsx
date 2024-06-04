@@ -1,8 +1,5 @@
 import { useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
-import thunkFetchFavorites from '../../store/thunks/thunkFetchFavorites';
-import thunkDeleteFavorite from '../../store/thunks/thunkDeleteFavorite';
 import {
   Box,
   Button,
@@ -16,6 +13,7 @@ import {
 } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import thunkFetchFavorites from '../../store/thunks/thunkFetchFavorites';
+import thunkDeleteFavorite from '../../store/thunks/thunkDeleteFavorite';
 
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';

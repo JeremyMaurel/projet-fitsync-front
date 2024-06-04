@@ -3,18 +3,7 @@
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 // Import des bibliothèques ou des composants techniques
-import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
-import actionThunkFetchSessions from '../../store/thunks/thunkFetchSessions';
-import thunkDeleteSession from '../../store/thunks/thunkDeleteSession';
-import dayjs from 'dayjs';
 
-// Import des sous-composants
-import Header from '../Base/Header/Header';
-import Footer from '../Base/Footer/Footer';
-
-// Import des composants MUI
 import {
   Container,
   Box,
@@ -26,12 +15,18 @@ import {
   Grid,
   Button,
 } from '@mui/material';
+import dayjs from 'dayjs';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import actionThunkFetchSessions from '../../store/thunks/thunkFetchSessions';
+import thunkDeleteSession from '../../store/thunks/thunkDeleteSession';
 
-// Import of sub-components
+// Import des sous-composants
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
+
+// Import des composants MUI
+
+// Import of sub-components
 
 // Import of MUI components
 
