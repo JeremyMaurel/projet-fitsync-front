@@ -13,12 +13,16 @@ import {
   ListItem,
   Link as MuiLink,
   Divider,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
 import thunkFetchFavorites from '../../store/thunks/thunkFetchFavorites';
 
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
+import DesktopHeader from '../Base/Header/DesktopHeader';
+import DesktopFooter from '../Base/Footer/DesktopFooter';
 
 const Home: React.FC = () => {
   const pseudo = useAppSelector((state) => state.user.credentials.pseudo);
@@ -27,6 +31,10 @@ const Home: React.FC = () => {
     (state) => state.favorites.favoritesList
   );
   const dispatch = useAppDispatch();
+
+  const theme = useTheme();
+
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
   useEffect(() => {
     dispatch(thunkFetchFavorites());
@@ -37,7 +45,7 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <Header />
+      {isDesktop ? <DesktopHeader /> : <Header />}
       <Container component="main" maxWidth="md" sx={{ mt: 10, pb: 10 }}>
         <Box
           sx={{
@@ -122,7 +130,7 @@ const Home: React.FC = () => {
           </CardContent>
         </Card>
       </Container>
-      <Footer />
+      {isDesktop ? <DesktopFooter /> : <Footer />}
     </>
   );
 };

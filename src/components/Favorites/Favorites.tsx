@@ -10,6 +10,7 @@ import {
   CardContent,
   Grid,
   useTheme,
+  useMediaQuery,
 } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import thunkFetchFavorites from '../../store/thunks/thunkFetchFavorites';
@@ -17,9 +18,11 @@ import thunkDeleteFavorite from '../../store/thunks/thunkDeleteFavorite';
 
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
+import DesktopHeader from '../Base/Header/DesktopHeader';
 
 // Gestion du style
 import './Favorites.scss';
+import DesktopFooter from '../Base/Footer/DesktopFooter';
 
 export default function Favorites() {
   const dispatch = useAppDispatch();
@@ -33,7 +36,7 @@ export default function Favorites() {
 
   // Utilisation du thème pour récupérer la couleur primaire
   const theme = useTheme();
-
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   // Fonction de gestion de la suppression
   const handleDeleteFavorite = (activityId: number) => {
     dispatch(thunkDeleteFavorite(activityId));
@@ -41,7 +44,7 @@ export default function Favorites() {
 
   return (
     <>
-      <Header />
+      {isDesktop ? <DesktopHeader /> : <Header />}
       <main>
         <Container
           maxWidth="md"
@@ -103,7 +106,7 @@ export default function Favorites() {
           <Box mt={5} />
         </Container>
       </main>
-      <Footer />
+      {isDesktop ? <DesktopFooter /> : <Footer />}
     </>
   );
 }

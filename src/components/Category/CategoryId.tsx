@@ -1,4 +1,5 @@
 // Import of librairies or technical components
+import { useMediaQuery, useTheme } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/redux-hooks';
 
@@ -6,9 +7,11 @@ import { useAppSelector } from '../../hooks/redux-hooks';
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 import CtaAdd from '../Base/CtaAdd/CtaAdd';
+import DesktopHeader from '../Base/Header/DesktopHeader';
 
 // Stylesheet
 import './CategoryId.scss';
+import DesktopFooter from '../Base/Footer/DesktopFooter';
 
 export default function CategoryId() {
   // -- STATE REDUX --
@@ -29,9 +32,13 @@ export default function CategoryId() {
   const activitiesToDisplay = activities.filter(
     (activity) => activity.category_id === idFromUrl
   );
+
+  const theme = useTheme();
+
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   return (
     <>
-      <Header />
+      {isDesktop ? <DesktopHeader /> : <Header />}
       <main className="main">
         <h1 className="main--title">{categoryToDisplay?.name}</h1>
         <div className="tile--list">
@@ -51,7 +58,7 @@ export default function CategoryId() {
         </div>
         <CtaAdd />
       </main>
-      <Footer />
+      {isDesktop ? <DesktopFooter /> : <Footer />}
     </>
   );
 }

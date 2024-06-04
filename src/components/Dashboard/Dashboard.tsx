@@ -10,6 +10,8 @@ import {
   CardContent,
   Divider,
   IconButton,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -19,6 +21,8 @@ import {
 } from '@mui/icons-material';
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
+import DesktopHeader from '../Base/Header/DesktopHeader';
+import DesktopFooter from '../Base/Footer/DesktopFooter';
 
 // Définition du thème personnalisé
 const theme = createTheme({
@@ -31,10 +35,12 @@ const theme = createTheme({
 });
 
 const Dashboard: React.FC = () => {
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Header />
+      {isDesktop ? <DesktopHeader /> : <Header />}
       <main>
         <Container
           maxWidth="md"
@@ -145,7 +151,7 @@ const Dashboard: React.FC = () => {
           </Card>
         </Container>
       </main>
-      <Footer />
+      {isDesktop ? <DesktopFooter /> : <Footer />}
     </ThemeProvider>
   );
 };
