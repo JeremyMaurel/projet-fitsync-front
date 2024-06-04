@@ -30,7 +30,6 @@ import NewSession from '../NewSession/NewSession';
 import Login from '../Authentification/Login';
 import Signup from '../Authentification/Signup';
 import ResetPassword from '../ResetPassword/ResetPassword';
-import Contact from '../Contact/Contact';
 import HomeAdmin from '../Home/HomeAdmin';
 import ActivityRequest from '../ActivityRequest/ActivityRequest';
 import AdminSettings from '../Settings/AdminSettings';
@@ -92,7 +91,6 @@ function App() {
           {logged && <Route path="/settings" element={<Settings />} />}
           <Route path="/category-list" element={<CategoryList />} />
           <Route path="/category-list/:categoryId" element={<CategoryId />} />
-          <Route path="/contact" element={<Contact />} />
           <Route path="/activity/:activityId" element={<ActivityId />} />
           {logged && (
             <Route path="/history/:sessionId" element={<SessionId />} />
