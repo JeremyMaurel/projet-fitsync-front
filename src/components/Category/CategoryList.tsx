@@ -57,7 +57,7 @@ export default function CategoryList() {
       <Container
         component="main"
         maxWidth="md"
-        sx={{ mt: 10, color: theme.palette.text.primary }}
+        sx={{ mt: 10, pb: 5, color: theme.palette.text.primary }}
       >
         <Typography variant="h3" component="h1" gutterBottom>
           Categories
@@ -71,7 +71,7 @@ export default function CategoryList() {
         >
           <Grid container spacing={2}>
             {categoriesList.map((category) => {
-              const IconComponent = activityIcons[category.name] || Spa; // Default icon if not found
+              const IconComponent = activityIcons[category.name] || Spa;
               return (
                 <Grid item xs={12} sm={6} key={category.id}>
                   <Card

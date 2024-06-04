@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import dayjs from 'dayjs';
 import {
   Box,
@@ -12,40 +14,50 @@ import {
   CardContent,
   Divider,
   InputAdornment,
-  MenuItem,
   Container,
+  OutlinedInput,
 } from '@mui/material';
 import { Add as AddIcon, Search as SearchIcon } from '@mui/icons-material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker, TimePicker } from '@mui/x-date-pickers';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
+import { DateTimePicker } from '@mui/x-date-pickers';
 
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
-import thunkAddSession from '../../store/thunks/thunkAddSession';
+import thunkAddNewSession from '../../store/thunks/thunkAddNewSession';
+import actionThunkFetchSessions from '../../store/thunks/thunkFetchSessions';
 
 function NewSession() {
   const dispatch = useAppDispatch();
 
+  // -- NEW SESSION STATES --
+  const [newSessionComment, setNewSessionComment] = useState('');
+  const [newSessionDuration, setNewSessionDuration] = useState('');
+  const [newSessionActivityId, setNewSessionActivityId] = useState('');
+  const [newSessionDateTime, setNewSessionDateTime] = useState('');
+
+  // -- LIST SESSIONS SELECTOR --
+  const sessionsList = useAppSelector((state) => state.sessions.sessionsList);
+
+  useEffect(() => {
+    dispatch(actionThunkFetchSessions());
+  }, [dispatch]);
+
+  // -- LIST ACTIVITIES SELECTOR --
   const activitiesList = useAppSelector(
     (state) => state.activities.activitiesList
   );
 
-  const [searchTerm, setSearchTerm] = useState('');
+  // -- LOCAL UTILS STATES --
+  const [activityName, setActivityName] = useState('');
+  const [searchActivities, setSearchActivities] = useState('');
   const [filteredActivities, setFilteredActivities] = useState([]);
-  const [durationHours, setDurationHours] = useState('');
-  const [durationMinutes, setDurationMinutes] = useState('');
-
-  // COMMENT STATE
-  const [comment, setComment] = useState('');
-
-  const handleChangeComment = (event) => {
-    setComment(event.target.value);
-  };
+  const currentDateTime = dayjs();
 
   const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
+    setSearchActivities(event.target.value);
     if (event.target.value === '') {
       setFilteredActivities([]);
     } else {
@@ -57,44 +69,39 @@ function NewSession() {
     }
   };
 
-  const handleSelectActivity = (activityName) => {
-    setSearchTerm(activityName);
-    setFilteredActivities([]);
+  const handleNewSessionDuration = (event) => {
+    setNewSessionDuration(event.target.value);
   };
 
-  const handleDurationChange = (event) => {
-    const { name, value } = event.target;
-    if (name === 'hours') {
-      setDurationHours(value);
-    } else if (name === 'minutes') {
-      setDurationMinutes(value);
-    }
+  const handleNewSessionComment = (event) => {
+    setNewSessionComment(event.target.value);
   };
 
-  const today = dayjs();
-  const yesterday = dayjs().subtract(1, 'day');
-  const todayStartOfTheDay = today.startOf('day');
-
-  const hoursOptions = Array.from({ length: 24 }, (_, i) => i);
-  const minutesOptions = Array.from({ length: 60 }, (_, i) => i);
-
-  // List of mock sessions
-  const mockSessions = [
-    { id: 1, name: 'Yoga', date: '2024-05-28' },
-    { id: 2, name: 'Running', date: '2024-05-27' },
-    { id: 3, name: 'Cycling', date: '2024-05-26' },
-  ];
+  const handleSelectActivity = (activityId: number, activityName: string) => {
+    setNewSessionActivityId(activityId); // Définit l'ID de l'activité sélectionnée
+    setSearchActivities(activityName); // Met à jour le terme de recherche avec le nom de l'activité
+    setFilteredActivities([]); // Réinitialise la liste des activités filtrées
+  };
 
   // SUBMIT NEW SESSION
-  const handleSubmit = () => {
-    dispatch(
-      thunkAddSession({
-        duration,
-        activityId,
-        date,
-        comment,
-      })
-    );
+  const handleSubmitAddSession = () => {
+    // Créer un objet représentant la nouvelle session avec le commentaire
+    const newSession = {
+      duration: newSessionDuration,
+      activityId: newSessionActivityId,
+      date: newSessionDateTime,
+      comment: newSessionComment,
+    };
+
+    console.log(newSessionDateTime);
+
+    // Envoyer la nouvelle session à la base de données en utilisant le thunkAddNewSession
+    dispatch(thunkAddNewSession(newSession));
+
+    // Réinitialiser le champ de commentaire après l'ajout de la session
+    setNewSessionDuration('');
+    setNewSessionComment('');
+    setNewSessionActivityId('');
   };
 
   return (
@@ -117,7 +124,7 @@ function NewSession() {
                 My Last Sessions
               </Typography>
               <List>
-                {mockSessions.map((session, index) => (
+                {sessionsList.map((session, index) => (
                   <React.Fragment key={session.id}>
                     <ListItem>
                       <Box
@@ -126,14 +133,14 @@ function NewSession() {
                         width="100%"
                       >
                         <Typography variant="body1" color="primary">
-                          {session.name}
+                          {session.activity_name}
                         </Typography>
                         <Typography variant="body2" color="textSecondary">
                           {session.date}
                         </Typography>
                       </Box>
                     </ListItem>
-                    {index < mockSessions.length - 1 && <Divider />}
+                    {index < sessionsList.length - 1 && <Divider />}
                   </React.Fragment>
                 ))}
               </List>
@@ -144,13 +151,16 @@ function NewSession() {
             <TextField
               label="Search Activities"
               variant="outlined"
-              value={searchTerm}
-              onChange={handleSearch}
+              value={searchActivities}
+              onChange={(event) => {
+                handleSearch(event);
+                setActivityName(event.target.value);
+              }}
               sx={{ mb: 2 }}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <SearchIcon color="primary" />
+                    <SearchIcon />
                   </InputAdornment>
                 ),
               }}
@@ -158,8 +168,8 @@ function NewSession() {
             {filteredActivities.length > 0 && (
               <Box
                 sx={{
-                  maxHeight: '200px', // Set the maximum height of the scrollable area
-                  overflowY: 'auto', // Enable vertical scrolling
+                  maxHeight: '200px',
+                  overflowY: 'auto',
                   border: '1px solid #ccc',
                   borderRadius: '4px',
                 }}
@@ -168,7 +178,9 @@ function NewSession() {
                   {filteredActivities.map((activity) => (
                     <ListItem
                       key={activity.id}
-                      onClick={() => handleSelectActivity(activity.name)}
+                      onClick={() =>
+                        handleSelectActivity(activity.id, activity.name)
+                      }
                     >
                       {activity.name}
                     </ListItem>
@@ -181,57 +193,34 @@ function NewSession() {
           <Typography variant="h6" gutterBottom>
             Date & Time
           </Typography>
+
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Box display="flex" flexDirection="column" mb={2}>
-              <DatePicker
-                label="Date Picker"
-                defaultValue={yesterday}
-                disablePast
-                views={['year', 'month', 'day']}
-                slotProps={{ textField: { fullWidth: true, sx: { mb: 2 } } }}
-              />
-              <TimePicker
-                label="Time Picker"
-                defaultValue={todayStartOfTheDay}
-                disablePast
-                slotProps={{ textField: { fullWidth: true, sx: { mb: 2 } } }}
-              />
-            </Box>
+            <DateTimePicker
+              defaultValue={currentDateTime}
+              sx={{ width: '100%', mb: 5 }}
+              slotProps={{ textField: { fullWidth: true } }}
+              onChange={(newValue) => {
+                if (newValue !== null) {
+                  setNewSessionDateTime(newValue.toISOString());
+                }
+              }}
+            />
           </LocalizationProvider>
 
           <Typography variant="h6" gutterBottom>
             Duration
           </Typography>
           <Box display="flex" mb={2}>
-            <TextField
-              select
-              label="Hours"
-              name="hours"
-              value={durationHours}
-              onChange={handleDurationChange}
-              sx={{ mr: 2 }}
+            <OutlinedInput
               fullWidth
-            >
-              {hoursOptions.map((hour) => (
-                <MenuItem key={hour} value={hour}>
-                  {hour}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              select
-              label="Minutes"
-              name="minutes"
-              value={durationMinutes}
-              onChange={handleDurationChange}
-              fullWidth
-            >
-              {minutesOptions.map((minute) => (
-                <MenuItem key={minute} value={minute}>
-                  {minute}
-                </MenuItem>
-              ))}
-            </TextField>
+              type="number"
+              placeholder="Enter duration"
+              value={newSessionDuration}
+              onChange={handleNewSessionDuration}
+              endAdornment={
+                <InputAdornment position="end">minutes</InputAdornment>
+              }
+            />
           </Box>
 
           <TextField
@@ -241,22 +230,22 @@ function NewSession() {
             placeholder="Add a comment..."
             variant="outlined"
             margin="normal"
-            value={comment}
-            onChange={handleChangeComment}
+            value={newSessionComment}
+            onChange={handleNewSessionComment}
           />
           <Button
             variant="contained"
             fullWidth
             endIcon={<AddIcon />}
             sx={{
-              marginTop: 5,
+              marginTop: 3,
               marginBottom: 10,
               bgcolor: '#adfa1d',
               '&:hover': {
                 bgcolor: '#8bcc0f',
               },
             }}
-            onClick={handleSubmit}
+            onClick={handleSubmitAddSession}
           >
             Add Session
           </Button>

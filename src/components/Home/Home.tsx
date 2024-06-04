@@ -38,7 +38,7 @@ const Home: React.FC = () => {
   return (
     <>
       <Header />
-      <Container component="main" maxWidth="md" sx={{ mt: 10 }}>
+      <Container component="main" maxWidth="md" sx={{ mt: 10, pb: 10 }}>
         <Box
           sx={{
             display: 'block',

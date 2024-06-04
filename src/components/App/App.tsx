@@ -99,7 +99,6 @@ function App() {
           {logged && <Route path="/history" element={<History />} />}
           {logged && <Route path="/new-session" element={<NewSession />} />}
           <Route path="*" element={<div>Page 404 (belle page à créer)</div>} />
-          <Route path="/contact" element={<Contact />} />
         </Routes>
       </ThemeProvider>
     </div>

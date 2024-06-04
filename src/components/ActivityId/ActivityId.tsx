@@ -67,12 +67,10 @@ const ActivityId: React.FC = () => {
                 alignItems="center"
                 justifyContent="space-between"
               >
-                <Typography variant="h5" color="primary">
-                  {activityToDisplay?.name}
-                </Typography>
+                <Typography variant="h5">{activityToDisplay?.name}</Typography>
               </Box>
               <Divider sx={{ my: 2 }} />
-              <Typography variant="body1">
+              <Typography variant="body1" color="textSecondary">
                 Description of the activity goes here.
               </Typography>
             </CardContent>
