@@ -7,7 +7,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  IconButton,
   useTheme,
   Grid,
 } from '@mui/material';
@@ -103,36 +102,33 @@ export default function CategoryList() {
               const IconComponent = activityIcons[category.name] || Spa;
               return (
                 <Grid item xs={12} sm={6} key={category.id}>
-                  <Card
-                    sx={{
-                      boxShadow: 3,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      height: '100%',
-                    }}
+                  <Link
+                    to={`/category-list/${category.id}`}
+                    style={{ textDecoration: 'none' }}
                   >
-                    <CardHeader
-                      title={
-                        <Link
-                          to={`/category-list/${category.id}`}
-                          style={{ textDecoration: 'none', color: 'inherit' }}
-                        >
-                          {category.name}
-                        </Link>
-                      }
-                      action={
-                        <IconButton>
-                          <IconComponent color="primary" />
-                        </IconButton>
-                      }
+                    <Card
                       sx={{
-                        borderBottom: `1px solid ${theme.palette.divider}`,
+                        boxShadow: 3,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        height: '100%',
                       }}
-                    />
-                    <CardContent sx={{ flexGrow: 1 }}>
-                      {/* Additional content can go here */}
-                    </CardContent>
-                  </Card>
+                    >
+                      <CardHeader
+                        title={category.name}
+                        action={
+                          <IconComponent
+                            color="primary"
+                            sx={{ fontSize: 28 }}
+                          />
+                        }
+                        sx={{
+                          borderBottom: `1px solid ${theme.palette.divider}`,
+                        }}
+                      />
+                      <CardContent sx={{ flexGrow: 1 }}></CardContent>
+                    </Card>
+                  </Link>
                 </Grid>
               );
             })}
