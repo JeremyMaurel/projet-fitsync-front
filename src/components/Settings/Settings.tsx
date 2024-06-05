@@ -15,7 +15,6 @@ import {
   TextField,
   Typography,
   Modal,
-  Avatar,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
@@ -33,6 +32,7 @@ import {
   actionWeightUpdate,
 } from '../../store/thunks/actionWeightUpdate';
 import DesktopFooter from '../Base/Footer/DesktopFooter';
+import { AccountCircle } from '@mui/icons-material';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -185,11 +185,7 @@ export default function Settings() {
               display: 'block',
             }}
           >
-            <Avatar
-              alt="User Photo"
-              src={avatarUrl}
-              sx={{ width: 70, height: 70, mb: 2 }}
-            />
+            <AccountCircle sx={{ fontSize: 60 }} />
             <Typography variant="h3" component="h1" gutterBottom>
               {pseudo}'s Settings
             </Typography>

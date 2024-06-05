@@ -17,8 +17,14 @@ import {
   OutlinedInput,
   useMediaQuery,
   useTheme,
+  IconButton,
+  Chip,
 } from '@mui/material';
-import { Add as AddIcon, Search as SearchIcon } from '@mui/icons-material';
+import {
+  Add as AddIcon,
+  Delete,
+  Search as SearchIcon,
+} from '@mui/icons-material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers';
@@ -32,6 +38,7 @@ import DesktopHeader from '../Base/Header/DesktopHeader';
 import thunkAddNewSession from '../../store/thunks/thunkAddNewSession';
 import actionThunkFetchSessions from '../../store/thunks/thunkFetchSessions';
 import DesktopFooter from '../Base/Footer/DesktopFooter';
+import thunkDeleteSession from '../../store/thunks/thunkDeleteSession';
 
 function NewSession() {
   const dispatch = useAppDispatch();
@@ -110,6 +117,11 @@ function NewSession() {
     setSearchActivities('');
   };
 
+  // Fonction de gestion de la suppression
+  const handleDeleteSession = (sessionId: number) => {
+    dispatch(thunkDeleteSession(sessionId));
+  };
+
   return (
     <>
       {isDesktop ? <DesktopHeader /> : <Header />}
@@ -123,26 +135,42 @@ function NewSession() {
           <Typography variant="h3" component="h1" gutterBottom>
             New Session
           </Typography>
-
           <Card sx={{ mb: 4, boxShadow: 3, borderRadius: 2 }}>
             <CardContent>
-              <Typography variant="h5" gutterBottom>
+              <Typography variant="h5" color="action.disabled" gutterBottom>
                 My Last Sessions
               </Typography>
               <List>
-                {sessionsList.map((session, index) => (
+                {sessionsList.slice(-3).map((session, index) => (
                   <Box key={session.id}>
-                    <ListItem>
-                      <Box width="100%">
-                        <Typography variant="body1" color="primary">
-                          {session.activity_name}
-                        </Typography>
+                    <ListItem
+                      sx={{
+                        pt: index === 0 ? 0 : 2,
+                        alignItems: 'flex-start',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <Box sx={{ width: '100%' }}>
                         <Typography variant="body2" color="textSecondary">
                           {dayjs(session.date).format('MM-DD-YYYY HH:mm')}
                         </Typography>
+                        <Typography variant="body1" sx={{ marginBottom: 1 }}>
+                          {session.activity_name}
+                        </Typography>
+                        <Typography variant="body1" color="primary">
+                          MET {session.activity_met}
+                        </Typography>
                       </Box>
+                      <Chip
+                        label="DELETE"
+                        size="small"
+                        aria-label="delete"
+                        onClick={() => handleDeleteSession(session.id)}
+                        sx={{ fontSize: '0.60rem', height: '24px' }}
+                      />
                     </ListItem>
-                    {index < sessionsList.length - 1 && <Divider />}
+                    {index < sessionsList.slice(-3).length - 1 && <Divider />}
                   </Box>
                 ))}
               </List>
