@@ -11,6 +11,7 @@ export const actionUserUpdate = createAsyncThunk(
       height?: number;
       gender?: string;
       birthdate?: string;
+      objective?: number;
     },
     thunkAPI
   ) => {
