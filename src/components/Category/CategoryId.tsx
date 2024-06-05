@@ -67,40 +67,42 @@ export default function CategoryId() {
             width="100%"
           >
             <Grid container spacing={2}>
-              {activitiesToDisplay.map((activity) => (
-                <Grid item xs={12} sm={6} key={activity.id}>
-                  <Card
-                    sx={{
-                      boxShadow: 3,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      height: '100%',
-                    }}
-                  >
-                    <CardContent sx={{ flexGrow: 1 }}>
-                      <Link
-                        to={`/activity/${activity.id}`}
-                        style={{ textDecoration: 'none', color: 'inherit' }}
-                      >
-                        <Typography
-                          variant="h6"
-                          component="h2"
-                          sx={{
-                            mb: 2,
-                            pb: 1,
-                            borderBottom: `1px solid ${theme.palette.divider}`,
-                          }}
+              {activitiesToDisplay
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map((activity) => (
+                  <Grid item xs={12} sm={6} key={activity.id}>
+                    <Card
+                      sx={{
+                        boxShadow: 3,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        height: '100%',
+                      }}
+                    >
+                      <CardContent sx={{ flexGrow: 1 }}>
+                        <Link
+                          to={`/activity/${activity.id}`}
+                          style={{ textDecoration: 'none', color: 'inherit' }}
                         >
-                          {activity.name}
-                        </Typography>
-                        <Typography variant="body2" color="primary">
-                          MET: {activity.met}
-                        </Typography>
-                      </Link>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
+                          <Typography
+                            variant="h6"
+                            component="h2"
+                            sx={{
+                              mb: 2,
+                              pb: 1,
+                              borderBottom: `1px solid ${theme.palette.divider}`,
+                            }}
+                          >
+                            {activity.name}
+                          </Typography>
+                          <Typography variant="body2" color="primary">
+                            MET: {activity.met}
+                          </Typography>
+                        </Link>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                ))}
               <Grid item xs={12} sm={12}>
                 <Button fullWidth variant="contained" color="primary">
                   Request Activity +

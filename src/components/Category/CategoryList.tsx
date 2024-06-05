@@ -98,40 +98,42 @@ export default function CategoryList() {
           width="100%"
         >
           <Grid container spacing={2}>
-            {categoriesList.map((category) => {
-              const IconComponent = activityIcons[category.name];
-              return (
-                <Grid item xs={12} sm={6} key={category.id}>
-                  <Link
-                    to={`/category-list/${category.id}`}
-                    style={{ textDecoration: 'none' }}
-                  >
-                    <Card
-                      sx={{
-                        boxShadow: 3,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        height: '100%',
-                      }}
+            {[...categoriesList]
+              .sort((a, b) => a.name.localeCompare(b.name))
+              .map((category) => {
+                const IconComponent = activityIcons[category.name];
+                return (
+                  <Grid item xs={12} sm={6} key={category.id}>
+                    <Link
+                      to={`/category-list/${category.id}`}
+                      style={{ textDecoration: 'none' }}
                     >
-                      <CardHeader
-                        title={category.name}
-                        action={
-                          <IconComponent
-                            color="primary"
-                            sx={{ fontSize: 28 }}
-                          />
-                        }
+                      <Card
                         sx={{
-                          borderBottom: `1px solid ${theme.palette.divider}`,
+                          boxShadow: 3,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          height: '100%',
                         }}
-                      />
-                      <CardContent sx={{ flexGrow: 1 }} />
-                    </Card>
-                  </Link>
-                </Grid>
-              );
-            })}
+                      >
+                        <CardHeader
+                          title={category.name}
+                          action={
+                            <IconComponent
+                              color="primary"
+                              sx={{ fontSize: 28 }}
+                            />
+                          }
+                          sx={{
+                            borderBottom: `1px solid ${theme.palette.divider}`,
+                          }}
+                        />
+                        <CardContent sx={{ flexGrow: 1 }} />
+                      </Card>
+                    </Link>
+                  </Grid>
+                );
+              })}
           </Grid>
         </Box>
       </Container>
