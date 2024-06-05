@@ -191,7 +191,12 @@ export default function Settings() {
             </Typography>
           </Box>
           <Box component="form" sx={{ mt: 1 }} onSubmit={handleSubmit}>
-            <Typography component="h2" variant="h6" sx={{ mt: 2, mb: 1 }}>
+            <Typography
+              component="h2"
+              variant="h6"
+              color="action.disabled"
+              sx={{ mt: 2, mb: 1 }}
+            >
               User Infos
             </Typography>
             <TextField
@@ -232,7 +237,12 @@ export default function Settings() {
               type="number"
               defaultValue={height}
             />
-            <Typography component="h2" variant="h6" sx={{ mt: 3, mb: 1 }}>
+            <Typography
+              component="h2"
+              variant="h6"
+              color="action.disabled"
+              sx={{ mt: 3, mb: 1 }}
+            >
               User Weight
             </Typography>
             {weight !== null && (
@@ -266,7 +276,12 @@ export default function Settings() {
               value={newWeightDate}
               onChange={(e) => setNewWeightDate(e.target.value)}
             />
-            <Typography component="h2" variant="h6" sx={{ mt: 3, mb: 1 }}>
+            <Typography
+              component="h2"
+              variant="h6"
+              color="action.disabled"
+              sx={{ mt: 3, mb: 1 }}
+            >
               User Account
             </Typography>
             <TextField

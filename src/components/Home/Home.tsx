@@ -16,6 +16,7 @@ import {
   useMediaQuery,
   useTheme,
   Link,
+  Chip,
 } from '@mui/material';
 import { AccountCircle, ArrowCircleRightOutlined } from '@mui/icons-material';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
@@ -28,6 +29,7 @@ import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 import DesktopHeader from '../Base/Header/DesktopHeader';
 import DesktopFooter from '../Base/Footer/DesktopFooter';
+import { fetchWeight } from '../../store/thunks/actionWeightUpdate';
 
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -39,9 +41,16 @@ const Home: React.FC = () => {
 
   // -- LIST SESSIONS SELECTOR --
   const sessionsList = useAppSelector((state) => state.sessions.sessionsList);
+  const weight = useAppSelector((state) => state.weight.value);
+  const weightDate = useAppSelector((state) => state.weight.date);
+  console.log(weight);
 
   useEffect(() => {
     dispatch(actionThunkFetchSessions());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchWeight());
   }, [dispatch]);
 
   const theme = useTheme();
@@ -70,30 +79,38 @@ const Home: React.FC = () => {
             Hello {pseudo}!
           </Typography>
         </Box>
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          mb={4}
-          width="100%"
-        >
-          <Card sx={{ width: '100%', mb: 2, boxShadow: 3, borderRadius: 2 }}>
-            <CardHeader title="Weekly Goal" />
-            <CardContent>
-              <Typography variant="h3" color="primary">
-                {getRandomPercentage()}%
-              </Typography>
-            </CardContent>
-          </Card>
+
+        <Box display="flex" mb={2} flexDirection="column" width="100%">
           <Card sx={{ width: '100%', boxShadow: 3, borderRadius: 2 }}>
-            <CardHeader title="Monthly Goal" />
-            <CardContent>
+            <CardContent sx={{ paddingTop: '8px' }}>
+              {' '}
+              <Typography
+                variant="h5"
+                color="action.disabled"
+                gutterBottom
+                sx={{ marginBottom: '4px' }}
+              >
+                Current Weight
+              </Typography>
+              <Chip
+                label={dayjs(weightDate).format('MM-DD-YYYY')}
+                size="small"
+                aria-label="weight date"
+                sx={{
+                  fontSize: '0.60rem',
+                  height: '24px',
+                  mr: 1,
+                  mb: 1,
+                  mt: 2,
+                }}
+              />
               <Typography variant="h3" color="primary">
-                {getRandomPercentage()}%
+                {weight} kg
               </Typography>
             </CardContent>
           </Card>
         </Box>
+
         <Card sx={{ mb: 4, boxShadow: 3, borderRadius: 2 }}>
           <CardContent>
             <Typography variant="h5" color="action.disabled" gutterBottom>
