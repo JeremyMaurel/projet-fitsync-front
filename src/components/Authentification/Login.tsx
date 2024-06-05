@@ -62,7 +62,7 @@ export default function Login() {
             alignItems: 'center',
           }}
         >
-          <Typography variant="h3" component="h1" gutterBottom>
+          <Typography variant="h4" component="h1" gutterBottom>
             Hello dear user !
           </Typography>
           <Typography component="p">Please login to access the app</Typography>
@@ -116,9 +116,6 @@ export default function Login() {
         </Box>
       </Container>
       <DisconnectedFooter />
-      <Typography variant="h5" gutterBottom>
-        My last sessions
-      </Typography>
     </>
   );
 }
