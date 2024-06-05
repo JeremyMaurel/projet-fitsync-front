@@ -10,12 +10,18 @@ export default function LandingPage() {
     <>
       <DisconnectedHeader />
       <Container component="main" maxWidth="md" sx={{ mt: 10 }}>
-        <Typography variant="h3" color="primary" gutterBottom>
-          Fitsync lorem ipsum dolor sit amet
+        <Typography
+          variant="h2"
+          color="primary"
+          lineHeight="1"
+          gutterBottom
+          sx={{ mb: 4 }}
+        >
+          Track your fitness & weight progress
         </Typography>
         <Typography variant="h5" paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor.
+          Monitor your workouts and weight changes to stay motivated and achieve
+          your wellness goals.
         </Typography>
         <Box textAlign="center" sx={{ mt: 4 }}>
           <Button
@@ -24,7 +30,7 @@ export default function LandingPage() {
             variant="contained"
             color="primary"
             size="large"
-            sx={{ mt: 20 }}
+            sx={{ mt: 10 }}
           >
             Create account
           </Button>

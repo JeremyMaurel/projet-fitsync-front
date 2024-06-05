@@ -3,7 +3,6 @@
 import React, { useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
-  Avatar,
   Container,
   Box,
   Typography,
@@ -16,24 +15,43 @@ import {
   Divider,
   useMediaQuery,
   useTheme,
+  Link,
+  Chip,
 } from '@mui/material';
+import { AccountCircle, ArrowCircleRightOutlined } from '@mui/icons-material';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
 import thunkFetchFavorites from '../../store/thunks/thunkFetchFavorites';
+import actionThunkFetchSessions from '../../store/thunks/thunkFetchSessions';
+import dayjs from 'dayjs';
 
 // Import of sub-components
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 import DesktopHeader from '../Base/Header/DesktopHeader';
 import DesktopFooter from '../Base/Footer/DesktopFooter';
+import { fetchWeight } from '../../store/thunks/actionWeightUpdate';
 
 const Home: React.FC = () => {
+  const dispatch = useAppDispatch();
   // Pickup from the state of pseudo to say hello
   const pseudo = useAppSelector((state) => state.user.credentials.pseudo);
-  const avatarUrl = 'public/1.jpg';
   const favoritesList = useAppSelector(
     (state) => state.favorites.favoritesList
   );
-  const dispatch = useAppDispatch();
+
+  // -- LIST SESSIONS SELECTOR --
+  const sessionsList = useAppSelector((state) => state.sessions.sessionsList);
+  const weight = useAppSelector((state) => state.weight.value);
+  const weightDate = useAppSelector((state) => state.weight.date);
+  console.log(weight);
+
+  useEffect(() => {
+    dispatch(actionThunkFetchSessions());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchWeight());
+  }, [dispatch]);
 
   const theme = useTheme();
 
@@ -56,79 +74,123 @@ const Home: React.FC = () => {
             justifyContent: 'center',
           }}
         >
-          <Avatar
-            alt="User Photo"
-            src={avatarUrl}
-            sx={{ width: 70, height: 70, mb: 2 }}
-          />
+          <AccountCircle sx={{ fontSize: 60 }} />
           <Typography variant="h3" component="h1" gutterBottom>
             Hello {pseudo}!
           </Typography>
         </Box>
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          mb={4}
-          width="100%"
-        >
-          <Card sx={{ width: '100%', mb: 2, boxShadow: 3, borderRadius: 2 }}>
-            <CardHeader title="Weekly Goal" />
-            <CardContent>
-              <Typography variant="h3" color="primary">
-                {getRandomPercentage()}%
-              </Typography>
-            </CardContent>
-          </Card>
+
+        <Box display="flex" mb={2} flexDirection="column" width="100%">
           <Card sx={{ width: '100%', boxShadow: 3, borderRadius: 2 }}>
-            <CardHeader title="Monthly Goal" />
-            <CardContent>
+            <CardContent sx={{ paddingTop: '8px' }}>
+              {' '}
+              <Typography
+                variant="h5"
+                color="action.disabled"
+                gutterBottom
+                sx={{ marginBottom: '4px' }}
+              >
+                Current Weight
+              </Typography>
+              <Chip
+                label={dayjs(weightDate).format('MM-DD-YYYY')}
+                size="small"
+                aria-label="weight date"
+                sx={{
+                  fontSize: '0.60rem',
+                  height: '24px',
+                  mr: 1,
+                  mb: 1,
+                  mt: 2,
+                }}
+              />
               <Typography variant="h3" color="primary">
-                {getRandomPercentage()}%
+                {weight} kg
               </Typography>
             </CardContent>
           </Card>
         </Box>
-        <MuiLink
-          component={RouterLink}
-          to="/favorites"
-          underline="none"
-          sx={{ width: '100%' }}
-        >
-          <Card sx={{ mb: 4, width: '100%', boxShadow: 3, borderRadius: 2 }}>
-            <CardHeader title="My Favorite Activities" />
-            <CardContent>
-              <List>
-                {favoritesList.map((favorite, index) => (
-                  <React.Fragment key={favorite.activity_id}>
-                    <ListItem>{favorite.activity_name}</ListItem>
-                    {index !== favoritesList.length - 1 && <Divider />}
-                  </React.Fragment>
-                ))}
-              </List>
-            </CardContent>
-          </Card>
-        </MuiLink>
-        <Card sx={{ width: '100%', boxShadow: 3, borderRadius: 2 }}>
-          <CardHeader title="My Last Sessions" />
+
+        <Card sx={{ mb: 4, boxShadow: 3, borderRadius: 2 }}>
           <CardContent>
-            <List>
-              <ListItem sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                {/* Placeholder pour les sessions */}
-                Placeholder session 1
-              </ListItem>
-              <ListItem sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                {/* Placeholder pour les sessions */}
-                Placeholder session 2
-              </ListItem>
-              <ListItem sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                {/* Placeholder pour les sessions */}
-                Placeholder session 3
-              </ListItem>
-              <ListItem sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                {/* Placeholder pour les sessions */}
-                Placeholder session 4
-              </ListItem>
+            <Typography variant="h5" color="action.disabled" gutterBottom>
+              My Favorite Activities
+            </Typography>
+            <List sx={{ padding: 0 }}>
+              {favoritesList.slice(-3).map((favorite, index) => (
+                <Link
+                  key={favorite.activity_id}
+                  component={RouterLink}
+                  to={`/activity/${favorite.activity_id}`}
+                  color="inherit"
+                  underline="none"
+                >
+                  <Box
+                    sx={{
+                      backgroundColor: 'action.hover',
+                      color: '#fff',
+                      borderRadius: '8px',
+                      padding: '8px',
+                      marginBottom:
+                        index < favoritesList.slice(-3).length - 1 ? '8px' : 0,
+                    }}
+                  >
+                    <ListItem
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <Typography variant="body1">
+                        {favorite.activity_name}
+                      </Typography>
+                      <ArrowCircleRightOutlined
+                        color="primary"
+                        sx={{ fontSize: '1.8rem' }}
+                      />
+                    </ListItem>
+                  </Box>
+                </Link>
+              ))}
+            </List>
+          </CardContent>
+        </Card>
+        <Card sx={{ mb: 4, boxShadow: 3, borderRadius: 2 }}>
+          <CardContent>
+            <Typography variant="h5" color="action.disabled" gutterBottom>
+              My Last Sessions
+            </Typography>
+            <List sx={{ padding: 0 }}>
+              {sessionsList.slice(-3).map((session, index) => (
+                <Box key={session.id}>
+                  <ListItem
+                    sx={{
+                      pt: index === 0 ? 0 : 2,
+                      alignItems: 'flex-start',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <Box sx={{ width: '100%' }}>
+                      <Typography variant="body2" color="textSecondary">
+                        {dayjs(session.date).format('MM-DD-YYYY HH:mm')}
+                      </Typography>
+                      <Typography variant="body1" sx={{ marginBottom: 1 }}>
+                        {session.activity_name}
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        color="primary"
+                        sx={{ marginBottom: 1 }}
+                      >
+                        MET {session.activity_met}
+                      </Typography>
+                    </Box>
+                  </ListItem>
+                  {index < sessionsList.slice(-3).length - 1 && <Divider />}
+                </Box>
+              ))}
             </List>
           </CardContent>
         </Card>

@@ -16,7 +16,6 @@ import {
   TextField,
   Typography,
   Modal,
-  Avatar,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
@@ -34,6 +33,7 @@ import {
   actionWeightUpdate,
 } from '../../store/thunks/actionWeightUpdate';
 import DesktopFooter from '../Base/Footer/DesktopFooter';
+import { AccountCircle } from '@mui/icons-material';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -186,17 +186,18 @@ export default function Settings() {
               display: 'block',
             }}
           >
-            <Avatar
-              alt="User Photo"
-              src={avatarUrl}
-              sx={{ width: 70, height: 70, mb: 2 }}
-            />
+            <AccountCircle sx={{ fontSize: 60 }} />
             <Typography variant="h3" component="h1" gutterBottom>
               {pseudo}'s Settings
             </Typography>
           </Box>
           <Box component="form" sx={{ mt: 1 }} onSubmit={handleSubmit}>
-            <Typography component="h2" variant="h6" sx={{ mt: 2, mb: 1 }}>
+            <Typography
+              component="h2"
+              variant="h6"
+              color="action.disabled"
+              sx={{ mt: 2, mb: 1 }}
+            >
               User Infos
             </Typography>
             <TextField
@@ -237,7 +238,12 @@ export default function Settings() {
               type="number"
               defaultValue={height}
             />
-            <Typography component="h2" variant="h6" sx={{ mt: 3, mb: 1 }}>
+            <Typography
+              component="h2"
+              variant="h6"
+              color="action.disabled"
+              sx={{ mt: 3, mb: 1 }}
+            >
               User Weight
             </Typography>
             {weight !== null && (
@@ -271,7 +277,12 @@ export default function Settings() {
               value={newWeightDate}
               onChange={(e) => setNewWeightDate(e.target.value)}
             />
-            <Typography component="h2" variant="h6" sx={{ mt: 3, mb: 1 }}>
+            <Typography
+              component="h2"
+              variant="h6"
+              color="action.disabled"
+              sx={{ mt: 3, mb: 1 }}
+            >
               User Account
             </Typography>
             <TextField

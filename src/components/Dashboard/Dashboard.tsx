@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react/function-component-definition */
+import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import {
@@ -13,6 +15,7 @@ import {
   IconButton,
   useMediaQuery,
   useTheme,
+  Link,
   Modal,
   TextField,
   Button,
@@ -135,7 +138,6 @@ const Dashboard: React.FC = () => {
             Dashboard
           </Typography>
 
-          {/* Card pour le suivi des objectifs */}
           <Card sx={{ mb: 2, boxShadow: 3, borderRadius: 2 }}>
             <CardContent>
               <Box
@@ -164,7 +166,6 @@ const Dashboard: React.FC = () => {
             </CardContent>
           </Card>
 
-          {/* Card pour le suivi du poids */}
           <Card sx={{ mb: 2, boxShadow: 3, borderRadius: 2 }}>
             <CardContent>
               <Box
@@ -190,20 +191,26 @@ const Dashboard: React.FC = () => {
               </Box>
             </CardContent>
           </Card>
-
-          {/* Card pour les favoris */}
           <Card sx={{ mb: 2, boxShadow: 3, borderRadius: 2 }}>
             <CardContent>
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
+              <Link
+                component={RouterLink}
+                to="/favorites"
+                color="inherit"
+                underline="none"
               >
-                <Typography variant="h5" color="primary">
-                  Favorites
-                </Typography>
-                <FavoriteIcon color="primary" />
-              </Box>
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Typography variant="h5" color="primary">
+                    Favorites
+                  </Typography>
+                  <FavoriteIcon color="primary" />
+                </Box>
+              </Link>
+
               <Divider sx={{ my: 2 }} />
               <Typography variant="body1">
                 Access your favorite activities and routines quickly.
@@ -211,19 +218,25 @@ const Dashboard: React.FC = () => {
             </CardContent>
           </Card>
 
-          {/* Card pour l'historique */}
           <Card sx={{ mb: 2, boxShadow: 3, borderRadius: 2 }}>
             <CardContent>
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
+              <Link
+                component={RouterLink}
+                to="/history"
+                color="inherit"
+                underline="none"
               >
-                <Typography variant="h5" color="primary">
-                  History
-                </Typography>
-                <HistoryIcon color="primary" />
-              </Box>
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Typography variant="h5" color="primary">
+                    History
+                  </Typography>
+                  <HistoryIcon color="primary" />
+                </Box>
+              </Link>
               <Divider sx={{ my: 2 }} />
               <Typography variant="body1">
                 Review your past activities and progress.
