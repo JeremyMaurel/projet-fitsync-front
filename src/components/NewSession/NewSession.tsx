@@ -1,4 +1,5 @@
-import * as React from 'react';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+// Import of librairies or technical components
 import { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import {

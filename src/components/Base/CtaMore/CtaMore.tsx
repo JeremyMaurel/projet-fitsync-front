@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Typography, IconButton } from '@mui/material';
 import { Add as PlusIcon } from '@mui/icons-material';
 

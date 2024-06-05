@@ -1,10 +1,9 @@
+// Import of librairies or technical components
 import { Link } from 'react-router-dom';
 import { Container, Box, Typography, Button } from '@mui/material';
+
 import DisconnectedHeader from '../Base/Header/DisconnectedHeader';
 import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
-
-// Feuille de style
-import './LandingPage.scss';
 
 export default function LandingPage() {
   return (

@@ -1,14 +1,15 @@
-import { TextField, Button, Container, Typography, Box } from '@mui/material';
-import LoginIcon from '@mui/icons-material/Login';
 import React, { FormEvent, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
+import LoginIcon from '@mui/icons-material/Login';
+import { TextField, Button, Container, Typography, Box } from '@mui/material';
+
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import { actionChangeCredential } from '../../store/reducers/userReducer';
 import actionLogin from '../../store/thunks/actionLogin';
+
 import DisconnectedHeader from '../Base/Header/DisconnectedHeader';
 import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
-
-import './Authentification.scss';
 
 export default function Login() {
   const pseudo = useAppSelector((state) => state.user.credentials.pseudo ?? '');
@@ -48,6 +49,7 @@ export default function Login() {
       }
     }
   }, [logged, navigate, role]);
+
   return (
     <>
       <DisconnectedHeader />
@@ -114,10 +116,9 @@ export default function Login() {
         </Box>
       </Container>
       <DisconnectedFooter />
+      <Typography variant="h5" gutterBottom>
+        My last sessions
+      </Typography>
     </>
   );
 }
-
-<Typography variant="h5" gutterBottom>
-  My last sessions
-</Typography>;

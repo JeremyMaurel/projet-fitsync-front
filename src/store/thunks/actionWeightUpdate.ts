@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 /* eslint-disable no-useless-catch */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import instanceAxios from '../../axios/axiosInstance';
@@ -23,6 +24,12 @@ const fetchWeight = createAsyncThunk('weight/FETCH_WEIGHT', async () => {
   try {
     const response = await instanceAxios.get('/weight');
     const data = response.data.data;
+
+    // Ne retourner rien s'il n'y a qu'une seule entrée
+    if (data.length === 1) {
+      return null;
+    }
+
     return data[data.length - 1];
   } catch (error) {
     throw error;

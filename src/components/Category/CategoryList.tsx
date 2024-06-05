@@ -41,9 +41,6 @@ import { useAppSelector } from '../../hooks/redux-hooks';
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 import DesktopHeader from '../Base/Header/DesktopHeader';
-
-// Stylesheet
-import './CategoryList.scss';
 import DesktopFooter from '../Base/Footer/DesktopFooter';
 
 // Mapping of activity names to icons
@@ -129,7 +126,7 @@ export default function CategoryList() {
                           borderBottom: `1px solid ${theme.palette.divider}`,
                         }}
                       />
-                      <CardContent sx={{ flexGrow: 1 }}></CardContent>
+                      <CardContent sx={{ flexGrow: 1 }} />
                     </Card>
                   </Link>
                 </Grid>

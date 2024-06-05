@@ -45,10 +45,10 @@ export default function BurgerMenu() {
             width: '80%',
             height: '80%',
             maxWidth: '80vw',
-            margin: '2.5rem', // Ajoute une marge de 1rem autour du Drawer
-            marginTop: '10vh', // Centre verticalement
-            marginBottom: '10vh', // Centre verticalement
-            borderRadius: '10px', // Coins arrondis
+            margin: '2.5rem',
+            marginTop: '10vh',
+            marginBottom: '10vh',
+            borderRadius: '10px',
           },
         }}
       >

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react/function-component-definition */
 import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';

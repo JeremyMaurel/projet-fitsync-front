@@ -1,5 +1,5 @@
-// Import of librairies or technical components
 /* eslint-disable react/function-component-definition */
+// Import of librairies or technical components
 import React, { useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {

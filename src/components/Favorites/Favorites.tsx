@@ -19,9 +19,6 @@ import thunkDeleteFavorite from '../../store/thunks/thunkDeleteFavorite';
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 import DesktopHeader from '../Base/Header/DesktopHeader';
-
-// Gestion du style
-import './Favorites.scss';
 import DesktopFooter from '../Base/Footer/DesktopFooter';
 
 export default function Favorites() {
