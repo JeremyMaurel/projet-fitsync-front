@@ -1,6 +1,10 @@
 // weightReducer.ts
 import { createReducer, PayloadAction } from '@reduxjs/toolkit';
-import { actionWeightUpdate, fetchWeight } from '../thunks/actionWeightUpdate';
+import {
+  actionWeightUpdate,
+  fetchWeight,
+  fetchGraphicWeight,
+} from '../thunks/actionWeightUpdate';
 
 interface WeightState {
   value: number | null;
@@ -27,7 +31,11 @@ const weightReducer = createReducer(initialState, (builder) => {
         state.value = action.payload.weight;
         state.date = action.payload.date;
       }
-    );
+    )
+    .addCase(fetchGraphicWeight.fulfilled, (state, action) => {
+      state.value = action.payload.map((entry) => entry.weight);
+      state.date = action.payload.map((entry) => entry.date);
+    });
 });
 
 export default weightReducer;

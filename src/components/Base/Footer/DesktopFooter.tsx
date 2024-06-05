@@ -1,4 +1,4 @@
-import { IconButton, Box, Typography, Button } from '@mui/material';
+import { IconButton, Box, Typography, Button, useTheme } from '@mui/material';
 import { Facebook, Twitter, Instagram } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
@@ -17,6 +17,7 @@ const FixedFooter = styled(Box)(({ theme }) => ({
 }));
 
 export default function DesktopFooter() {
+  const theme = useTheme();
   return (
     <FixedFooter>
       <Button
@@ -24,6 +25,10 @@ export default function DesktopFooter() {
         color="primary"
         component={Link}
         to="/contact-support"
+        sx={{
+          color: theme.palette.text.disabled,
+          backgroundColor: theme.palette.action.hover,
+        }}
       >
         Contact Support
       </Button>
