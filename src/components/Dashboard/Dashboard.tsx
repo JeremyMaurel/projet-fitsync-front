@@ -49,7 +49,7 @@ const Dashboard: React.FC = () => {
             marginTop: 10,
           }}
         >
-          <Typography variant="h3" gutterBottom>
+          <Typography variant="h3" component="h1" gutterBottom>
             Dashboard
           </Typography>
 

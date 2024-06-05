@@ -31,7 +31,7 @@ export default function SessionId() {
     <>
       <Header />
       <Container component="main" maxWidth="md" sx={{ mt: 10 }}>
-        <Typography variant="h3" gutterBottom>
+        <Typography variant="h3" component="h1" gutterBottom>
           Session
         </Typography>
         <Card sx={{ mb: 4, p: 2 }}>

@@ -99,7 +99,7 @@ export default function CategoryList() {
         >
           <Grid container spacing={2}>
             {categoriesList.map((category) => {
-              const IconComponent = activityIcons[category.name] || Spa;
+              const IconComponent = activityIcons[category.name];
               return (
                 <Grid item xs={12} sm={6} key={category.id}>
                   <Link

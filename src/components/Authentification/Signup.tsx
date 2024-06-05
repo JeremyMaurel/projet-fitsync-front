@@ -93,7 +93,7 @@ export default function Signup() {
             alignItems: 'center',
           }}
         >
-          <Typography component="h1" variant="h5">
+          <Typography variant="h3" component="h1" gutterBottom>
             Hello dear user!
           </Typography>
           <Typography

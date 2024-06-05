@@ -24,6 +24,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 
+import IActivity from '../../@types/activity';
+
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 import DesktopHeader from '../Base/Header/DesktopHeader';
@@ -57,7 +59,7 @@ function NewSession() {
   // -- LOCAL UTILS STATES --
   const [activityName, setActivityName] = useState('');
   const [searchActivities, setSearchActivities] = useState('');
-  const [filteredActivities, setFilteredActivities] = useState([]);
+  const [filteredActivities, setFilteredActivities] = useState<IActivity[]>([]);
   const currentDateTime = dayjs();
 
   const handleSearch = (event) => {
