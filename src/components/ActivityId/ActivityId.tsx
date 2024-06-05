@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react/function-component-definition */
 import React from 'react';
 
@@ -11,6 +12,8 @@ import {
   CardContent,
   Divider,
   Button,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
 import { Add as AddIcon, Favorite as FavoriteIcon } from '@mui/icons-material';
 
@@ -18,6 +21,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
+import DesktopHeader from '../Base/Header/DesktopHeader';
+import DesktopFooter from '../Base/Footer/DesktopFooter';
 
 import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
 
@@ -49,6 +54,8 @@ const ActivityId: React.FC = () => {
     (category) => category.id === activityToDisplay?.category_id
   );
 
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const handleAddToFavorites = async () => {
     const favoriteActivityId = Number(activityId);
     await dispatch(thunkAddFavorite(favoriteActivityId));
@@ -58,7 +65,7 @@ const ActivityId: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Header />
+      {isDesktop ? <DesktopHeader /> : <Header />}
       <main>
         <Container
           maxWidth="md"
@@ -68,7 +75,6 @@ const ActivityId: React.FC = () => {
         >
           <Typography variant="h3" component="h1" gutterBottom>
             {categoryToDisplay?.name}
-
           </Typography>
           <Card sx={{ mb: 2, boxShadow: 3, borderRadius: 2 }}>
             <CardContent>
@@ -108,7 +114,7 @@ const ActivityId: React.FC = () => {
           </Button>
         </Container>
       </main>
-      <Footer />
+      {isDesktop ? <DesktopFooter /> : <Footer />}
     </ThemeProvider>
   );
 };
