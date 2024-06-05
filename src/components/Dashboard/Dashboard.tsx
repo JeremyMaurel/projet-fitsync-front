@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react/function-component-definition */
-import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -127,11 +126,12 @@ const Dashboard: React.FC = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       {isDesktop ? <DesktopHeader /> : <Header />}
-      <main>
+      <Box display="flex" flexDirection="column">
         <Container
           maxWidth="md"
           sx={{
             marginTop: 10,
+            marginBottom: 10,
           }}
         >
           <Typography variant="h3" component="h1" gutterBottom>
@@ -244,8 +244,9 @@ const Dashboard: React.FC = () => {
             </CardContent>
           </Card>
         </Container>
-      </main>
+      </Box>
       {isDesktop ? <DesktopFooter /> : <Footer />}
+
       <Modal
         open={isModalOpen}
         onClose={handleCloseModal}
