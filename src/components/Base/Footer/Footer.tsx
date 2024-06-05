@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { Home, Dashboard, Add } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
@@ -12,15 +12,13 @@ const FixedBottomNavigation = styled(BottomNavigation)(({ theme }) => ({
 }));
 
 export default function Footer() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   return (
     <FixedBottomNavigation
-      value={value}
-      onChange={(event, newValue) => {
-        setValue(newValue);
-      }}
       showLabels
+      value={value}
+      onChange={(_, newValue) => setValue(newValue)}
     >
       <BottomNavigationAction
         label="Home"
@@ -35,7 +33,7 @@ export default function Footer() {
         to="/dashboard"
       />
       <BottomNavigationAction
-        label="Session"
+        label="Add"
         icon={<Add />}
         component={Link}
         to="/new-session"

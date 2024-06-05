@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable jsx-a11y/label-has-associated-control */
