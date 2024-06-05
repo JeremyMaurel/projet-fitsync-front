@@ -2,7 +2,7 @@
 /* eslint-disable react/function-component-definition */
 import { Link as RouterLink } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import {
   CssBaseline,
   Container,
@@ -18,12 +18,12 @@ import {
   Modal,
   TextField,
   Button,
+  Chip,
 } from '@mui/material';
 import {
   Add as AddIcon,
   Favorite as FavoriteIcon,
   History as HistoryIcon,
-  FitnessCenter as FitnessCenterIcon,
 } from '@mui/icons-material';
 import { Line } from 'react-chartjs-2';
 import {
@@ -45,6 +45,7 @@ import {
   fetchGraphicWeight,
   actionWeightUpdate,
 } from '../../store/thunks/actionWeightUpdate';
+import { actionUserUpdate } from '../../store/thunks/actionUserUpdate';
 
 ChartJS.register(
   CategoryScale,
@@ -56,16 +57,6 @@ ChartJS.register(
   Legend
 );
 
-// Définition du thème personnalisé
-const theme = createTheme({
-  palette: {
-    mode: 'dark',
-    primary: {
-      main: '#adfa1d',
-    },
-  },
-});
-
 const Dashboard: React.FC = () => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
@@ -73,9 +64,12 @@ const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
   const weight = useAppSelector((state) => state.weight.value);
   const weightDate = useAppSelector((state) => state.weight.date);
+  const targetWeight = useAppSelector((state) => state.user.objective);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newWeight, setNewWeight] = useState('');
+  const [isTargetModalOpen, setIsTargetModalOpen] = useState(false);
+  const [newTargetWeight, setNewTargetWeight] = useState('');
 
   const data = {
     labels: weightDate,
@@ -118,6 +112,24 @@ const Dashboard: React.FC = () => {
     setIsModalOpen(false);
   };
 
+  const handleOpenTargetModal = () => {
+    setIsTargetModalOpen(true);
+  };
+
+  const handleCloseTargetModal = () => {
+    setIsTargetModalOpen(false);
+  };
+
+  const handleTargetWeightChange = (event) => {
+    setNewTargetWeight(event.target.value);
+  };
+
+  const handleSaveTargetWeight = () => {
+    dispatch(actionUserUpdate({ objective: parseFloat(newTargetWeight) }));
+    setNewTargetWeight('');
+    setIsTargetModalOpen(false);
+  };
+
   useEffect(() => {
     dispatch(fetchGraphicWeight());
   }, [dispatch]);
@@ -140,28 +152,37 @@ const Dashboard: React.FC = () => {
 
           <Card sx={{ mb: 2, boxShadow: 3, borderRadius: 2 }}>
             <CardContent>
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                <Typography variant="h5" color="primary">
-                  Goals Tracking
-                </Typography>
-                <IconButton color="primary">
-                  <AddIcon />
-                </IconButton>
-              </Box>
-              <Divider sx={{ my: 2 }} />
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                <Typography variant="body1">
+              <Box display="flex" flexDirection="column">
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Typography variant="h5" color="primary">
+                    Goals Tracking
+                  </Typography>
+                  <IconButton color="primary" onClick={handleOpenTargetModal}>
+                    <AddIcon />
+                  </IconButton>
+                </Box>
+                <Divider sx={{ my: 2 }} />
+                <Typography variant="body1" color="text.secondary">
                   Track your goals and monitor your progress.
                 </Typography>
-                <FitnessCenterIcon color="primary" />
+                <Chip
+                  label={
+                    targetWeight
+                      ? `Target Weight: ${targetWeight} kg`
+                      : 'Set your target weight'
+                  }
+                  size="small"
+                  sx={{
+                    color: '#adfa1d',
+                    fontSize: '1.00rem',
+                    height: '36px',
+                    mt: 2,
+                  }}
+                />
               </Box>
             </CardContent>
           </Card>
@@ -212,7 +233,7 @@ const Dashboard: React.FC = () => {
               </Link>
 
               <Divider sx={{ my: 2 }} />
-              <Typography variant="body1">
+              <Typography variant="body1" color="text.secondary">
                 Access your favorite activities and routines quickly.
               </Typography>
             </CardContent>
@@ -238,7 +259,7 @@ const Dashboard: React.FC = () => {
                 </Box>
               </Link>
               <Divider sx={{ my: 2 }} />
-              <Typography variant="body1">
+              <Typography variant="body1" color="text.secondary">
                 Review your past activities and progress.
               </Typography>
             </CardContent>
@@ -280,6 +301,52 @@ const Dashboard: React.FC = () => {
           />
           <Button
             onClick={handleSaveWeight}
+            variant="contained"
+            color="primary"
+          >
+            Save
+          </Button>
+        </Box>
+      </Modal>
+
+      <Modal
+        open={isTargetModalOpen}
+        onClose={handleCloseTargetModal}
+        aria-labelledby="target-modal-title"
+        aria-describedby="target-modal-description"
+      >
+        <Box
+          sx={{
+            position: 'absolute' as const,
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4,
+            minWidth: 300,
+          }}
+        >
+          <Typography
+            id="target-modal-title"
+            variant="h5"
+            component="h2"
+            gutterBottom
+          >
+            Set Target Weight
+          </Typography>
+          <TextField
+            id="new-target-weight"
+            label="Enter Target Weight (kg)"
+            variant="outlined"
+            value={newTargetWeight}
+            onChange={handleTargetWeightChange}
+            fullWidth
+            autoFocus
+            sx={{ mb: 2 }}
+          />
+          <Button
+            onClick={handleSaveTargetWeight}
             variant="contained"
             color="primary"
           >

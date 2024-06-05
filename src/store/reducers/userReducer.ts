@@ -144,6 +144,7 @@ const userReducer = createReducer(initialState, (builder) => {
           height: number;
           pseudo: string;
           mail: string;
+          objective?: number;
         }>
       ) => {
         state.birthdate = action.payload.birthdate;
@@ -151,6 +152,9 @@ const userReducer = createReducer(initialState, (builder) => {
         state.height = action.payload.height;
         state.credentials.pseudo = action.payload.pseudo;
         state.mail = action.payload.mail;
+        if (action.payload.objective !== undefined) {
+          state.objective = action.payload.objective;
+        }
       }
     )
     .addCase(actionChangePassword.fulfilled, (state) => {

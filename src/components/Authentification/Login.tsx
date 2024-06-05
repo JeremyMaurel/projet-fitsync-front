@@ -107,7 +107,7 @@ export default function Login() {
             >
               Login
             </Button>
-            <Link to="/signin">
+            <Link to="/signup">
               <Typography variant="body2">
                 You don&lsquo;t have an account yet? Register here
               </Typography>

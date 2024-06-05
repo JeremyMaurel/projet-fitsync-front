@@ -20,6 +20,7 @@ import {
   useTheme,
 } from '@mui/material';
 
+import { AccountCircle } from '@mui/icons-material';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
@@ -33,7 +34,6 @@ import {
   actionWeightUpdate,
 } from '../../store/thunks/actionWeightUpdate';
 import DesktopFooter from '../Base/Footer/DesktopFooter';
-import { AccountCircle } from '@mui/icons-material';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;

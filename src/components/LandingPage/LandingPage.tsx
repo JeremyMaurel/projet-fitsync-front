@@ -17,11 +17,11 @@ export default function LandingPage() {
           gutterBottom
           sx={{ mb: 4 }}
         >
-          Track your fitness & weight progress
+          Track your activity & weight progress
         </Typography>
         <Typography variant="h5" paragraph>
-          Monitor your workouts and weight changes to stay motivated and achieve
-          your wellness goals.
+          Monitor your daily activity by categories and your weight goals to
+          stay motivated to achieve your wellness goals.
         </Typography>
         <Box textAlign="center" sx={{ mt: 4 }}>
           <Button
