@@ -1,13 +1,18 @@
-import { Plus } from 'react-feather';
-import './CtaMore.scss';
+import { Box, Typography, IconButton } from '@mui/material';
+import { Add as PlusIcon } from '@mui/icons-material';
 
 export default function CtaMore() {
   return (
-    <div className="cta">
-      <div className="cta--container">
-        <h2 className="cta--title">More</h2>
-      </div>
-      <Plus size={30} className="cta--action-icon" />
-    </div>
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="space-between"
+      sx={{ p: 2, borderRadius: 2, boxShadow: 3, bgcolor: 'background.paper' }}
+    >
+      <Typography variant="h5">More</Typography>
+      <IconButton color="primary">
+        <PlusIcon fontSize="large" />
+      </IconButton>
+    </Box>
   );
 }

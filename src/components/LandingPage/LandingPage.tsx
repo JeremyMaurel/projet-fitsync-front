@@ -1,29 +1,41 @@
-// Import of React component or libraries
+// Import of librairies or technical components
 import { Link } from 'react-router-dom';
+import { Container, Box, Typography, Button } from '@mui/material';
 
-// Import of components
 import DisconnectedHeader from '../Base/Header/DisconnectedHeader';
 import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
-
-// Stylesheet
-import './LandingPage.scss';
 
 export default function LandingPage() {
   return (
     <>
       <DisconnectedHeader />
-      <main className="main">
-        <h1 className="main--title">Fitsync lorem ipsum dolor sit amet</h1>
-        <h3>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor.
-        </h3>
-        <Link to="/signin" className="lp-cta--link">
-          <button className="form--btn lp-cta" type="submit">
+      <Container component="main" maxWidth="md" sx={{ mt: 10 }}>
+        <Typography
+          variant="h2"
+          color="primary"
+          lineHeight="1"
+          gutterBottom
+          sx={{ mb: 4 }}
+        >
+          Track your fitness & weight progress
+        </Typography>
+        <Typography variant="h5" paragraph>
+          Monitor your workouts and weight changes to stay motivated and achieve
+          your wellness goals.
+        </Typography>
+        <Box textAlign="center" sx={{ mt: 4 }}>
+          <Button
+            component={Link}
+            to="/signup"
+            variant="contained"
+            color="primary"
+            size="large"
+            sx={{ mt: 10 }}
+          >
             Create account
-          </button>
-        </Link>
-      </main>
+          </Button>
+        </Box>
+      </Container>
       <DisconnectedFooter />
     </>
   );

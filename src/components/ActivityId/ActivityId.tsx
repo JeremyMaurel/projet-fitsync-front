@@ -1,74 +1,122 @@
-// Import of librairies or technical components
-import { Zap, ArrowRightCircle, PlusCircle } from 'react-feather';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable react/function-component-definition */
+import React from 'react';
 
-// Import of sub-components
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import {
+  CssBaseline,
+  Container,
+  Box,
+  Typography,
+  Card,
+  CardContent,
+  Divider,
+  Button,
+  useTheme,
+  useMediaQuery,
+} from '@mui/material';
+import { Add as AddIcon, Favorite as FavoriteIcon } from '@mui/icons-material';
+
+import { useParams, useNavigate } from 'react-router-dom';
+
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
+import DesktopHeader from '../Base/Header/DesktopHeader';
+import DesktopFooter from '../Base/Footer/DesktopFooter';
 
-// Stylesheet
-import './ActivityId.scss';
+import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
+
 import thunkAddFavorite from '../../store/thunks/thunkAddFavorite';
 
-export default function ActivityId() {
-  // -- STATE REDUX --
+const theme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#adfa1d',
+    },
+    secondary: {
+      main: '#f50057',
+    },
+  },
+});
+
+const ActivityId: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  // I pickup from the state all the activities
-  const activities = useAppSelector((state) => state.activities.activitiesList);
-
-  // I use the Activity id from the page URL
   const { activityId } = useParams();
   const idFromUrl = Number(activityId);
-
+  const activities = useAppSelector((state) => state.activities.activitiesList);
   const activityToDisplay = activities.find(
     (activity) => activity.id === idFromUrl
   );
+  const categories = useAppSelector((state) => state.categories.categoriesList);
+  const categoryToDisplay = categories.find(
+    (category) => category.id === activityToDisplay?.category_id
+  );
 
+  const theme = useTheme();
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   const handleAddToFavorites = async () => {
-    await dispatch(thunkAddFavorite(Number(activityId)));
+    const favoriteActivityId = Number(activityId);
+    await dispatch(thunkAddFavorite(favoriteActivityId));
     navigate('/favorites');
   };
 
   return (
-    <>
-      <Header />
-      <main className="main">
-        <h1 className="main--title">Activity</h1>
-        <div className="tile--activity-name">
-          <h2 className="tile--activity-name--title">
-            {activityToDisplay?.name}
-          </h2>
-        </div>
-        <div className="tile tile--met">
-          <h2 className="tile--met--title">
-            &nbsp;
-            <Zap /> &nbsp;: &nbsp;{activityToDisplay?.met} MET
-          </h2>
-          <p className="tile--met--title">per minute of exercise</p>
-        </div>
-        <div className="tile tile--description">
-          <h2 className="tile--description--title">Description</h2>
-        </div>
-        <Link to="/new-session" className="form--btn--link">
-          <button
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      {isDesktop ? <DesktopHeader /> : <Header />}
+      <main>
+        <Container
+          maxWidth="md"
+          sx={{
+            marginTop: 10,
+          }}
+        >
+          <Typography variant="h3" component="h1" gutterBottom>
+            {categoryToDisplay?.name}
+          </Typography>
+          <Card sx={{ mb: 2, boxShadow: 3, borderRadius: 2 }}>
+            <CardContent>
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Typography variant="h5">{activityToDisplay?.name}</Typography>
+              </Box>
+              <Divider sx={{ my: 2 }} />
+              <Typography variant="body1" color="textSecondary">
+                Description of the activity goes here.
+              </Typography>
+            </CardContent>
+          </Card>
+          <Button
+            variant="contained"
+            color="secondary"
             className="form--btn"
-            type="submit"
+            fullWidth
+            sx={{ mb: 2 }}
+            endIcon={<FavoriteIcon />}
+            onClick={handleAddToFavorites}
+          >
+            Add to my favorite activities
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            className="form--btn"
+            fullWidth
+            endIcon={<AddIcon />}
             value={`${activityToDisplay?.id}`}
           >
-            Select this activity &nbsp; <ArrowRightCircle />
-          </button>
-        </Link>
-        <button
-          className="form--btn"
-          type="button"
-          onClick={handleAddToFavorites}
-        >
-          Add to my favorite activities <PlusCircle />
-        </button>
+            Select this activity
+          </Button>
+        </Container>
       </main>
-      <Footer />
-    </>
+      {isDesktop ? <DesktopFooter /> : <Footer />}
+    </ThemeProvider>
   );
-}
+};
+
+export default ActivityId;

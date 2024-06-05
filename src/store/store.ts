@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 // Import of librairies or technical components
 import { configureStore } from '@reduxjs/toolkit';
 // import of reducers
@@ -5,13 +6,17 @@ import activitiesReducer from './reducers/activitiesReducer';
 import categoriesReducer from './reducers/categoriesReducer';
 import userReducer from './reducers/userReducer';
 import favoritesReducer from './reducers/favoritesReducer';
+import sessionsReducer from './reducers/sessionsReducer';
+import weightReducer from './reducers/weightReducer';
 
 const store = configureStore({
   reducer: {
     activities: activitiesReducer,
     categories: categoriesReducer,
     user: userReducer,
+    weight: weightReducer,
     favorites: favoritesReducer,
+    sessions: sessionsReducer,
   },
 });
 

@@ -5,4 +5,5 @@ export default interface IActivity {
   category_id: number;
   created_at: Date;
   updated_at: Date;
+  title: string;
 }
