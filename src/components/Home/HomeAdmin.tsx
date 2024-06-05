@@ -17,7 +17,7 @@ export default function HomeAdmin() {
           mt: 1,
         }}
       >
-        <Typography component="h1" variant="h4" sx={{ mb: 10 }}>
+        <Typography variant="h3" component="h1" gutterBottom>
           Hello Admin!
         </Typography>
         <Box

@@ -90,7 +90,7 @@ export default function CategoryList() {
         maxWidth="md"
         sx={{ mt: 10, pb: 5, color: theme.palette.text.primary }}
       >
-        <Typography variant="h3" color="action.selected" gutterBottom>
+        <Typography variant="h3" component="h1" gutterBottom>
           Categories
         </Typography>
         <Box

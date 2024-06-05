@@ -17,7 +17,7 @@ export default function ActivityRequest() {
           mt: 5,
         }}
       >
-        <Typography component="h1" variant="h4" sx={{ mb: 10 }}>
+        <Typography variant="h3" component="h1" gutterBottom>
           Activity requests
         </Typography>
         <Grid container spacing={4} sx={{ maxWidth: 800 }}>

@@ -58,7 +58,7 @@ export default function History() {
         maxWidth="md"
         sx={{ mt: 10, paddingBottom: 10, color: theme.palette.text.primary }}
       >
-        <Typography variant="h3" color="action.selected" gutterBottom>
+        <Typography variant="h3" component="h1" gutterBottom>
           History
         </Typography>
         <Box

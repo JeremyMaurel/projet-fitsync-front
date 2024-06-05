@@ -17,7 +17,7 @@ export default function AdminSettings() {
           mt: 1,
         }}
       >
-        <Typography component="h1" variant="h4" sx={{ mb: 10 }}>
+        <Typography variant="h3" component="h1" gutterBottom sx={{ mb: 10 }}>
           Admin settings
         </Typography>
         <Box

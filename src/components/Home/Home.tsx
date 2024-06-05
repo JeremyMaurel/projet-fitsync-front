@@ -61,7 +61,7 @@ const Home: React.FC = () => {
             src={avatarUrl}
             sx={{ width: 70, height: 70, mb: 2 }}
           />
-          <Typography variant="h3" gutterBottom>
+          <Typography variant="h3" component="h1" gutterBottom>
             Hello {pseudo}!
           </Typography>
         </Box>

@@ -18,7 +18,7 @@ export default function ErrorPage() {
       {logged && <Header />}
 
       <Container component="main" maxWidth="md" sx={{ mt: 10 }}>
-        <Typography variant="h3" color="primary" gutterBottom>
+        <Typography variant="h3" component="h1" color="primary" gutterBottom>
           Got lost?
         </Typography>
         <Typography variant="h5" paragraph>

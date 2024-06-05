@@ -7,7 +7,7 @@ export default function ResetPassword() {
     <>
       <DisconnectedHeader />
       <Container component="main" maxWidth="sm" sx={{ mt: 10 }}>
-        <Typography variant="h3" gutterBottom>
+        <Typography variant="h3" component="h1" gutterBottom>
           Reset Password
         </Typography>
         <Typography variant="body1" paragraph>

@@ -35,10 +35,10 @@ export default function Contact() {
         <DisconnectedHeader />
       )}
       <Container component="main" maxWidth="md" sx={{ mt: 10 }}>
-        <Typography variant="h3" color="primary" gutterBottom>
+        <Typography variant="h3" component="h1" gutterBottom>
           Admin support
         </Typography>
-        <Typography variant="h5" paragraph>
+        <Typography variant="h6" paragraph lineHeight="normal">
           Our dedicated support team is here to assist you with any questions or
           issues you may have. Please fill out the form below and we'll get back
           to you as soon as possible.

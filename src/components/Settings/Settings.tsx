@@ -192,7 +192,7 @@ export default function Settings() {
               src={avatarUrl}
               sx={{ width: 70, height: 70, mb: 2 }}
             />
-            <Typography component="h1" variant="h4">
+            <Typography variant="h3" component="h1" gutterBottom>
               {pseudo}'s Settings
             </Typography>
           </Box>

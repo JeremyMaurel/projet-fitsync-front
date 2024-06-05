@@ -16,13 +16,11 @@ import { useAppSelector } from '../../hooks/redux-hooks';
 // Import of sub-components
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
-import CtaAdd from '../Base/CtaAdd/CtaAdd';
 import DesktopHeader from '../Base/Header/DesktopHeader';
 import DesktopFooter from '../Base/Footer/DesktopFooter';
 
 // Stylesheet
 import './CategoryId.scss';
-import { Add } from '@mui/icons-material';
 
 export default function CategoryId() {
   // -- STATE REDUX --
@@ -58,7 +56,7 @@ export default function CategoryId() {
             paddingBottom: 10,
           }}
         >
-          <Typography variant="h3" color="action.selected" gutterBottom>
+          <Typography variant="h3" component="h1" gutterBottom>
             {categoryToDisplay?.name}
           </Typography>
           <Box
