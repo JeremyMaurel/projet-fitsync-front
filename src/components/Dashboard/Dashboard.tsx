@@ -2,6 +2,7 @@
 /* eslint-disable react/function-component-definition */
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import {
   CssBaseline,
@@ -15,6 +16,9 @@ import {
   useMediaQuery,
   useTheme,
   Link,
+  Modal,
+  TextField,
+  Button,
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -22,10 +26,36 @@ import {
   History as HistoryIcon,
   FitnessCenter as FitnessCenterIcon,
 } from '@mui/icons-material';
+import { Line } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
 import DesktopHeader from '../Base/Header/DesktopHeader';
 import DesktopFooter from '../Base/Footer/DesktopFooter';
+import {
+  fetchGraphicWeight,
+  actionWeightUpdate,
+} from '../../store/thunks/actionWeightUpdate';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 // Définition du thème personnalisé
 const theme = createTheme({
@@ -40,6 +70,59 @@ const theme = createTheme({
 const Dashboard: React.FC = () => {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+
+  const dispatch = useAppDispatch();
+  const weight = useAppSelector((state) => state.weight.value);
+  const weightDate = useAppSelector((state) => state.weight.date);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newWeight, setNewWeight] = useState('');
+
+  const data = {
+    labels: weightDate,
+    datasets: [
+      {
+        label: 'Weight (kg)',
+        data: weight,
+        borderColor: '#adfa1d',
+        backgroundColor: 'rgba(173, 250, 29, 0.5)',
+      },
+    ],
+  };
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+    },
+  };
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleWeightChange = (event) => {
+    setNewWeight(event.target.value);
+  };
+
+  const handleSaveWeight = () => {
+    dispatch(
+      actionWeightUpdate({ weight: parseFloat(newWeight), date: new Date() })
+    );
+    setNewWeight('');
+    setIsModalOpen(false);
+  };
+
+  useEffect(() => {
+    dispatch(fetchGraphicWeight());
+  }, [dispatch]);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -93,7 +176,7 @@ const Dashboard: React.FC = () => {
                 <Typography variant="h5" color="primary">
                   Weight Tracking Data
                 </Typography>
-                <IconButton color="primary">
+                <IconButton color="primary" onClick={handleOpenModal}>
                   <AddIcon />
                 </IconButton>
               </Box>
@@ -102,11 +185,9 @@ const Dashboard: React.FC = () => {
                 display="flex"
                 alignItems="center"
                 justifyContent="space-between"
+                height={300}
               >
-                <Typography variant="body1">
-                  Monitor your weight over time.
-                </Typography>
-                <FitnessCenterIcon color="primary" />
+                <Line data={data} options={options} />
               </Box>
             </CardContent>
           </Card>
@@ -165,6 +246,46 @@ const Dashboard: React.FC = () => {
         </Container>
       </main>
       {isDesktop ? <DesktopFooter /> : <Footer />}
+      <Modal
+        open={isModalOpen}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+      >
+        <Box
+          sx={{
+            position: 'absolute' as const,
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4,
+            minWidth: 300,
+          }}
+        >
+          <Typography id="modal-title" variant="h5" component="h2" gutterBottom>
+            Add New Weight
+          </Typography>
+          <TextField
+            id="new-weight"
+            label="Enter Weight (kg)"
+            variant="outlined"
+            value={newWeight}
+            onChange={handleWeightChange}
+            fullWidth
+            autoFocus
+            sx={{ mb: 2 }}
+          />
+          <Button
+            onClick={handleSaveWeight}
+            variant="contained"
+            color="primary"
+          >
+            Save
+          </Button>
+        </Box>
+      </Modal>
     </ThemeProvider>
   );
 };

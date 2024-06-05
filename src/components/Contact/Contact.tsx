@@ -17,6 +17,7 @@ import DesktopHeader from '../Base/Header/DesktopHeader';
 
 import { useAppSelector } from '../../hooks/redux-hooks';
 import Footer from '../Base/Footer/Footer';
+import DesktopFooter from '../Base/Footer/DesktopFooter';
 
 export default function Contact() {
   const logged = useAppSelector((state) => state.user.logged);
@@ -81,7 +82,15 @@ export default function Contact() {
           </FormControl>
         </Box>
       </Container>
-      {logged ? <Footer /> : <DisconnectedFooter />}
+      {logged ? (
+        isDesktop ? (
+          <DesktopFooter />
+        ) : (
+          <Footer />
+        )
+      ) : (
+        <DisconnectedFooter />
+      )}
     </>
   );
 }

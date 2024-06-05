@@ -24,16 +24,31 @@ const fetchWeight = createAsyncThunk('weight/FETCH_WEIGHT', async () => {
   try {
     const response = await instanceAxios.get('/weight');
     const data = response.data.data;
-
-    // Ne retourner rien s'il n'y a qu'une seule entrée
-    if (data.length === 1) {
-      return null;
-    }
-
     return data[data.length - 1];
   } catch (error) {
     throw error;
   }
 });
 
-export { actionWeightUpdate, fetchWeight };
+const fetchGraphicWeight = createAsyncThunk(
+  'weight/FETCH_GRAPHIC_WEIGHT',
+  async () => {
+    try {
+      const response = await instanceAxios.get('/weight');
+      const data = response.data.data;
+
+      const formattedData = data
+        .map((entry) => ({
+          weight: parseFloat(entry.value),
+          date: new Date(entry.date).toISOString().split('T')[0],
+        }))
+        .slice(1);
+
+      return formattedData;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+export { actionWeightUpdate, fetchWeight, fetchGraphicWeight };
