@@ -24,6 +24,9 @@ const fetchWeight = createAsyncThunk('weight/FETCH_WEIGHT', async () => {
   try {
     const response = await instanceAxios.get('/weight');
     const data = response.data.data;
+    if (data.length <= 1) {
+      return null;
+    }
     return data[data.length - 1];
   } catch (error) {
     throw error;
