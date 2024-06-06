@@ -251,35 +251,36 @@ function NewSession() {
               </Typography>
               <Card
                 sx={{
-                  alignItems: 'flex-center',
-                  display: 'flex',
-                  justifyContent: 'space-between',
                   mb: 4,
                   boxShadow: 3,
+                  padding: 3,
                 }}
               >
-                <Typography
-                  variant="h6"
-                  color="primary"
-                  gutterBottom
-                  sx={{ margin: 3 }}
-                >
-                  {activityToDisplay?.name}
-                </Typography>
-                <Button
-                  variant="contained"
-                  endIcon={<CheckCircleIcon />}
+                <Box
                   sx={{
-                    margin: 3,
-                    bgcolor: '#adfa1d',
-                    '&:hover': {
-                      bgcolor: '#8bcc0f',
-                    },
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
                   }}
-                  onClick={() => handlePreSelectedActivity(idFromUrl)}
                 >
-                  Confirm the selected activity
-                </Button>
+                  <Typography variant="body1" gutterBottom>
+                    {activityToDisplay?.name}
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    endIcon={<CheckCircleIcon />}
+                    sx={{
+                      mt: 2, // Utilisez mt (margin top) pour espacer le bouton du Typography
+                      bgcolor: '#ADFA1D',
+                      '&:hover': {
+                        bgcolor: '#8BCC0F',
+                      },
+                    }}
+                    onClick={() => handlePreSelectedActivity(idFromUrl)}
+                  >
+                    Confirm the selected activity
+                  </Button>
+                </Box>
               </Card>
             </>
           )}
