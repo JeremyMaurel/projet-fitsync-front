@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import './Footer.scss';
 
 export default function DisconnectedFooter() {
   return (
