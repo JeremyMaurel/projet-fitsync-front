@@ -4,7 +4,7 @@ import { AppBar, Toolbar, IconButton, Box, Button } from '@mui/material';
 
 export default function DisconnectedHeader() {
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       <Toolbar>
         <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
           <IconButton
