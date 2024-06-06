@@ -19,10 +19,10 @@ import {
   Chip,
 } from '@mui/material';
 import { AccountCircle, ArrowCircleRightOutlined } from '@mui/icons-material';
+import dayjs from 'dayjs';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
 import thunkFetchFavorites from '../../store/thunks/thunkFetchFavorites';
 import actionThunkFetchSessions from '../../store/thunks/thunkFetchSessions';
-import dayjs from 'dayjs';
 
 // Import of sub-components
 import Header from '../Base/Header/Header';

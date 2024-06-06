@@ -56,10 +56,15 @@ const ActivityId: React.FC = () => {
 
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+
   const handleAddToFavorites = async () => {
     const favoriteActivityId = Number(activityId);
     await dispatch(thunkAddFavorite(favoriteActivityId));
     navigate('/favorites');
+  };
+
+  const handleSelectThisActivity = () => {
+    navigate(`/new-session/${idFromUrl}`);
   };
 
   return (
@@ -108,7 +113,7 @@ const ActivityId: React.FC = () => {
             className="form--btn"
             fullWidth
             endIcon={<AddIcon />}
-            value={`${activityToDisplay?.id}`}
+            onClick={handleSelectThisActivity}
           >
             Select this activity
           </Button>

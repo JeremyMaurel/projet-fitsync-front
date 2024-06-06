@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import GlobalStyles from '@mui/material/GlobalStyles';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 
 import actionThunkFetchActivities from '../../store/thunks/thunkFetchActivities';
@@ -61,6 +62,14 @@ function App() {
     <div className="app">
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
+        <GlobalStyles
+          styles={{
+            a: {
+              color: 'white',
+              textDecoration: 'none',
+            },
+          }}
+        />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
@@ -85,7 +94,12 @@ function App() {
           {logged && <Route path="/dashboard" element={<Dashboard />} />}
           {logged && <Route path="/favorites" element={<Favorites />} />}
           {logged && <Route path="/history" element={<History />} />}
-          {logged && <Route path="/new-session" element={<NewSession />} />}
+          {logged && (
+            <Route
+              path="/new-session/:activityIdFromUrl"
+              element={<NewSession />}
+            />
+          )}
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </ThemeProvider>
