@@ -9,7 +9,7 @@ import {
   Button,
   Divider,
 } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
@@ -18,10 +18,21 @@ import actionThunkFetchSessions from '../../store/thunks/thunkFetchSessions';
 
 export default function SessionId() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { sessionId } = useParams();
   const idFromUrl = Number(sessionId);
   const sessions = useAppSelector((state) => state.sessions.sessionsList);
   const session = sessions.find((session) => session.id === idFromUrl);
+
+  // Looking for the activity ID to add to the custom link in CTA, not provided in session object
+  const activities = useAppSelector((state) => state.activities.activitiesList);
+  const activity = activities.find(
+    (activity) => activity.name === session?.activity_name
+  );
+
+  const doItAgain = () => {
+    navigate(`/new-session/${activity?.id}`);
+  };
 
   useEffect(() => {
     dispatch(actionThunkFetchSessions());
@@ -60,6 +71,7 @@ export default function SessionId() {
               color="primary"
               fullWidth
               sx={{ mb: 2 }}
+              onClick={doItAgain}
             >
               Do it again?
             </Button>

@@ -21,6 +21,7 @@ import {
   Chip,
 } from '@mui/material';
 import {
+  CheckCircle as CheckCircleIcon,
   Add as AddIcon,
   Delete,
   Search as SearchIcon,
@@ -28,6 +29,7 @@ import {
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers';
+import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 
 import IActivity from '../../@types/activity';
@@ -60,9 +62,25 @@ function NewSession() {
   const activitiesList = useAppSelector(
     (state) => state.activities.activitiesList
   );
-  const theme = useTheme();
 
+  // -- MANAGEMENT OF PRESELECTED ACTIVITY
+  // if "/new" is at the en of  URL, there will be no pre selected activity
+  // if something else than "/new" ("/1" for example) is at the end of the URL, there will be a pre selected activity with a corresponding activity ID that will be provided to the page
+  const { activityIdFromUrl } = useParams();
+  const idFromUrl = Number(activityIdFromUrl);
+
+  let preSelectedActivity = false;
+  if (activityIdFromUrl !== 'new') {
+    preSelectedActivity = true;
+  }
+
+  const activityToDisplay = activitiesList.find(
+    (activity) => activity.id === idFromUrl
+  );
+
+  const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
+
   // -- LOCAL UTILS STATES --
   const [activityName, setActivityName] = useState('');
   const [searchActivities, setSearchActivities] = useState('');
@@ -95,6 +113,10 @@ function NewSession() {
     setFilteredActivities([]); // Réinitialise la liste des activités filtrées
   };
 
+  const handlePreSelectedActivity = (idFromUrl) => {
+    setNewSessionActivityId(idFromUrl);
+  };
+
   // SUBMIT NEW SESSION
   const handleSubmitAddSession = () => {
     // Créer un objet représentant la nouvelle session avec le commentaire
@@ -105,7 +127,7 @@ function NewSession() {
       comment: newSessionComment,
     };
 
-    // console.log(newSessionDateTime);
+    console.log(newSession);
 
     // Envoyer la nouvelle session à la base de données en utilisant le thunkAddNewSession
     dispatch(thunkAddNewSession(newSession));
@@ -177,48 +199,90 @@ function NewSession() {
             </CardContent>
           </Card>
 
-          <Box display="flex" flexDirection="column" mb={2}>
-            <TextField
-              label="Search Activities"
-              variant="outlined"
-              value={searchActivities}
-              onChange={(event) => {
-                handleSearch(event);
-                setActivityName(event.target.value);
-              }}
-              sx={{ mb: 2 }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
-            {filteredActivities.length > 0 && (
-              <Box
+          {!preSelectedActivity && (
+            <Box display="flex" flexDirection="column" mb={2}>
+              <TextField
+                label="Search Activities"
+                variant="outlined"
+                value={searchActivities}
+                onChange={(event) => {
+                  handleSearch(event);
+                  setActivityName(event.target.value);
+                }}
+                sx={{ mb: 2 }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              {filteredActivities.length > 0 && (
+                <Box
+                  sx={{
+                    maxHeight: '200px',
+                    overflowY: 'auto',
+                    border: '1px solid #ccc',
+                    borderRadius: '4px',
+                  }}
+                >
+                  <List>
+                    {filteredActivities.map((activity) => (
+                      <ListItem
+                        key={activity.id}
+                        onClick={() =>
+                          handleSelectActivity(activity.id, activity.name)
+                        }
+                      >
+                        {activity.name}
+                      </ListItem>
+                    ))}
+                  </List>
+                </Box>
+              )}
+            </Box>
+          )}
+
+          {preSelectedActivity && (
+            <>
+              <Typography variant="h6" gutterBottom>
+                Selected Activity
+              </Typography>
+              <Card
                 sx={{
-                  maxHeight: '200px',
-                  overflowY: 'auto',
-                  border: '1px solid #ccc',
-                  borderRadius: '4px',
+                  alignItems: 'flex-center',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  mb: 4,
+                  boxShadow: 3,
                 }}
               >
-                <List>
-                  {filteredActivities.map((activity) => (
-                    <ListItem
-                      key={activity.id}
-                      onClick={() =>
-                        handleSelectActivity(activity.id, activity.name)
-                      }
-                    >
-                      {activity.name}
-                    </ListItem>
-                  ))}
-                </List>
-              </Box>
-            )}
-          </Box>
+                <Typography
+                  variant="h6"
+                  color="primary"
+                  gutterBottom
+                  sx={{ margin: 3 }}
+                >
+                  {activityToDisplay?.name}
+                </Typography>
+                <Button
+                  variant="contained"
+                  endIcon={<CheckCircleIcon />}
+                  sx={{
+                    margin: 3,
+                    bgcolor: '#adfa1d',
+                    '&:hover': {
+                      bgcolor: '#8bcc0f',
+                    },
+                  }}
+                  onClick={() => handlePreSelectedActivity(idFromUrl)}
+                >
+                  Confirm the selected activity
+                </Button>
+              </Card>
+            </>
+          )}
 
           <Typography variant="h6" gutterBottom>
             Date & Time
