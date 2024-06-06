@@ -15,13 +15,13 @@ export default function LandingPage() {
           color="primary"
           lineHeight="1"
           gutterBottom
-          sx={{ mb: 4 }}
+          sx={{ mt: 15, mb: 4 }} // Augmenter la marge supérieure
         >
           Track your activity & weight progress
         </Typography>
         <Typography variant="h5" paragraph>
           Monitor your daily activity by categories and your weight goals to
-          stay motivated to achieve your wellness goals.
+          stay motivated to achieve your healthy routine.
         </Typography>
         <Box textAlign="center" sx={{ mt: 4 }}>
           <Button
