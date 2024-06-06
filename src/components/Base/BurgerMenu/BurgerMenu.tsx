@@ -78,7 +78,7 @@ export default function BurgerMenu() {
           <ListItem component={Link} to="/category-list">
             <ListItemText primary="Categories" />
           </ListItem>
-          <ListItem component={Link} to="/new-session">
+          <ListItem component={Link} to="/new-session/new">
             <ListItemText primary="New Session" />
           </ListItem>
           <ListItem component={Link} to="/history">

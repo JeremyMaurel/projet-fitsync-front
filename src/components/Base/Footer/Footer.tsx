@@ -53,7 +53,7 @@ export default function Footer() {
           label="Session"
           icon={<Add sx={{ color: 'primary' }} />}
           component={Link}
-          to="/new-session"
+          to="/new-session/new"
         />
       </BottomNavigation>
     </Box>

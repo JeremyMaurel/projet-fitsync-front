@@ -85,7 +85,12 @@ function App() {
           {logged && <Route path="/dashboard" element={<Dashboard />} />}
           {logged && <Route path="/favorites" element={<Favorites />} />}
           {logged && <Route path="/history" element={<History />} />}
-          {logged && <Route path="/new-session" element={<NewSession />} />}
+          {logged && (
+            <Route
+              path="/new-session/:activityIdFromUrl"
+              element={<NewSession />}
+            />
+          )}
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </ThemeProvider>
