@@ -287,7 +287,7 @@ const Dashboard: React.FC = () => {
           }}
         >
           <Typography id="modal-title" variant="h5" component="h2" gutterBottom>
-            Add New Weight
+            Add Current Weight
           </Typography>
           <TextField
             id="new-weight"

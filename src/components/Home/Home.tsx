@@ -61,9 +61,6 @@ const Home: React.FC = () => {
     dispatch(thunkFetchFavorites());
   }, [dispatch]);
 
-  // Fonction pour générer un pourcentage aléatoire pour simuler la progression
-  const getRandomPercentage = () => Math.floor(Math.random() * 100) + 1;
-
   return (
     <>
       {isDesktop ? <DesktopHeader /> : <Header />}

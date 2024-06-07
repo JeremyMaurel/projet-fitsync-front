@@ -24,10 +24,13 @@ const fetchWeight = createAsyncThunk('weight/FETCH_WEIGHT', async () => {
   try {
     const response = await instanceAxios.get('/weight');
     const data = response.data.data;
+
     if (data.length <= 1) {
       return null;
     }
-    return data[data.length - 1];
+    data.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    return data[0];
   } catch (error) {
     throw error;
   }
@@ -45,7 +48,8 @@ const fetchGraphicWeight = createAsyncThunk(
           weight: parseFloat(entry.value),
           date: new Date(entry.date).toISOString().split('T')[0],
         }))
-        .slice(1);
+        .slice(1)
+        .sort((a, b) => new Date(a.date) - new Date(b.date));
 
       return formattedData;
     } catch (error) {
@@ -66,4 +70,22 @@ const fetchAllWeights = createAsyncThunk(
   }
 );
 
-export { actionWeightUpdate, fetchWeight, fetchGraphicWeight, fetchAllWeights };
+const deleteWeight = createAsyncThunk(
+  'weight/DELETE_WEIGHTS',
+  async (id: number) => {
+    try {
+      await instanceAxios.delete(`/weight/${id}`);
+      return id;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+export {
+  actionWeightUpdate,
+  fetchWeight,
+  fetchGraphicWeight,
+  fetchAllWeights,
+  deleteWeight,
+};

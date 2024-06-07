@@ -45,6 +45,7 @@ import {
   fetchWeight,
   actionWeightUpdate,
   fetchAllWeights,
+  deleteWeight,
 } from '../../store/thunks/actionWeightUpdate';
 import DesktopFooter from '../Base/Footer/DesktopFooter';
 
@@ -91,9 +92,7 @@ export default function Settings() {
     : '';
 
   const [newWeight, setNewWeight] = useState('');
-  const [newWeightDate, setNewWeightDate] = useState(
-    new Date().toISOString().split('T')[0]
-  );
+  const [newWeightDate, setNewWeightDate] = useState(new Date().toISOString());
   const [personName, setPersonName] = useState<string[]>([gender]);
 
   const [openModal, setOpenModal] = useState(false);
@@ -104,6 +103,7 @@ export default function Settings() {
 
   const [openWeightModal, setOpenWeightModal] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState(null);
+  const [deleteWeightId, setDeleteWeightId] = useState(null);
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     const {
@@ -151,7 +151,7 @@ export default function Settings() {
         actionWeightUpdate({ weight: updatedWeight, date: newWeightDate })
       );
       setNewWeight('');
-      setNewWeightDate(new Date().toISOString().split('T')[0]);
+      setNewWeightDate(new Date().toISOString());
     }
 
     if (Object.keys(updatedUser).length > 0) {
@@ -194,17 +194,31 @@ export default function Settings() {
     setOpenWeightModal(false);
   };
 
-  const handleDelete = (index) => {
+  const handleDelete = (index, weightId) => {
     setDeleteIndex(index);
+    setDeleteWeightId(weightId);
   };
 
   const handleDeleteConfirmed = () => {
     console.log(`Supprimer l'entrée de poids à l'index ${deleteIndex}`);
     setDeleteIndex(null);
+    setDeleteWeightId(null);
   };
 
   const handleDeleteCancelled = () => {
     setDeleteIndex(null);
+    setDeleteWeightId(null);
+  };
+
+  const handleDeleteWeight = async (weightId: number) => {
+    try {
+      await dispatch(deleteWeight(weightId));
+      console.log(weightId);
+
+      await dispatch(fetchWeight());
+    } catch (error) {
+      console.error('Failed to delete weight:', error);
+    }
   };
 
   return (
@@ -459,7 +473,9 @@ export default function Settings() {
                         </TableCell>
                         <TableCell>{weightData.value}</TableCell>
                         <TableCell>
-                          <IconButton onClick={() => handleDelete(index)}>
+                          <IconButton
+                            onClick={() => handleDelete(index, weightData.id)}
+                          >
                             <DeleteIcon />
                           </IconButton>
                         </TableCell>
@@ -491,7 +507,14 @@ export default function Settings() {
           <Button onClick={handleDeleteCancelled} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleDeleteConfirmed} color="primary" autoFocus>
+          <Button
+            onClick={() => {
+              handleDeleteWeight(deleteWeightId);
+              handleDeleteConfirmed();
+            }}
+            color="primary"
+            autoFocus
+          >
             Delete
           </Button>
         </DialogActions>
