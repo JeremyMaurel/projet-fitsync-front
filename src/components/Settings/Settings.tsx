@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-restricted-globals */
@@ -18,9 +19,20 @@ import {
   Modal,
   useMediaQuery,
   useTheme,
+  Table,
+  TableContainer,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
 
-import { AccountCircle } from '@mui/icons-material';
+import { AccountCircle, Delete as DeleteIcon } from '@mui/icons-material';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
@@ -32,6 +44,7 @@ import {
 import {
   fetchWeight,
   actionWeightUpdate,
+  fetchAllWeights,
 } from '../../store/thunks/actionWeightUpdate';
 import DesktopFooter from '../Base/Footer/DesktopFooter';
 
@@ -68,8 +81,8 @@ export default function Settings() {
   const weight = useAppSelector((state) => state.weight.value);
   const weightDate = useAppSelector((state) => state.weight.date);
   const height = useAppSelector((state) => state.user.height);
+  const allWeights = useAppSelector((state) => state.weight.allWeights);
 
-  const avatarUrl = 'public/1.jpg';
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -88,6 +101,9 @@ export default function Settings() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [passwordMismatch, setPasswordMismatch] = useState(false);
+
+  const [openWeightModal, setOpenWeightModal] = useState(false);
+  const [deleteIndex, setDeleteIndex] = useState(null);
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     const {
@@ -146,6 +162,7 @@ export default function Settings() {
 
   useEffect(() => {
     dispatch(fetchWeight());
+    dispatch(fetchAllWeights());
   }, [dispatch]);
 
   useEffect(() => {}, [weight, weightDate]);
@@ -167,6 +184,27 @@ export default function Settings() {
     await dispatch(actionChangePassword(newPassword));
     setPasswordMismatch(false);
     handleCloseModal();
+  };
+
+  const handleOpenWeightModal = () => {
+    setOpenWeightModal(true);
+  };
+
+  const handleCloseWeightModal = () => {
+    setOpenWeightModal(false);
+  };
+
+  const handleDelete = (index) => {
+    setDeleteIndex(index);
+  };
+
+  const handleDeleteConfirmed = () => {
+    console.log(`Supprimer l'entrée de poids à l'index ${deleteIndex}`);
+    setDeleteIndex(null);
+  };
+
+  const handleDeleteCancelled = () => {
+    setDeleteIndex(null);
   };
 
   return (
@@ -246,6 +284,7 @@ export default function Settings() {
             >
               User Weight
             </Typography>
+            <Button onClick={handleOpenWeightModal}>Show All Weights</Button>
             {weight !== null && (
               <div>
                 <Typography>
@@ -305,6 +344,7 @@ export default function Settings() {
               defaultValue={mail}
             />
             <Button onClick={handleOpenModal}>Change Password</Button>
+
             <Button
               type="submit"
               fullWidth
@@ -377,6 +417,85 @@ export default function Settings() {
           </Button>
         </Box>
       </Modal>
+      <Modal
+        open={openWeightModal}
+        onClose={handleCloseWeightModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Box
+          sx={{
+            maxHeight: '80vh',
+            overflowY: 'auto',
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            padding: 2,
+          }}
+        >
+          <Typography variant="h6" component="h2" gutterBottom>
+            All Weights
+          </Typography>
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Date</TableCell>
+                  <TableCell>Weight (kg)</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {allWeights ? (
+                  [...allWeights]
+                    .sort((a, b) => new Date(a.date) - new Date(b.date))
+                    .map((weightData, index) => (
+                      <TableRow key={index}>
+                        <TableCell>
+                          {new Date(weightData.date).toLocaleDateString()}
+                        </TableCell>
+                        <TableCell>{weightData.value}</TableCell>
+                        <TableCell>
+                          <IconButton onClick={() => handleDelete(index)}>
+                            <DeleteIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={3}>No weights available</TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
+      </Modal>
+      <Dialog
+        open={deleteIndex !== null}
+        onClose={handleDeleteCancelled}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Confirm Deletion</DialogTitle>
+        <DialogContent>
+          <Typography variant="body1">
+            Are you sure you want to delete this weight entry?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancelled} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteConfirmed} color="primary" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

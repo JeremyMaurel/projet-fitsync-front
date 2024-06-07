@@ -72,7 +72,7 @@ export default function DesktopHeader() {
               color="inherit"
               component={Link}
               to="/new-session/new"
-              sx={getButtonStyles('/new-session')}
+              sx={getButtonStyles('/new-session/new')}
             >
               New session
             </Button>
