@@ -19,6 +19,7 @@ import {
   TextField,
   Button,
   Chip,
+  LinearProgress,
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -65,6 +66,9 @@ const Dashboard: React.FC = () => {
   const weight = useAppSelector((state) => state.weight.value);
   const weightDate = useAppSelector((state) => state.weight.date);
   const targetWeight = useAppSelector((state) => state.user.objective);
+
+  const targetMET = 100;
+  const achievedMET = 50;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newWeight, setNewWeight] = useState('');
@@ -149,7 +153,29 @@ const Dashboard: React.FC = () => {
           <Typography variant="h3" component="h1" gutterBottom>
             Dashboard
           </Typography>
-
+          <Card sx={{ mb: 2, boxShadow: 3, borderRadius: 2 }}>
+            <CardContent>
+              <Typography variant="h5" color="primary">
+                MET Tracking
+              </Typography>
+              <Divider sx={{ my: 2 }} />
+              <Typography variant="body1" color="text.secondary">
+                Track your MET objectives and achievements.
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+                Target MET: {targetMET}%
+              </Typography>
+              <LinearProgress
+                variant="determinate"
+                value={targetMET}
+                sx={{ mb: 2 }}
+              />
+              <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+                Achieved MET: {achievedMET}%
+              </Typography>
+              <LinearProgress variant="determinate" value={achievedMET} />
+            </CardContent>
+          </Card>
           <Card sx={{ mb: 2, boxShadow: 3, borderRadius: 2 }}>
             <CardContent>
               <Box display="flex" flexDirection="column">
