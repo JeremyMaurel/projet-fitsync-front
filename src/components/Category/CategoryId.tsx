@@ -96,7 +96,7 @@ export default function CategoryId() {
                             {activity.name}
                           </Typography>
                           <Typography variant="body2" color="primary">
-                            MET: {activity.met}
+                            MET per minute: {activity.met}
                           </Typography>
                         </Link>
                       </CardContent>

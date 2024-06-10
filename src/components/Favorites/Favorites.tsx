@@ -83,7 +83,7 @@ export default function Favorites() {
                         {favorite.activity_name}
                       </Typography>
                       <Typography variant="body2" color="primary">
-                        MET: {favorite.activity_met}
+                        MET per minute: {favorite.activity_met}
                       </Typography>
                     </Link>
                   </CardContent>

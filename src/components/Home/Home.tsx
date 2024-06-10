@@ -17,6 +17,7 @@ import {
   useTheme,
   Link,
   Chip,
+  LinearProgress,
 } from '@mui/material';
 import { AccountCircle, ArrowCircleRightOutlined } from '@mui/icons-material';
 import dayjs from 'dayjs';
@@ -30,6 +31,7 @@ import Footer from '../Base/Footer/Footer';
 import DesktopHeader from '../Base/Header/DesktopHeader';
 import DesktopFooter from '../Base/Footer/DesktopFooter';
 import { fetchWeight } from '../../store/thunks/actionWeightUpdate';
+import getTotalMetPerWeek from '../../utils/getWeeklyMets';
 
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -43,7 +45,8 @@ const Home: React.FC = () => {
   const sessionsList = useAppSelector((state) => state.sessions.sessionsList);
   const weight = useAppSelector((state) => state.weight.value);
   const weightDate = useAppSelector((state) => state.weight.date);
-  console.log(weight);
+  const targetMet = useAppSelector((state) => state.user.objective);
+  const totalMetPerWeek = getTotalMetPerWeek(sessionsList);
 
   useEffect(() => {
     dispatch(actionThunkFetchSessions());
@@ -78,6 +81,27 @@ const Home: React.FC = () => {
         </Box>
 
         <Box display="flex" mb={2} flexDirection="column" width="100%">
+          <Card sx={{ mb: 2, boxShadow: 3, borderRadius: 2 }}>
+            <CardContent>
+              <Typography variant="h5" color="action.disabled">
+                Weekly METs Tracking
+              </Typography>
+              <Divider sx={{ my: 2 }} />
+              <Typography
+                variant="body2"
+                textAlign="center"
+                color="text.secondary"
+                sx={{ mt: 2 }}
+              >
+                {totalMetPerWeek} / {targetMet}
+              </Typography>
+              <LinearProgress
+                variant="determinate"
+                value={(totalMetPerWeek / targetMet) * 100}
+                sx={{ height: 40, borderRadius: 9, mt: 1 }}
+              />
+            </CardContent>
+          </Card>
           <Card sx={{ width: '100%', boxShadow: 3, borderRadius: 2 }}>
             <CardContent sx={{ paddingTop: '8px' }}>
               {' '}
@@ -89,6 +113,7 @@ const Home: React.FC = () => {
               >
                 Current Weight
               </Typography>
+              <Divider sx={{ my: 2 }} />
               <Chip
                 label={dayjs(weightDate).format('MM-DD-YYYY')}
                 size="small"
@@ -181,7 +206,7 @@ const Home: React.FC = () => {
                         color="primary"
                         sx={{ marginBottom: 1 }}
                       >
-                        MET {session.activity_met}
+                        Total METs {session.activity_met * session.duration}
                       </Typography>
                     </Box>
                   </ListItem>
