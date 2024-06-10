@@ -17,13 +17,11 @@ import {
   OutlinedInput,
   useMediaQuery,
   useTheme,
-  IconButton,
   Chip,
 } from '@mui/material';
 import {
   CheckCircle as CheckCircleIcon,
   Add as AddIcon,
-  Delete,
   Search as SearchIcon,
 } from '@mui/icons-material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -50,6 +48,7 @@ function NewSession() {
   const [newSessionDuration, setNewSessionDuration] = useState('');
   const [newSessionActivityId, setNewSessionActivityId] = useState('');
   const [newSessionDateTime, setNewSessionDateTime] = useState('');
+  const [totalMet, setTotalMet] = useState(0);
 
   // -- LIST SESSIONS SELECTOR --
   const sessionsList = useAppSelector((state) => state.sessions.sessionsList);
@@ -100,7 +99,18 @@ function NewSession() {
     }
   };
   const handleNewSessionDuration = (event) => {
-    setNewSessionDuration(event.target.value);
+    const duration = event.target.value;
+    setNewSessionDuration(duration);
+
+    // Calculer le MET total dépensé
+    const selectedActivity = activitiesList.find(
+      (activity) => activity.id === newSessionActivityId
+    );
+    if (selectedActivity) {
+      const metValue = selectedActivity.met; // Assurez-vous que le champ MET est disponible dans l'objet activité
+      const totalMetValue = metValue * duration;
+      setTotalMet(totalMetValue);
+    }
   };
 
   const handleNewSessionComment = (event) => {
@@ -144,6 +154,10 @@ function NewSession() {
     dispatch(thunkDeleteSession(sessionId));
   };
 
+  const calculateTotalMet = (activityMet, duration) => {
+    const durationInHours = duration / 60;
+    return activityMet * durationInHours;
+  };
   return (
     <>
       {isDesktop ? <DesktopHeader /> : <Header />}
@@ -181,7 +195,9 @@ function NewSession() {
                           {session.activity_name}
                         </Typography>
                         <Typography variant="body1" color="primary">
-                          MET {session.activity_met}
+                          {/* Penser a factoriser ici et dans history */}
+                          Total METs Expended:{' '}
+                          {(session.activity_met * session.duration).toFixed(1)}
                         </Typography>
                       </Box>
                       <Chip
@@ -270,7 +286,7 @@ function NewSession() {
                     variant="contained"
                     endIcon={<CheckCircleIcon />}
                     sx={{
-                      mt: 2, // Utilisez mt (margin top) pour espacer le bouton du Typography
+                      mt: 2,
                       bgcolor: '#ADFA1D',
                       '&:hover': {
                         bgcolor: '#8BCC0F',
@@ -317,7 +333,11 @@ function NewSession() {
               }
             />
           </Box>
-
+          {totalMet > 0 && (
+            <Typography variant="body1" color="textSecondary" gutterBottom>
+              Total MET expended: {totalMet.toFixed(2)}
+            </Typography>
+          )}
           <TextField
             fullWidth
             multiline

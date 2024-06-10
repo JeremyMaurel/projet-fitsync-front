@@ -90,12 +90,20 @@ export default function History() {
                             {dayjs(session.date).format('HH:mm')}
                           </Typography>
                           {session.activity_name}
+
                           <Typography
                             variant="body2"
                             color="textSecondary"
                             sx={{ mt: 2 }}
                           >
                             Duration: {session.duration} mn
+                          </Typography>
+                          <Typography variant="body2" color="primary">
+                            {/* Penser a factoriser ici et NewSession */}
+                            Total METs :
+                            {(session.activity_met * session.duration).toFixed(
+                              1
+                            )}
                           </Typography>
                         </Link>
                         <hr
