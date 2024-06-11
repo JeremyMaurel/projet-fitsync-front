@@ -157,6 +157,13 @@ function NewSession() {
       return;
     }
 
+    const selectedDateTime = dayjs(newSession.date);
+    const maxAllowedDateTime = dayjs().add(7, 'day');
+    if (selectedDateTime.isAfter(maxAllowedDateTime)) {
+      setError('Please select a date within the coming week.');
+      return;
+    }
+
     // Envoyer la nouvelle session à la base de données en utilisant le thunkAddNewSession
     dispatch(thunkAddNewSession(newSession));
 

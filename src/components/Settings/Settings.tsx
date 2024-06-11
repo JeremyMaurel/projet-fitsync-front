@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable @typescript-eslint/no-shadow */
@@ -77,7 +78,7 @@ export default function Settings() {
   const dispatch = useAppDispatch();
   const pseudo = useAppSelector((state) => state.user.credentials.pseudo);
   const mail = useAppSelector((state) => state.user.mail);
-  const gender = useAppSelector((state) => state.user.gender);
+  const gender = useAppSelector((state) => state.user.gender) || '';
   const birthdate = useAppSelector((state) => state.user.birthdate);
   const weight = useAppSelector((state) => state.weight.value);
   const weightDate = useAppSelector((state) => state.weight.date);
@@ -114,10 +115,13 @@ export default function Settings() {
     );
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event: {
+    preventDefault: () => void;
+    target: any;
+  }) => {
+    event.preventDefault();
 
-    const formData = e.target;
+    const formData = event.target;
     const updatedUser = {};
     const updatedWeight = parseFloat(newWeight);
 
