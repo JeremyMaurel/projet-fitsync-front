@@ -2,7 +2,7 @@
 /* eslint-disable react/function-component-definition */
 import React from 'react';
 
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import {
   CssBaseline,
   Container,
@@ -27,18 +27,6 @@ import DesktopFooter from '../Base/Footer/DesktopFooter';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
 
 import thunkAddFavorite from '../../store/thunks/thunkAddFavorite';
-
-const theme = createTheme({
-  palette: {
-    mode: 'dark',
-    primary: {
-      main: '#adfa1d',
-    },
-    secondary: {
-      main: '#f50057',
-    },
-  },
-});
 
 const ActivityId: React.FC = () => {
   const dispatch = useAppDispatch();

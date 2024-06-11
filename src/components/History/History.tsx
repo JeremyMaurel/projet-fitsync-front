@@ -47,9 +47,11 @@ export default function History() {
 
   // Fonction de gestion de la suppression
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
-  const [sessionToDeleteId, setSessionToDeleteId] = useState(null);
+  const [sessionToDeleteId, setSessionToDeleteId] = useState<number | null>(
+    null
+  );
 
-  const openConfirmDeleteDialog = (sessionId) => {
+  const openConfirmDeleteDialog = (sessionId: number) => {
     setSessionToDeleteId(sessionId);
     setConfirmDeleteOpen(true);
   };
@@ -59,7 +61,7 @@ export default function History() {
     setConfirmDeleteOpen(false);
   };
 
-  const handleDeleteSessionConfirmed = (sessionId) => {
+  const handleDeleteSessionConfirmed = (sessionId: number) => {
     dispatch(thunkDeleteSession(sessionId));
     closeConfirmDeleteDialog();
   };
@@ -178,7 +180,7 @@ export default function History() {
             Cancel
           </Button>
           <Button
-            onClick={() => handleDeleteSessionConfirmed(sessionToDeleteId)}
+            onClick={() => handleDeleteSessionConfirmed(sessionToDeleteId ?? 0)}
             color="primary"
             autoFocus
           >

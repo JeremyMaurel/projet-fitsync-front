@@ -41,9 +41,11 @@ export default function Favorites() {
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   // Fonction de gestion de la suppression
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
-  const [activityToDeleteId, setActivityToDeleteId] = useState(null);
+  const [activityToDeleteId, setActivityToDeleteId] = useState<number | null>(
+    null
+  );
 
-  const openConfirmDeleteDialog = (activityId) => {
+  const openConfirmDeleteDialog = (activityId: number) => {
     setActivityToDeleteId(activityId);
     setConfirmDeleteOpen(true);
   };
@@ -53,7 +55,7 @@ export default function Favorites() {
     setConfirmDeleteOpen(false);
   };
 
-  const handleDeleteFavoriteConfirmed = (activityId) => {
+  const handleDeleteFavoriteConfirmed = (activityId: number) => {
     dispatch(thunkDeleteFavorite(activityId));
     closeConfirmDeleteDialog();
   };
@@ -146,7 +148,9 @@ export default function Favorites() {
             Cancel
           </Button>
           <Button
-            onClick={() => handleDeleteFavoriteConfirmed(activityToDeleteId)}
+            onClick={() => {
+              handleDeleteFavoriteConfirmed(activityToDeleteId ?? 0);
+            }}
             color="primary"
             autoFocus
           >

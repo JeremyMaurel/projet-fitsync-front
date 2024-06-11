@@ -10,7 +10,7 @@ export default function Footer() {
   const location = useLocation();
 
   React.useEffect(() => {
-    const pathname = location.pathname;
+    const { pathname } = location;
     if (pathname === '/home') {
       setValue(0);
     } else if (pathname === '/dashboard') {

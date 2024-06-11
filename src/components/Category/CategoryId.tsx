@@ -19,9 +19,6 @@ import Footer from '../Base/Footer/Footer';
 import DesktopHeader from '../Base/Header/DesktopHeader';
 import DesktopFooter from '../Base/Footer/DesktopFooter';
 
-// Stylesheet
-import './CategoryId.scss';
-
 export default function CategoryId() {
   // -- STATE REDUX --
   // Je récupère toutes les catégories de l'état

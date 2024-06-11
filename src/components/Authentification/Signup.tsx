@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-control-regex */
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -30,28 +31,28 @@ export default function Signup() {
   const [error, setError] = useState('');
   const [passwordStrength, setPasswordStrength] = useState(0);
 
-  const calculatePasswordStrength = (password) => {
+  const calculatePasswordStrength = (passwordToAnalyze: string) => {
     let strength = 0;
-    if (/[A-Z]/.test(password)) {
+    if (/[A-Z]/.test(passwordToAnalyze)) {
       strength += 1;
     }
-    if (/[0-9]/.test(password)) {
+    if (/[0-9]/.test(passwordToAnalyze)) {
       strength += 1;
     }
-    if (/[^A-Za-z0-9]/.test(password)) {
+    if (/[^A-Za-z0-9]/.test(passwordToAnalyze)) {
       strength += 1;
     }
-    if (/[a-z]/.test(password)) {
+    if (/[a-z]/.test(passwordToAnalyze)) {
       strength += 1;
     }
-    if (password.length >= 8) {
+    if (passwordToAnalyze.length >= 8) {
       strength += 1;
     }
     return (strength / 5) * 100;
   };
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, checked } = event.target;
 
     switch (name) {
       case 'pseudo':
@@ -68,21 +69,21 @@ export default function Signup() {
         setConfirmPassword(value);
         break;
       case 'conditions':
-        setConditions(event.target.checked);
+        setConditions(checked);
         break;
       default:
         break;
     }
   };
 
-  const isValidEmail = (mail) => {
+  const isValidEmail = (mailToValidate: string) => {
     const emailRegex =
       /^(?=.{1,64}@.{1,255}$)(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)])$/i;
-    return emailRegex.test(mail);
+    return emailRegex.test(mailToValidate);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setError('');
 
     if (!pseudo || !mail || !password || !confirmPassword) {
@@ -116,9 +117,13 @@ export default function Signup() {
       if (actionUserSignin.fulfilled.match(result)) {
         navigate('/login');
       } else {
-        setError(result.payload || 'Signup failed. Please try again.');
+        const errorMessage =
+          typeof result.payload === 'string'
+            ? result.payload
+            : 'Signup failed. Please try again.';
+        setError(errorMessage);
       }
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message || 'Signup failed. Please try again.');
     }
   };

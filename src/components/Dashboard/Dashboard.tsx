@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react/function-component-definition */
 import { Link as RouterLink } from 'react-router-dom';
@@ -67,7 +68,7 @@ const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
   const weight = useAppSelector((state) => state.weight.value);
   const weightDate = useAppSelector((state) => state.weight.date);
-  const targetMet = useAppSelector((state) => state.user.objective);
+  const targetMet = useAppSelector((state) => state.user.objective) || 0;
   const sessions = useAppSelector((state) => state.sessions.sessionsList);
   const totalMetPerWeek = getTotalMetPerWeek(sessions);
   useEffect(() => {
@@ -79,12 +80,12 @@ const Dashboard: React.FC = () => {
   const [isTargetModalOpen, setIsTargetModalOpen] = useState(false);
   const [newTargetMet, setNewTargetMet] = useState('');
 
-  const data = {
-    labels: weightDate,
+  const data: any = {
+    labels: weightDate || [],
     datasets: [
       {
         label: 'Weight (kg)',
-        data: weight,
+        data: weight || [],
         borderColor: '#adfa1d',
         backgroundColor: 'rgba(173, 250, 29, 0.5)',
       },
@@ -108,7 +109,7 @@ const Dashboard: React.FC = () => {
     setIsModalOpen(false);
   };
 
-  const handleWeightChange = (event) => {
+  const handleWeightChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewWeight(event.target.value);
   };
 
@@ -129,7 +130,9 @@ const Dashboard: React.FC = () => {
     setIsTargetModalOpen(false);
   };
 
-  const handleTargetWeightChange = (event) => {
+  const handleTargetWeightChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setNewTargetMet(event.target.value);
   };
 

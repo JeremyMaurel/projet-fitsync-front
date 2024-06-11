@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Import of libraries or technical components
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import instanceAxios from '../../axios/axiosInstance';
@@ -15,7 +16,7 @@ const actionUserSignin = createAsyncThunk(
     try {
       const response = await instanceAxios.post('/signup', newUser);
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       if (
         error.response &&
         error.response.data &&
@@ -29,5 +30,4 @@ const actionUserSignin = createAsyncThunk(
     }
   }
 );
-
 export default actionUserSignin;

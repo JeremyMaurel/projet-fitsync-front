@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // Import of librairies or technical components
 import { useState, useEffect } from 'react';
@@ -51,8 +52,12 @@ function NewSession() {
 
   // -- NEW SESSION STATES --
   const [newSessionComment, setNewSessionComment] = useState('');
-  const [newSessionDuration, setNewSessionDuration] = useState('');
-  const [newSessionActivityId, setNewSessionActivityId] = useState('');
+  const [newSessionDuration, setNewSessionDuration] = useState<number | null>(
+    null
+  );
+  const [newSessionActivityId, setNewSessionActivityId] = useState<
+    number | null
+  >(null);
   const [newSessionDateTime, setNewSessionDateTime] = useState('');
   const [totalMet, setTotalMet] = useState(0);
   const [error, setError] = useState('');
@@ -88,12 +93,12 @@ function NewSession() {
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
   // -- LOCAL UTILS STATES --
-  const [activityName, setActivityName] = useState('');
+  const [activityName, setActivityName] = useState<string>('');
   const [searchActivities, setSearchActivities] = useState('');
   const [filteredActivities, setFilteredActivities] = useState<IActivity[]>([]);
   const currentDateTime = dayjs();
 
-  const handleSearch = (event) => {
+  const handleSearch = (event: any) => {
     setSearchActivities(event.target.value);
     if (event.target.value === '') {
       setFilteredActivities([]);
@@ -105,8 +110,8 @@ function NewSession() {
       );
     }
   };
-  const handleNewSessionDuration = (event) => {
-    const duration = event.target.value;
+  const handleNewSessionDuration = (event: any) => {
+    const duration = Number(event.target.value);
     setNewSessionDuration(duration);
 
     // Calculer le MET total dépensé
@@ -120,18 +125,21 @@ function NewSession() {
     }
   };
 
-  const handleNewSessionComment = (event) => {
+  const handleNewSessionComment = (event: any) => {
     setNewSessionComment(event.target.value);
   };
 
-  const handleSelectActivity = (activityId: number, activityName: string) => {
+  const handleSelectActivity = (
+    activityId: number,
+    selectedActivityName: string
+  ) => {
     setNewSessionActivityId(activityId); // Définit l'ID de l'activité sélectionnée
     setSearchActivities(activityName); // Met à jour le terme de recherche avec le nom de l'activité
     setFilteredActivities([]); // Réinitialise la liste des activités filtrées
   };
 
-  const handlePreSelectedActivity = (idFromUrl) => {
-    setNewSessionActivityId(idFromUrl);
+  const handlePreSelectedActivity = (idSelectedFromUrl: number) => {
+    setNewSessionActivityId(idSelectedFromUrl);
   };
 
   // SUBMIT NEW SESSION
@@ -153,23 +161,23 @@ function NewSession() {
     dispatch(thunkAddNewSession(newSession));
 
     // Réinitialiser le champ de commentaire après l'ajout de la session
-    setNewSessionDuration('');
+    setNewSessionDuration(null);
     setNewSessionComment('');
-    setNewSessionActivityId('');
+    setNewSessionActivityId(null);
     setSearchActivities('');
     window.location.reload();
   };
 
-  const handleDeleteSession = (sessionId: number) => {
-    openConfirmDeleteDialog(sessionId);
-  };
-
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
-  const [sessionToDeleteId, setSessionToDeleteId] = useState(null);
-
-  const openConfirmDeleteDialog = (sessionId) => {
+  const [sessionToDeleteId, setSessionToDeleteId] = useState<number | null>(
+    null
+  );
+  const openConfirmDeleteDialog = (sessionId: number) => {
     setSessionToDeleteId(sessionId);
     setConfirmDeleteOpen(true);
+  };
+  const handleDeleteSession = (sessionId: number) => {
+    openConfirmDeleteDialog(sessionId);
   };
 
   const closeConfirmDeleteDialog = () => {
@@ -177,7 +185,7 @@ function NewSession() {
     setConfirmDeleteOpen(false);
   };
 
-  const handleDeleteSessionConfirmed = (sessionId) => {
+  const handleDeleteSessionConfirmed = (sessionId: number) => {
     dispatch(thunkDeleteSession(sessionId));
   };
 
@@ -411,7 +419,7 @@ function NewSession() {
           </Button>
           <Button
             onClick={() => {
-              handleDeleteSessionConfirmed(sessionToDeleteId);
+              handleDeleteSessionConfirmed(sessionToDeleteId ?? 0);
               closeConfirmDeleteDialog();
             }}
             color="primary"

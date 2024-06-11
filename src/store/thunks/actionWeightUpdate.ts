@@ -5,7 +5,10 @@ import instanceAxios from '../../axios/axiosInstance';
 
 const actionWeightUpdate = createAsyncThunk(
   'weight/UPDATE_WEIGHT',
-  async ({ weight, date }, thunkAPI) => {
+  async (
+    { weight, date }: { weight: number; date: string | Date },
+    thunkAPI
+  ) => {
     try {
       const response = await instanceAxios.post('/weight', {
         weight,
@@ -28,8 +31,12 @@ const fetchWeight = createAsyncThunk('weight/FETCH_WEIGHT', async () => {
     if (data.length <= 1) {
       return null;
     }
-    data.sort((a, b) => new Date(b.date) - new Date(a.date));
-
+    data.sort(
+      (
+        a: { date: string | number | Date },
+        b: { date: string | number | Date }
+      ) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
     return data[0];
   } catch (error) {
     throw error;
@@ -44,12 +51,17 @@ const fetchGraphicWeight = createAsyncThunk(
       const data = response.data.data;
 
       const formattedData = data
-        .map((entry) => ({
+        .map((entry: { value: string; date: string | number | Date }) => ({
           weight: parseFloat(entry.value),
           date: new Date(entry.date).toISOString().split('T')[0],
         }))
         .slice(1)
-        .sort((a, b) => new Date(a.date) - new Date(b.date));
+        .sort(
+          (
+            a: { date: string | number | Date },
+            b: { date: string | number | Date }
+          ) => new Date(a.date).getTime() - new Date(b.date).getTime()
+        );
 
       return formattedData;
     } catch (error) {

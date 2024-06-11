@@ -8,10 +8,8 @@ import {
   Typography,
   Card,
   CardContent,
-  CardHeader,
   List,
   ListItem,
-  Link as MuiLink,
   Divider,
   useMediaQuery,
   useTheme,
@@ -92,7 +90,7 @@ const Home: React.FC = () => {
               </Typography>
               <LinearProgress
                 variant="determinate"
-                value={(totalMetPerWeek / targetMet) * 100}
+                value={(totalMetPerWeek / (targetMet ?? 100)) * 100}
                 sx={{ height: 40, borderRadius: 9, mt: 1 }}
               />
             </CardContent>
