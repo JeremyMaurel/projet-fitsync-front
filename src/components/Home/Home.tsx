@@ -24,6 +24,7 @@ import dayjs from 'dayjs';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
 import thunkFetchFavorites from '../../store/thunks/thunkFetchFavorites';
 import actionThunkFetchSessions from '../../store/thunks/thunkFetchSessions';
+import actionThunkFetchUser from '../../store/thunks/thunkFetchUser';
 
 // Import of sub-components
 import Header from '../Base/Header/Header';
@@ -49,20 +50,14 @@ const Home: React.FC = () => {
   const totalMetPerWeek = getTotalMetPerWeek(sessionsList);
 
   useEffect(() => {
+    dispatch(actionThunkFetchUser());
     dispatch(actionThunkFetchSessions());
-  }, [dispatch]);
-
-  useEffect(() => {
     dispatch(fetchWeight());
+    dispatch(thunkFetchFavorites());
   }, [dispatch]);
 
   const theme = useTheme();
-
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
-
-  useEffect(() => {
-    dispatch(thunkFetchFavorites());
-  }, [dispatch]);
 
   return (
     <>

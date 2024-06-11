@@ -43,7 +43,15 @@ export default function DesktopHeader() {
             aria-label="menu"
             component={Link}
             to="/home"
-            sx={{ mr: 4 }}
+            sx={{
+              mr: 4,
+              '&:hover': {
+                backgroundColor: 'transparent',
+              },
+              '& .MuiTouchRipple-root': {
+                display: 'none',
+              },
+            }}
           >
             <img
               src="/fitsync-logo.svg"

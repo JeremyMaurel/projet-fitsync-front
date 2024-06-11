@@ -1,4 +1,4 @@
-// Import of librairies or technical components
+// Import of libraries or technical components
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import instanceAxios from '../../axios/axiosInstance';
 
@@ -16,6 +16,13 @@ const actionUserSignin = createAsyncThunk(
       const response = await instanceAxios.post('/signup', newUser);
       return response.data;
     } catch (error) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        return thunkAPI.rejectWithValue(error.response.data.message);
+      }
       return thunkAPI.rejectWithValue(
         'An error occurred while registering your user data. Please try again'
       );

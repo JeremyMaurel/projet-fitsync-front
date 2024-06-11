@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   TextField,
+  Alert,
   Typography,
   List,
   ListItem,
@@ -18,6 +19,11 @@ import {
   useMediaQuery,
   useTheme,
   Chip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from '@mui/material';
 import {
   CheckCircle as CheckCircleIcon,
@@ -49,6 +55,7 @@ function NewSession() {
   const [newSessionActivityId, setNewSessionActivityId] = useState('');
   const [newSessionDateTime, setNewSessionDateTime] = useState('');
   const [totalMet, setTotalMet] = useState(0);
+  const [error, setError] = useState('');
 
   // -- LIST SESSIONS SELECTOR --
   const sessionsList = useAppSelector((state) => state.sessions.sessionsList);
@@ -129,6 +136,7 @@ function NewSession() {
 
   // SUBMIT NEW SESSION
   const handleSubmitAddSession = () => {
+    setError('');
     // Créer un objet représentant la nouvelle session avec le commentaire
     const newSession = {
       duration: newSessionDuration,
@@ -136,8 +144,10 @@ function NewSession() {
       date: newSessionDateTime,
       comment: newSessionComment,
     };
-
-    console.log(newSession);
+    if (!newSession.duration || !newSession.activityId || !newSession.date) {
+      setError('Activity, date and duration must be provided');
+      return;
+    }
 
     // Envoyer la nouvelle session à la base de données en utilisant le thunkAddNewSession
     dispatch(thunkAddNewSession(newSession));
@@ -147,17 +157,30 @@ function NewSession() {
     setNewSessionComment('');
     setNewSessionActivityId('');
     setSearchActivities('');
+    window.location.reload();
   };
 
-  // Fonction de gestion de la suppression
   const handleDeleteSession = (sessionId: number) => {
+    openConfirmDeleteDialog(sessionId);
+  };
+
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const [sessionToDeleteId, setSessionToDeleteId] = useState(null);
+
+  const openConfirmDeleteDialog = (sessionId) => {
+    setSessionToDeleteId(sessionId);
+    setConfirmDeleteOpen(true);
+  };
+
+  const closeConfirmDeleteDialog = () => {
+    setSessionToDeleteId(null);
+    setConfirmDeleteOpen(false);
+  };
+
+  const handleDeleteSessionConfirmed = (sessionId) => {
     dispatch(thunkDeleteSession(sessionId));
   };
 
-  const calculateTotalMet = (activityMet, duration) => {
-    const durationInHours = duration / 60;
-    return activityMet * durationInHours;
-  };
   return (
     <>
       {isDesktop ? <DesktopHeader /> : <Header />}
@@ -195,7 +218,6 @@ function NewSession() {
                           {session.activity_name}
                         </Typography>
                         <Typography variant="body1" color="primary">
-                          {/* Penser a factoriser ici et dans history */}
                           Total METs Expended:{' '}
                           {(session.activity_met * session.duration).toFixed(1)}
                         </Typography>
@@ -214,7 +236,7 @@ function NewSession() {
               </List>
             </CardContent>
           </Card>
-
+          {error && <Alert severity="error">{error}</Alert>}
           {!preSelectedActivity && (
             <Box display="flex" flexDirection="column" mb={2}>
               <TextField
@@ -225,7 +247,8 @@ function NewSession() {
                   handleSearch(event);
                   setActivityName(event.target.value);
                 }}
-                sx={{ mb: 2 }}
+                sx={{ mb: 2, mt: 3 }}
+                required
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -307,9 +330,9 @@ function NewSession() {
 
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateTimePicker
-              defaultValue={currentDateTime}
               sx={{ width: '100%', mb: 5 }}
-              slotProps={{ textField: { fullWidth: true } }}
+              label="Date and time"
+              slotProps={{ textField: { fullWidth: true, required: true } }}
               onChange={(newValue) => {
                 if (newValue !== null) {
                   setNewSessionDateTime(newValue.toISOString());
@@ -321,6 +344,7 @@ function NewSession() {
           <Typography variant="h6" gutterBottom>
             Duration
           </Typography>
+
           <Box display="flex" mb={2}>
             <OutlinedInput
               fullWidth
@@ -331,8 +355,10 @@ function NewSession() {
               endAdornment={
                 <InputAdornment position="end">minutes</InputAdornment>
               }
+              required
             />
           </Box>
+
           {totalMet > 0 && (
             <Typography variant="body1" color="textSecondary" gutterBottom>
               Total MET expended: {totalMet.toFixed(2)}
@@ -367,6 +393,34 @@ function NewSession() {
         </Container>
       </main>
       {isDesktop ? <DesktopFooter /> : <Footer />}
+      <Dialog
+        open={confirmDeleteOpen}
+        onClose={closeConfirmDeleteDialog}
+        aria-labelledby="confirm-delete-title"
+        aria-describedby="confirm-delete-description"
+      >
+        <DialogTitle id="confirm-delete-title">Confirm Delete</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="confirm-delete-description">
+            Are you sure you want to delete this session?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeConfirmDeleteDialog} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              handleDeleteSessionConfirmed(sessionToDeleteId);
+              closeConfirmDeleteDialog();
+            }}
+            color="primary"
+            autoFocus
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

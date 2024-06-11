@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   Box,
@@ -11,6 +11,11 @@ import {
   Grid,
   useTheme,
   useMediaQuery,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import thunkFetchFavorites from '../../store/thunks/thunkFetchFavorites';
@@ -35,8 +40,22 @@ export default function Favorites() {
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
   // Fonction de gestion de la suppression
-  const handleDeleteFavorite = (activityId: number) => {
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const [activityToDeleteId, setActivityToDeleteId] = useState(null);
+
+  const openConfirmDeleteDialog = (activityId) => {
+    setActivityToDeleteId(activityId);
+    setConfirmDeleteOpen(true);
+  };
+
+  const closeConfirmDeleteDialog = () => {
+    setActivityToDeleteId(null);
+    setConfirmDeleteOpen(false);
+  };
+
+  const handleDeleteFavoriteConfirmed = (activityId) => {
     dispatch(thunkDeleteFavorite(activityId));
+    closeConfirmDeleteDialog();
   };
 
   return (
@@ -91,7 +110,9 @@ export default function Favorites() {
                     <Button
                       fullWidth
                       variant="contained"
-                      onClick={() => handleDeleteFavorite(favorite.activity_id)}
+                      onClick={() =>
+                        openConfirmDeleteDialog(favorite.activity_id)
+                      }
                       sx={{
                         color: theme.palette.text.disabled,
                         backgroundColor: theme.palette.action.hover,
@@ -108,6 +129,31 @@ export default function Favorites() {
         </Container>
       </main>
       {isDesktop ? <DesktopFooter /> : <Footer />}
+      <Dialog
+        open={confirmDeleteOpen}
+        onClose={closeConfirmDeleteDialog}
+        aria-labelledby="confirm-delete-title"
+        aria-describedby="confirm-delete-description"
+      >
+        <DialogTitle id="confirm-delete-title">Confirm Delete</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="confirm-delete-description">
+            Are you sure you want to delete this favorite activity?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeConfirmDeleteDialog} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={() => handleDeleteFavoriteConfirmed(activityToDeleteId)}
+            color="primary"
+            autoFocus
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

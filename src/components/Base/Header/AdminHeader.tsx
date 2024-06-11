@@ -18,6 +18,14 @@ export default function AdminHeader() {
             aria-label="menu"
             component={Link}
             to="/"
+            sx={{
+              '&:hover': {
+                backgroundColor: 'transparent',
+              },
+              '& .MuiTouchRipple-root': {
+                display: 'none',
+              },
+            }}
           >
             <img
               src="/fitsync-logo.svg"
