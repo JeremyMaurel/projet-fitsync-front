@@ -12,7 +12,6 @@ import DisconnectedHeader from '../Base/Header/DisconnectedHeader';
 import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
 
 export default function Login() {
-  const pseudo = useAppSelector((state) => state.user.credentials.pseudo ?? '');
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 

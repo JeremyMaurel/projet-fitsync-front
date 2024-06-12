@@ -1,3 +1,6 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-console */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-restricted-globals */
@@ -18,9 +21,20 @@ import {
   Modal,
   useMediaQuery,
   useTheme,
+  Table,
+  TableContainer,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
 
-import { AccountCircle } from '@mui/icons-material';
+import { AccountCircle, Delete as DeleteIcon } from '@mui/icons-material';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux-hooks';
 import Header from '../Base/Header/Header';
 import Footer from '../Base/Footer/Footer';
@@ -32,8 +46,15 @@ import {
 import {
   fetchWeight,
   actionWeightUpdate,
+  fetchAllWeights,
+  deleteWeight,
 } from '../../store/thunks/actionWeightUpdate';
 import DesktopFooter from '../Base/Footer/DesktopFooter';
+import {
+  calculatePasswordStrength,
+  isPasswordValid,
+} from '../../utils/PasswordStrengthLogic';
+import PasswordProgression from '../Base/utils/PasswordProgression';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -63,13 +84,13 @@ export default function Settings() {
   const dispatch = useAppDispatch();
   const pseudo = useAppSelector((state) => state.user.credentials.pseudo);
   const mail = useAppSelector((state) => state.user.mail);
-  const gender = useAppSelector((state) => state.user.gender);
+  const gender = useAppSelector((state) => state.user.gender) || '';
   const birthdate = useAppSelector((state) => state.user.birthdate);
   const weight = useAppSelector((state) => state.weight.value);
   const weightDate = useAppSelector((state) => state.weight.date);
   const height = useAppSelector((state) => state.user.height);
+  const allWeights = useAppSelector((state) => state.weight.allWeights);
 
-  const avatarUrl = 'public/1.jpg';
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -78,9 +99,7 @@ export default function Settings() {
     : '';
 
   const [newWeight, setNewWeight] = useState('');
-  const [newWeightDate, setNewWeightDate] = useState(
-    new Date().toISOString().split('T')[0]
-  );
+  const [newWeightDate, setNewWeightDate] = useState(new Date().toISOString());
   const [personName, setPersonName] = useState<string[]>([gender]);
 
   const [openModal, setOpenModal] = useState(false);
@@ -88,21 +107,37 @@ export default function Settings() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [passwordMismatch, setPasswordMismatch] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState(0);
 
-  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const [openWeightModal, setOpenWeightModal] = useState(false);
+  const [deleteIndex, setDeleteIndex] = useState(null);
+  const [deleteWeightId, setDeleteWeightId] = useState(null);
+
+  const handleChange = (e: any) => {
     const {
       target: { value },
-    } = event;
+    } = e;
     setPersonName(
       typeof value === 'string' ? value.split(',') : (value as string[])
     );
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  interface UpdatedUser {
+    pseudo?: string;
+    mail?: string;
+    height?: number;
+    gender?: string;
+    birthdate?: string;
+  }
 
-    const formData = e.target;
-    const updatedUser = {};
+  const handleSubmit = async (event: {
+    preventDefault: () => void;
+    target: any;
+  }) => {
+    event.preventDefault();
+
+    const formData = event.target;
+    const updatedUser: UpdatedUser = {};
     const updatedWeight = parseFloat(newWeight);
 
     const newPseudo = formData.pseudo.value;
@@ -135,7 +170,7 @@ export default function Settings() {
         actionWeightUpdate({ weight: updatedWeight, date: newWeightDate })
       );
       setNewWeight('');
-      setNewWeightDate(new Date().toISOString().split('T')[0]);
+      setNewWeightDate(new Date().toISOString());
     }
 
     if (Object.keys(updatedUser).length > 0) {
@@ -146,6 +181,7 @@ export default function Settings() {
 
   useEffect(() => {
     dispatch(fetchWeight());
+    dispatch(fetchAllWeights());
   }, [dispatch]);
 
   useEffect(() => {}, [weight, weightDate]);
@@ -158,17 +194,58 @@ export default function Settings() {
     setOpenModal(false);
   };
 
-  const handlePasswordChange = async () => {
+  const handlePasswordModification = async () => {
     if (newPassword !== confirmNewPassword) {
       setPasswordMismatch(true);
       return;
     }
-
+    if (!isPasswordValid(newPassword)) {
+      return;
+    }
     await dispatch(actionChangePassword(newPassword));
     setPasswordMismatch(false);
     handleCloseModal();
   };
 
+  const handleOpenWeightModal = () => {
+    setOpenWeightModal(true);
+  };
+
+  const handleCloseWeightModal = () => {
+    setOpenWeightModal(false);
+  };
+
+  const handleDelete = (index: any, weightId: any) => {
+    setDeleteIndex(index);
+    setDeleteWeightId(weightId);
+  };
+
+  const handleDeleteConfirmed = () => {
+    console.log(`Supprimer l'entrée de poids à l'index ${deleteIndex}`);
+    setDeleteIndex(null);
+    setDeleteWeightId(null);
+  };
+
+  const handleDeleteCancelled = () => {
+    setDeleteIndex(null);
+    setDeleteWeightId(null);
+  };
+
+  const handleDeleteWeight = async (weightId: number) => {
+    try {
+      await dispatch(deleteWeight(weightId));
+      console.log(weightId);
+
+      await dispatch(fetchWeight());
+    } catch (error) {
+      console.error('Failed to delete weight:', error);
+    }
+  };
+  const handleNewPassword = (e: any) => {
+    const newPass = e.target.value;
+    setNewPassword(newPass);
+    setPasswordStrength(calculatePasswordStrength(newPass));
+  };
   return (
     <>
       {isDesktop ? <DesktopHeader /> : <Header />}
@@ -246,6 +323,7 @@ export default function Settings() {
             >
               User Weight
             </Typography>
+            <Button onClick={handleOpenWeightModal}>Show All Weights</Button>
             {weight !== null && (
               <div>
                 <Typography>
@@ -305,6 +383,7 @@ export default function Settings() {
               defaultValue={mail}
             />
             <Button onClick={handleOpenModal}>Change Password</Button>
+
             <Button
               type="submit"
               fullWidth
@@ -353,8 +432,9 @@ export default function Settings() {
             name="newPassword"
             type="password"
             value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
+            onChange={handleNewPassword}
           />
+          <PasswordProgression passwordStrength={passwordStrength} />
           <TextField
             margin="normal"
             required
@@ -367,7 +447,7 @@ export default function Settings() {
             onChange={(e) => setConfirmNewPassword(e.target.value)}
           />
           <Button
-            onClick={handlePasswordChange}
+            onClick={handlePasswordModification}
             fullWidth
             variant="contained"
             color="primary"
@@ -377,6 +457,97 @@ export default function Settings() {
           </Button>
         </Box>
       </Modal>
+      <Modal
+        open={openWeightModal}
+        onClose={handleCloseWeightModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Box
+          sx={{
+            maxHeight: '80vh',
+            overflowY: 'auto',
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            padding: 2,
+          }}
+        >
+          <Typography variant="h6" component="h2" gutterBottom>
+            All Weights
+          </Typography>
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Date</TableCell>
+                  <TableCell>Weight (kg)</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {allWeights ? (
+                  [...allWeights]
+                    .sort(
+                      (a, b) =>
+                        new Date(a.date).getTime() - new Date(b.date).getTime()
+                    )
+                    .map((weightData, index) => (
+                      <TableRow key={index}>
+                        <TableCell>
+                          {new Date(weightData.date).toLocaleDateString()}
+                        </TableCell>
+                        <TableCell>{weightData.value}</TableCell>
+                        <TableCell>
+                          <IconButton
+                            onClick={() => handleDelete(index, weightData.id)}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={3}>No weights available</TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
+      </Modal>
+      <Dialog
+        open={deleteIndex !== null}
+        onClose={handleDeleteCancelled}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">Confirm Deletion</DialogTitle>
+        <DialogContent>
+          <Typography variant="body1">
+            Are you sure you want to delete this weight entry?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancelled} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              handleDeleteWeight(deleteWeightId ?? 0);
+              handleDeleteConfirmed();
+            }}
+            color="primary"
+            autoFocus
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

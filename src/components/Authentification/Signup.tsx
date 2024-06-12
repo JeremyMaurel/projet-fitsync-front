@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-control-regex */
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Send } from 'react-feather';
@@ -15,6 +17,11 @@ import { useAppDispatch } from '../../hooks/redux-hooks';
 import actionUserSignin from '../../store/thunks/actionUserSignin';
 import DisconnectedHeader from '../Base/Header/DisconnectedHeader';
 import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
+import PasswordProgression from '../Base/utils/PasswordProgression';
+import {
+  calculatePasswordStrength,
+  isPasswordValid,
+} from '../../utils/PasswordStrengthLogic';
 
 export default function Signup() {
   const dispatch = useAppDispatch();
@@ -26,9 +33,10 @@ export default function Signup() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [conditions, setConditions] = useState(false);
   const [error, setError] = useState('');
+  const [passwordStrength, setPasswordStrength] = useState(0);
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, checked } = event.target;
 
     switch (name) {
       case 'pseudo':
@@ -39,20 +47,27 @@ export default function Signup() {
         break;
       case 'password':
         setPassword(value);
+        setPasswordStrength(calculatePasswordStrength(value));
         break;
       case 'confirmPassword':
         setConfirmPassword(value);
         break;
       case 'conditions':
-        setConditions(event.target.checked);
+        setConditions(checked);
         break;
       default:
         break;
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const isValidEmail = (mailToValidate: string) => {
+    const emailRegex =
+      /^(?=.{1,64}@.{1,255}$)(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)])$/i;
+    return emailRegex.test(mailToValidate);
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setError('');
 
     if (!pseudo || !mail || !password || !confirmPassword) {
@@ -60,8 +75,17 @@ export default function Signup() {
       return;
     }
 
+    if (!isValidEmail(mail)) {
+      setError('Mail is not valid');
+      return;
+    }
     if (password !== confirmPassword) {
       setError('Passwords do not match');
+      return;
+    }
+
+    if (!isPasswordValid(password)) {
+      setError('Password does not meet the required criteria');
       return;
     }
 
@@ -72,13 +96,20 @@ export default function Signup() {
 
     const newUser = { pseudo, mail, password };
 
-    dispatch(actionUserSignin(newUser)).then((result) => {
+    try {
+      const result = await dispatch(actionUserSignin(newUser));
       if (actionUserSignin.fulfilled.match(result)) {
         navigate('/login');
       } else {
-        setError('Signup failed. Please try again.');
+        const errorMessage =
+          typeof result.payload === 'string'
+            ? result.payload
+            : 'Signup failed. Please try again.';
+        setError(errorMessage);
       }
-    });
+    } catch (err: any) {
+      setError(err.message || 'Signup failed. Please try again.');
+    }
   };
 
   return (
@@ -87,27 +118,20 @@ export default function Signup() {
       <Container component="main" maxWidth="xs">
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 15,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
           }}
         >
-          <Typography variant="h3" component="h1" gutterBottom>
-            Hello dear user!
+          <Typography variant="h4" component="h1" gutterBottom>
+            Hello dear user !
           </Typography>
-          <Typography
-            component="p"
-            variant="body2"
-            align="center"
-            sx={{ mt: 2 }}
-          >
-            Please create your account to access the app <br />
-            Already have an account? &nbsp;
-            <Link to="/login">Login here</Link>
+          <Typography component="p" sx={{ mb: 2 }}>
+            Please create your account to access the app
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
-            {error && <Alert severity="error">{error}</Alert>}
+          {error && <Alert severity="error">{error}</Alert>}
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -115,7 +139,7 @@ export default function Signup() {
               id="pseudo"
               label="Choose your pseudo"
               name="pseudo"
-              autoComplete="pseudo"
+              autoComplete="new-username"
               autoFocus
               value={pseudo}
               onChange={handleChange}
@@ -127,7 +151,7 @@ export default function Signup() {
               id="email"
               label="Your email"
               name="mail"
-              autoComplete="email"
+              autoComplete="new-email"
               value={mail}
               onChange={handleChange}
             />
@@ -139,10 +163,11 @@ export default function Signup() {
               label="Choose your password"
               type="password"
               id="password"
-              autoComplete="current-password"
+              autoComplete="new-password"
               value={password}
               onChange={handleChange}
             />
+            <PasswordProgression passwordStrength={passwordStrength} />
             <TextField
               margin="normal"
               required
@@ -151,6 +176,7 @@ export default function Signup() {
               label="Confirm your password"
               type="password"
               id="password--confirm"
+              autoComplete="new-password"
               value={confirmPassword}
               onChange={handleChange}
             />
@@ -175,6 +201,11 @@ export default function Signup() {
             >
               Create my account
             </Button>
+            <Link to="/login">
+              <Typography variant="body2">
+                Already have an account? Login here
+              </Typography>
+            </Link>
           </Box>
         </Box>
       </Container>

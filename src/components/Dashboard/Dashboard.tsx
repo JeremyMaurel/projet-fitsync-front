@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react/function-component-definition */
 import { Link as RouterLink } from 'react-router-dom';
@@ -19,6 +20,7 @@ import {
   TextField,
   Button,
   Chip,
+  LinearProgress,
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -45,7 +47,9 @@ import {
   fetchGraphicWeight,
   actionWeightUpdate,
 } from '../../store/thunks/actionWeightUpdate';
+import actionThunkFetchSessions from '../../store/thunks/thunkFetchSessions';
 import { actionUserUpdate } from '../../store/thunks/actionUserUpdate';
+import getTotalMetPerWeek from '../../utils/getWeeklyMets';
 
 ChartJS.register(
   CategoryScale,
@@ -64,19 +68,24 @@ const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
   const weight = useAppSelector((state) => state.weight.value);
   const weightDate = useAppSelector((state) => state.weight.date);
-  const targetWeight = useAppSelector((state) => state.user.objective);
+  const targetMet = useAppSelector((state) => state.user.objective) || 0;
+  const sessions = useAppSelector((state) => state.sessions.sessionsList);
+  const totalMetPerWeek = getTotalMetPerWeek(sessions);
+  useEffect(() => {
+    dispatch(actionThunkFetchSessions());
+  }, [dispatch]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newWeight, setNewWeight] = useState('');
   const [isTargetModalOpen, setIsTargetModalOpen] = useState(false);
-  const [newTargetWeight, setNewTargetWeight] = useState('');
+  const [newTargetMet, setNewTargetMet] = useState('');
 
-  const data = {
-    labels: weightDate,
+  const data: any = {
+    labels: weightDate || [],
     datasets: [
       {
         label: 'Weight (kg)',
-        data: weight,
+        data: weight || [],
         borderColor: '#adfa1d',
         backgroundColor: 'rgba(173, 250, 29, 0.5)',
       },
@@ -100,7 +109,7 @@ const Dashboard: React.FC = () => {
     setIsModalOpen(false);
   };
 
-  const handleWeightChange = (event) => {
+  const handleWeightChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewWeight(event.target.value);
   };
 
@@ -110,6 +119,7 @@ const Dashboard: React.FC = () => {
     );
     setNewWeight('');
     setIsModalOpen(false);
+    window.location.reload();
   };
 
   const handleOpenTargetModal = () => {
@@ -120,13 +130,15 @@ const Dashboard: React.FC = () => {
     setIsTargetModalOpen(false);
   };
 
-  const handleTargetWeightChange = (event) => {
-    setNewTargetWeight(event.target.value);
+  const handleTargetWeightChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setNewTargetMet(event.target.value);
   };
 
   const handleSaveTargetWeight = () => {
-    dispatch(actionUserUpdate({ objective: parseFloat(newTargetWeight) }));
-    setNewTargetWeight('');
+    dispatch(actionUserUpdate({ objective: parseFloat(newTargetMet) }));
+    setNewTargetMet('');
     setIsTargetModalOpen(false);
   };
 
@@ -149,7 +161,28 @@ const Dashboard: React.FC = () => {
           <Typography variant="h3" component="h1" gutterBottom>
             Dashboard
           </Typography>
-
+          <Card sx={{ mb: 2, boxShadow: 3, borderRadius: 2 }}>
+            <CardContent>
+              <Typography variant="h5" color="primary">
+                Weekly METs Tracking
+              </Typography>
+              <Divider sx={{ my: 2 }} />
+              <Typography variant="body1" color="text.secondary">
+                Track your METs objectives and achievements.
+              </Typography>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ mt: 2, mb: 2 }}
+              >
+                Achieved METs: {totalMetPerWeek}
+              </Typography>
+              <LinearProgress
+                variant="determinate"
+                value={(totalMetPerWeek / targetMet) * 100}
+              />
+            </CardContent>
+          </Card>
           <Card sx={{ mb: 2, boxShadow: 3, borderRadius: 2 }}>
             <CardContent>
               <Box display="flex" flexDirection="column">
@@ -159,21 +192,28 @@ const Dashboard: React.FC = () => {
                   justifyContent="space-between"
                 >
                   <Typography variant="h5" color="primary">
-                    Goals Tracking
+                    METs Objectives
                   </Typography>
-                  <IconButton color="primary" onClick={handleOpenTargetModal}>
-                    <AddIcon />
-                  </IconButton>
                 </Box>
                 <Divider sx={{ my: 2 }} />
-                <Typography variant="body1" color="text.secondary">
-                  Track your goals and monitor your progress.
+                <Typography
+                  variant="body1"
+                  color="text.secondary"
+                  fontSize={13}
+                  textAlign="justify"
+                >
+                  METs (Metabolic Equivalent of Task) measure the intensity of
+                  physical activities. The World Health Organization (WHO)
+                  recommends 600 to 1200 MET-minutes per week for basic health.
+                  For optimal health benefits, aim for 3000 to 4000 MET-minutes
+                  per week. Set your weekly goal here.
                 </Typography>
                 <Chip
+                  onClick={handleOpenTargetModal}
                   label={
-                    targetWeight
-                      ? `Target Weight: ${targetWeight} kg`
-                      : 'Set your target weight'
+                    targetMet
+                      ? `Target METs: ${targetMet} `
+                      : 'Set your target METs'
                   }
                   size="small"
                   sx={{
@@ -287,7 +327,7 @@ const Dashboard: React.FC = () => {
           }}
         >
           <Typography id="modal-title" variant="h5" component="h2" gutterBottom>
-            Add New Weight
+            Add Current Weight
           </Typography>
           <TextField
             id="new-weight"
@@ -333,13 +373,13 @@ const Dashboard: React.FC = () => {
             component="h2"
             gutterBottom
           >
-            Set Target Weight
+            Set your METs objectives
           </Typography>
           <TextField
             id="new-target-weight"
-            label="Enter Target Weight (kg)"
+            label="Enter Target METs"
             variant="outlined"
-            value={newTargetWeight}
+            value={newTargetMet}
             onChange={handleTargetWeightChange}
             fullWidth
             autoFocus

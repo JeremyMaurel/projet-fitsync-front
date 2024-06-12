@@ -19,9 +19,6 @@ import Footer from '../Base/Footer/Footer';
 import DesktopHeader from '../Base/Header/DesktopHeader';
 import DesktopFooter from '../Base/Footer/DesktopFooter';
 
-// Stylesheet
-import './CategoryId.scss';
-
 export default function CategoryId() {
   // -- STATE REDUX --
   // Je récupère toutes les catégories de l'état
@@ -96,7 +93,7 @@ export default function CategoryId() {
                             {activity.name}
                           </Typography>
                           <Typography variant="body2" color="primary">
-                            MET: {activity.met}
+                            MET per minute: {activity.met}
                           </Typography>
                         </Link>
                       </CardContent>

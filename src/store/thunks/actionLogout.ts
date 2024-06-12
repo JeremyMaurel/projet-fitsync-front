@@ -3,13 +3,8 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import instanceAxios from '../../axios/axiosInstance';
 
-// Import of RootState
-// eslint-disable-next-line import/no-cycle
-import { RootState } from '../store';
-
 const actionLogout = createAsyncThunk('user/LOGOUT', async (_, thunkAPI) => {
   try {
-    const state = thunkAPI.getState() as RootState;
     const response = await instanceAxios.post('/logout');
     return response.data;
   } catch (error) {

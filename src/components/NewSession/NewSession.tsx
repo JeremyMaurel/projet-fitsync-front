@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // Import of librairies or technical components
 import { useState, useEffect } from 'react';
@@ -6,6 +7,7 @@ import {
   Box,
   Button,
   TextField,
+  Alert,
   Typography,
   List,
   ListItem,
@@ -17,13 +19,16 @@ import {
   OutlinedInput,
   useMediaQuery,
   useTheme,
-  IconButton,
   Chip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from '@mui/material';
 import {
   CheckCircle as CheckCircleIcon,
   Add as AddIcon,
-  Delete,
   Search as SearchIcon,
 } from '@mui/icons-material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -47,9 +52,15 @@ function NewSession() {
 
   // -- NEW SESSION STATES --
   const [newSessionComment, setNewSessionComment] = useState('');
-  const [newSessionDuration, setNewSessionDuration] = useState('');
-  const [newSessionActivityId, setNewSessionActivityId] = useState('');
+  const [newSessionDuration, setNewSessionDuration] = useState<number | null>(
+    null
+  );
+  const [newSessionActivityId, setNewSessionActivityId] = useState<
+    number | null
+  >(null);
   const [newSessionDateTime, setNewSessionDateTime] = useState('');
+  const [totalMet, setTotalMet] = useState(0);
+  const [error, setError] = useState('');
 
   // -- LIST SESSIONS SELECTOR --
   const sessionsList = useAppSelector((state) => state.sessions.sessionsList);
@@ -82,12 +93,12 @@ function NewSession() {
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
   // -- LOCAL UTILS STATES --
-  const [activityName, setActivityName] = useState('');
+  const [activityName, setActivityName] = useState<string>('');
   const [searchActivities, setSearchActivities] = useState('');
   const [filteredActivities, setFilteredActivities] = useState<IActivity[]>([]);
   const currentDateTime = dayjs();
 
-  const handleSearch = (event) => {
+  const handleSearch = (event: any) => {
     setSearchActivities(event.target.value);
     if (event.target.value === '') {
       setFilteredActivities([]);
@@ -99,26 +110,41 @@ function NewSession() {
       );
     }
   };
-  const handleNewSessionDuration = (event) => {
-    setNewSessionDuration(event.target.value);
+  const handleNewSessionDuration = (event: any) => {
+    const duration = Number(event.target.value);
+    setNewSessionDuration(duration);
+
+    // Calculer le MET total dépensé
+    const selectedActivity = activitiesList.find(
+      (activity) => activity.id === newSessionActivityId
+    );
+    if (selectedActivity) {
+      const metValue = selectedActivity.met; // Assurez-vous que le champ MET est disponible dans l'objet activité
+      const totalMetValue = metValue * duration;
+      setTotalMet(totalMetValue);
+    }
   };
 
-  const handleNewSessionComment = (event) => {
+  const handleNewSessionComment = (event: any) => {
     setNewSessionComment(event.target.value);
   };
 
-  const handleSelectActivity = (activityId: number, activityName: string) => {
+  const handleSelectActivity = (
+    activityId: number,
+    selectedActivityName: string
+  ) => {
     setNewSessionActivityId(activityId); // Définit l'ID de l'activité sélectionnée
     setSearchActivities(activityName); // Met à jour le terme de recherche avec le nom de l'activité
     setFilteredActivities([]); // Réinitialise la liste des activités filtrées
   };
 
-  const handlePreSelectedActivity = (idFromUrl) => {
-    setNewSessionActivityId(idFromUrl);
+  const handlePreSelectedActivity = (idSelectedFromUrl: number) => {
+    setNewSessionActivityId(idSelectedFromUrl);
   };
 
   // SUBMIT NEW SESSION
   const handleSubmitAddSession = () => {
+    setError('');
     // Créer un objet représentant la nouvelle session avec le commentaire
     const newSession = {
       duration: newSessionDuration,
@@ -126,21 +152,47 @@ function NewSession() {
       date: newSessionDateTime,
       comment: newSessionComment,
     };
+    if (!newSession.duration || !newSession.activityId || !newSession.date) {
+      setError('Activity, date and duration must be provided');
+      return;
+    }
 
-    console.log(newSession);
+    const selectedDateTime = dayjs(newSession.date);
+    const maxAllowedDateTime = dayjs().add(7, 'day');
+    if (selectedDateTime.isAfter(maxAllowedDateTime)) {
+      setError('Please select a date within the coming week.');
+      return;
+    }
 
     // Envoyer la nouvelle session à la base de données en utilisant le thunkAddNewSession
     dispatch(thunkAddNewSession(newSession));
 
     // Réinitialiser le champ de commentaire après l'ajout de la session
-    setNewSessionDuration('');
+    setNewSessionDuration(null);
     setNewSessionComment('');
-    setNewSessionActivityId('');
+    setNewSessionActivityId(null);
     setSearchActivities('');
+    window.location.reload();
   };
 
-  // Fonction de gestion de la suppression
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const [sessionToDeleteId, setSessionToDeleteId] = useState<number | null>(
+    null
+  );
+  const openConfirmDeleteDialog = (sessionId: number) => {
+    setSessionToDeleteId(sessionId);
+    setConfirmDeleteOpen(true);
+  };
   const handleDeleteSession = (sessionId: number) => {
+    openConfirmDeleteDialog(sessionId);
+  };
+
+  const closeConfirmDeleteDialog = () => {
+    setSessionToDeleteId(null);
+    setConfirmDeleteOpen(false);
+  };
+
+  const handleDeleteSessionConfirmed = (sessionId: number) => {
     dispatch(thunkDeleteSession(sessionId));
   };
 
@@ -181,7 +233,8 @@ function NewSession() {
                           {session.activity_name}
                         </Typography>
                         <Typography variant="body1" color="primary">
-                          MET {session.activity_met}
+                          Total METs Expended:{' '}
+                          {(session.activity_met * session.duration).toFixed(1)}
                         </Typography>
                       </Box>
                       <Chip
@@ -198,7 +251,7 @@ function NewSession() {
               </List>
             </CardContent>
           </Card>
-
+          {error && <Alert severity="error">{error}</Alert>}
           {!preSelectedActivity && (
             <Box display="flex" flexDirection="column" mb={2}>
               <TextField
@@ -209,7 +262,8 @@ function NewSession() {
                   handleSearch(event);
                   setActivityName(event.target.value);
                 }}
-                sx={{ mb: 2 }}
+                sx={{ mb: 2, mt: 3 }}
+                required
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -251,35 +305,36 @@ function NewSession() {
               </Typography>
               <Card
                 sx={{
-                  alignItems: 'flex-center',
-                  display: 'flex',
-                  justifyContent: 'space-between',
                   mb: 4,
                   boxShadow: 3,
+                  padding: 3,
                 }}
               >
-                <Typography
-                  variant="h6"
-                  color="primary"
-                  gutterBottom
-                  sx={{ margin: 3 }}
-                >
-                  {activityToDisplay?.name}
-                </Typography>
-                <Button
-                  variant="contained"
-                  endIcon={<CheckCircleIcon />}
+                <Box
                   sx={{
-                    margin: 3,
-                    bgcolor: '#adfa1d',
-                    '&:hover': {
-                      bgcolor: '#8bcc0f',
-                    },
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
                   }}
-                  onClick={() => handlePreSelectedActivity(idFromUrl)}
                 >
-                  Confirm the selected activity
-                </Button>
+                  <Typography variant="body1" gutterBottom>
+                    {activityToDisplay?.name}
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    endIcon={<CheckCircleIcon />}
+                    sx={{
+                      mt: 2,
+                      bgcolor: '#ADFA1D',
+                      '&:hover': {
+                        bgcolor: '#8BCC0F',
+                      },
+                    }}
+                    onClick={() => handlePreSelectedActivity(idFromUrl)}
+                  >
+                    Confirm the selected activity
+                  </Button>
+                </Box>
               </Card>
             </>
           )}
@@ -290,9 +345,9 @@ function NewSession() {
 
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateTimePicker
-              defaultValue={currentDateTime}
               sx={{ width: '100%', mb: 5 }}
-              slotProps={{ textField: { fullWidth: true } }}
+              label="Date and time"
+              slotProps={{ textField: { fullWidth: true, required: true } }}
               onChange={(newValue) => {
                 if (newValue !== null) {
                   setNewSessionDateTime(newValue.toISOString());
@@ -304,6 +359,7 @@ function NewSession() {
           <Typography variant="h6" gutterBottom>
             Duration
           </Typography>
+
           <Box display="flex" mb={2}>
             <OutlinedInput
               fullWidth
@@ -314,9 +370,15 @@ function NewSession() {
               endAdornment={
                 <InputAdornment position="end">minutes</InputAdornment>
               }
+              required
             />
           </Box>
 
+          {totalMet > 0 && (
+            <Typography variant="body1" color="textSecondary" gutterBottom>
+              Total MET expended: {totalMet.toFixed(2)}
+            </Typography>
+          )}
           <TextField
             fullWidth
             multiline
@@ -346,6 +408,34 @@ function NewSession() {
         </Container>
       </main>
       {isDesktop ? <DesktopFooter /> : <Footer />}
+      <Dialog
+        open={confirmDeleteOpen}
+        onClose={closeConfirmDeleteDialog}
+        aria-labelledby="confirm-delete-title"
+        aria-describedby="confirm-delete-description"
+      >
+        <DialogTitle id="confirm-delete-title">Confirm Delete</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="confirm-delete-description">
+            Are you sure you want to delete this session?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeConfirmDeleteDialog} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              handleDeleteSessionConfirmed(sessionToDeleteId ?? 0);
+              closeConfirmDeleteDialog();
+            }}
+            color="primary"
+            autoFocus
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

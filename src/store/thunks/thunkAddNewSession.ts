@@ -3,8 +3,8 @@ import instanceAxios from '../../axios/axiosInstance';
 
 // Définition du type des données envoyées lors de l'ajout d'une session
 interface NewSession {
-  duration: number;
-  activityId: number;
+  duration: number | null;
+  activityId: number | null;
   date: string;
   comment?: string;
 }
@@ -36,9 +36,7 @@ const thunkAddNewSession = createAsyncThunk(
       // Renvoi des données de la réponse
       return response.data;
     } catch (error) {
-      // Gestion des erreurs
-      console.error("Erreur lors de l'ajout de la session :", error);
-      throw error;
+      return error;
     }
   }
 );

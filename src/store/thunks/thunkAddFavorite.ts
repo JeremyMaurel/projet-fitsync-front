@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import instanceAxios from '../../axios/axiosInstance';
 
@@ -6,7 +7,7 @@ const thunkAddFavorite = createAsyncThunk(
   async (activityId: number) => {
     try {
       const response = await instanceAxios.post('/favorites', {
-        activityId: activityId,
+        activityId,
       });
       return response.data;
     } catch (error) {

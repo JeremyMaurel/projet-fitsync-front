@@ -6,6 +6,10 @@ import actionLogout from '../thunks/actionLogout';
 import actionThunkFetchUser from '../thunks/thunkFetchUser';
 import actionCheckLogin from '../thunks/actionCheckLogin';
 import {
+  actionResetPassword,
+  actionNewPassword,
+} from '../thunks/actionResetPassword';
+import {
   actionUserUpdate,
   actionChangePassword,
 } from '../thunks/actionUserUpdate';
@@ -161,6 +165,23 @@ const userReducer = createReducer(initialState, (builder) => {
       state.credentials.password = '';
     })
     .addCase(actionChangePassword.rejected, (state) => {
+      state.error = 'Failed to change password. Please try again.';
+    })
+
+    .addCase(
+      actionResetPassword.fulfilled,
+      (state, action: PayloadAction<{ mail: string }>) => {
+        state.mail = action.payload.mail;
+      }
+    )
+    .addCase(actionResetPassword.rejected, (state) => {
+      state.error = 'Failed to send reset password mail. Please try again.';
+    })
+
+    .addCase(actionNewPassword.fulfilled, (state) => {
+      state.credentials.password = '';
+    })
+    .addCase(actionNewPassword.rejected, (state) => {
       state.error = 'Failed to change password. Please try again.';
     });
 });

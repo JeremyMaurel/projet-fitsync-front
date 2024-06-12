@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link, useLocation } from 'react-router-dom';
 import { AppBar, Toolbar, IconButton, Box, Button } from '@mui/material';
 import { Settings as SettingsIcon } from '@mui/icons-material';
@@ -30,7 +31,7 @@ export default function DesktopHeader() {
     textShadow: '0 0 10px #adfa1d, 0 0 20px #adfa1d, 0 0 30px #adfa1d',
   };
 
-  const getButtonStyles = (path) =>
+  const getButtonStyles = (path: any) =>
     location.pathname === path ? activeButtonStyles : buttonStyles;
 
   return (
@@ -43,7 +44,15 @@ export default function DesktopHeader() {
             aria-label="menu"
             component={Link}
             to="/home"
-            sx={{ mr: 4 }}
+            sx={{
+              mr: 4,
+              '&:hover': {
+                backgroundColor: 'transparent',
+              },
+              '& .MuiTouchRipple-root': {
+                display: 'none',
+              },
+            }}
           >
             <img
               src="/fitsync-logo.svg"
@@ -72,7 +81,7 @@ export default function DesktopHeader() {
               color="inherit"
               component={Link}
               to="/new-session/new"
-              sx={getButtonStyles('/new-session')}
+              sx={getButtonStyles('/new-session/new')}
             >
               New session
             </Button>

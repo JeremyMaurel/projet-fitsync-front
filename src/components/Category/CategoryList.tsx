@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Import of libraries or technical components
 import { Link } from 'react-router-dom';
 import {
@@ -44,7 +45,7 @@ import DesktopHeader from '../Base/Header/DesktopHeader';
 import DesktopFooter from '../Base/Footer/DesktopFooter';
 
 // Mapping of activity names to icons
-const activityIcons = {
+const activityIcons: any = {
   Bicycling: DirectionsBike,
   'Conditionning Exercise': FitnessCenter,
   Dancing: SportsGymnastics,
@@ -74,7 +75,6 @@ export default function CategoryList() {
   const categoriesList = useAppSelector(
     (state) => state.categories.categoriesList
   );
-  console.log(categoriesList);
 
   // Utilisation du thème pour récupérer la couleur primaire
   const theme = useTheme();

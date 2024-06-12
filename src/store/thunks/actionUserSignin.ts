@@ -1,4 +1,5 @@
-// Import of librairies or technical components
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// Import of libraries or technical components
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import instanceAxios from '../../axios/axiosInstance';
 
@@ -15,12 +16,18 @@ const actionUserSignin = createAsyncThunk(
     try {
       const response = await instanceAxios.post('/signup', newUser);
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        return thunkAPI.rejectWithValue(error.response.data.message);
+      }
       return thunkAPI.rejectWithValue(
         'An error occurred while registering your user data. Please try again'
       );
     }
   }
 );
-
 export default actionUserSignin;

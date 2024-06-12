@@ -1,4 +1,3 @@
-import React from 'react';
 import { Typography, Container, Paper, Grid } from '@mui/material';
 import AdminFooter from '../Base/Footer/AdminFooter';
 import AdminHeader from '../Base/Header/AdminHeader';

@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 // Import of libraries or technical components
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 // Import des bibliothèques ou des composants techniques
 
 import {
@@ -9,12 +9,16 @@ import {
   Box,
   Typography,
   Card,
-  CardContent,
   CardHeader,
   useTheme,
   Grid,
   Button,
   useMediaQuery,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from '@mui/material';
 import dayjs from 'dayjs';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
@@ -39,12 +43,27 @@ export default function History() {
 
   // Utilisation du thème pour récupérer la couleur primaire
   const theme = useTheme();
-
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
   // Fonction de gestion de la suppression
-  const handleDeleteSession = (sessionId: number) => {
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const [sessionToDeleteId, setSessionToDeleteId] = useState<number | null>(
+    null
+  );
+
+  const openConfirmDeleteDialog = (sessionId: number) => {
+    setSessionToDeleteId(sessionId);
+    setConfirmDeleteOpen(true);
+  };
+
+  const closeConfirmDeleteDialog = () => {
+    setSessionToDeleteId(null);
+    setConfirmDeleteOpen(false);
+  };
+
+  const handleDeleteSessionConfirmed = (sessionId: number) => {
     dispatch(thunkDeleteSession(sessionId));
+    closeConfirmDeleteDialog();
   };
 
   return (
@@ -90,12 +109,19 @@ export default function History() {
                             {dayjs(session.date).format('HH:mm')}
                           </Typography>
                           {session.activity_name}
+
                           <Typography
                             variant="body2"
                             color="textSecondary"
                             sx={{ mt: 2 }}
                           >
                             Duration: {session.duration} mn
+                          </Typography>
+                          <Typography variant="body2" color="primary">
+                            Total METs :
+                            {(session.activity_met * session.duration).toFixed(
+                              1
+                            )}
                           </Typography>
                         </Link>
                         <hr
@@ -121,7 +147,7 @@ export default function History() {
                     <Button
                       fullWidth
                       variant="contained"
-                      onClick={() => handleDeleteSession(session.id)}
+                      onClick={() => openConfirmDeleteDialog(session.id)}
                       sx={{
                         color: theme.palette.text.disabled,
                         backgroundColor: theme.palette.action.hover,
@@ -137,6 +163,31 @@ export default function History() {
         </Box>
       </Container>
       {isDesktop ? <DesktopFooter /> : <Footer />}
+      <Dialog
+        open={confirmDeleteOpen}
+        onClose={closeConfirmDeleteDialog}
+        aria-labelledby="confirm-delete-title"
+        aria-describedby="confirm-delete-description"
+      >
+        <DialogTitle id="confirm-delete-title">Confirm Delete</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="confirm-delete-description">
+            Are you sure you want to delete this session?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeConfirmDeleteDialog} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={() => handleDeleteSessionConfirmed(sessionToDeleteId ?? 0)}
+            color="primary"
+            autoFocus
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

@@ -30,6 +30,7 @@ import HomeAdmin from '../Home/HomeAdmin';
 import ActivityRequest from '../ActivityRequest/ActivityRequest';
 import AdminSettings from '../Settings/AdminSettings';
 import ErrorPage from '../Base/ErrorPage/ErrorPage';
+import ResetPasswordNew from '../ResetPassword/ResetPasswordNew';
 
 const darkTheme = createTheme({
   palette: {
@@ -75,6 +76,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/reset-password/new" element={<ResetPasswordNew />} />
           <Route path="/contact" element={<Contact />} />
           {logged && <Route path="/home" element={<Home />} />}
           {logged && <Route path="/home-admin" element={<HomeAdmin />} />}
