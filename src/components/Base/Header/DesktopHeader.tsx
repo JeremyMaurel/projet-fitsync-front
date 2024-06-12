@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link, useLocation } from 'react-router-dom';
 import { AppBar, Toolbar, IconButton, Box, Button } from '@mui/material';
 import { Settings as SettingsIcon } from '@mui/icons-material';
@@ -30,7 +31,7 @@ export default function DesktopHeader() {
     textShadow: '0 0 10px #adfa1d, 0 0 20px #adfa1d, 0 0 30px #adfa1d',
   };
 
-  const getButtonStyles = (path) =>
+  const getButtonStyles = (path: any) =>
     location.pathname === path ? activeButtonStyles : buttonStyles;
 
   return (

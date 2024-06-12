@@ -12,12 +12,16 @@ import {
   TextField,
   Typography,
   Alert,
-  LinearProgress,
 } from '@mui/material';
 import { useAppDispatch } from '../../hooks/redux-hooks';
 import actionUserSignin from '../../store/thunks/actionUserSignin';
 import DisconnectedHeader from '../Base/Header/DisconnectedHeader';
 import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
+import PasswordProgression from '../Base/utils/PasswordProgression';
+import {
+  calculatePasswordStrength,
+  isPasswordValid,
+} from '../../utils/PasswordStrengthLogic';
 
 export default function Signup() {
   const dispatch = useAppDispatch();
@@ -30,26 +34,6 @@ export default function Signup() {
   const [conditions, setConditions] = useState(false);
   const [error, setError] = useState('');
   const [passwordStrength, setPasswordStrength] = useState(0);
-
-  const calculatePasswordStrength = (passwordToAnalyze: string) => {
-    let strength = 0;
-    if (/[A-Z]/.test(passwordToAnalyze)) {
-      strength += 1;
-    }
-    if (/[0-9]/.test(passwordToAnalyze)) {
-      strength += 1;
-    }
-    if (/[^A-Za-z0-9]/.test(passwordToAnalyze)) {
-      strength += 1;
-    }
-    if (/[a-z]/.test(passwordToAnalyze)) {
-      strength += 1;
-    }
-    if (passwordToAnalyze.length >= 8) {
-      strength += 1;
-    }
-    return (strength / 5) * 100;
-  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, checked } = event.target;
@@ -100,7 +84,7 @@ export default function Signup() {
       return;
     }
 
-    if (passwordStrength < 100) {
+    if (!isPasswordValid(password)) {
       setError('Password does not meet the required criteria');
       return;
     }
@@ -183,17 +167,7 @@ export default function Signup() {
               value={password}
               onChange={handleChange}
             />
-            <LinearProgress
-              variant="determinate"
-              value={passwordStrength}
-              sx={{ mt: 0.5, mb: 1.5 }}
-            />
-            <Typography variant="body2" color="textSecondary">
-              {passwordStrength < 100
-                ? 'Password must contain at least one uppercase letter, one lowercase letter, one number, one special character, and 8 characters.'
-                : 'Password is strong enough'}
-            </Typography>
-
+            <PasswordProgression passwordStrength={passwordStrength} />
             <TextField
               margin="normal"
               required

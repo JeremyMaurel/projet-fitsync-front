@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-loop-func */
 import dayjs from 'dayjs';
 
-export default function getTotalMetPerWeek(sessions) {
+export default function getTotalMetPerWeek(sessions: any) {
   let totalMetPerWeek = 0;
 
   const currentDate = dayjs();
@@ -13,10 +14,11 @@ export default function getTotalMetPerWeek(sessions) {
     const date = thisWeekStart.add(i, 'day');
     const formattedDate = date.format('YYYY-MM-DD');
     const sessionsForDate = sessions.filter(
-      (session) => dayjs(session.date).format('YYYY-MM-DD') === formattedDate
+      (session: any) =>
+        dayjs(session.date).format('YYYY-MM-DD') === formattedDate
     );
 
-    sessionsForDate.forEach((session) => {
+    sessionsForDate.forEach((session: any) => {
       const sessionMet = session.duration * session.activity_met;
       totalMetPerWeek += sessionMet;
     });

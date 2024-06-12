@@ -1,22 +1,32 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
 /* eslint-disable react/no-unescaped-entities */
-import { SetStateAction, useState } from 'react';
-import { Container, Box, Typography, TextField, Button } from '@mui/material';
+import { useState } from 'react';
+import {
+  Container,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Alert,
+} from '@mui/material';
 import DisconnectedHeader from '../Base/Header/DisconnectedHeader';
 import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
+import { actionResetPassword } from '../../store/thunks/actionResetPassword';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 
 export default function ResetPassword() {
   const [mail, setMail] = useState('');
+  const dispatch = useAppDispatch();
+  const { error } = useAppSelector((state) => state.user);
 
-  const handleEmailChange = (event: {
-    target: { value: SetStateAction<string> };
-  }) => {
+  const handleEmailChange = (event: any) => {
     setMail(event.target.value);
   };
 
-  const handleSubmit = (event: { preventDefault: () => void }) => {
+  const handleSubmit = (event: any) => {
     event.preventDefault();
-    console.log('Email address well submit', mail);
+    dispatch(actionResetPassword({ mail })).then(() => {});
   };
 
   return (
@@ -43,6 +53,7 @@ export default function ResetPassword() {
             enter your email address below, and we'll send you a link to reset
             your password.
           </Typography>
+          {error && <Alert severity="error">{error}</Alert>}
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
             <TextField
               fullWidth

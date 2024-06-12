@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
 /* eslint-disable react/no-unescaped-entities */
@@ -49,6 +50,11 @@ import {
   deleteWeight,
 } from '../../store/thunks/actionWeightUpdate';
 import DesktopFooter from '../Base/Footer/DesktopFooter';
+import {
+  calculatePasswordStrength,
+  isPasswordValid,
+} from '../../utils/PasswordStrengthLogic';
+import PasswordProgression from '../Base/utils/PasswordProgression';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -101,19 +107,28 @@ export default function Settings() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [passwordMismatch, setPasswordMismatch] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState(0);
 
   const [openWeightModal, setOpenWeightModal] = useState(false);
   const [deleteIndex, setDeleteIndex] = useState(null);
   const [deleteWeightId, setDeleteWeightId] = useState(null);
 
-  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleChange = (e: any) => {
     const {
       target: { value },
-    } = event;
+    } = e;
     setPersonName(
       typeof value === 'string' ? value.split(',') : (value as string[])
     );
   };
+
+  interface UpdatedUser {
+    pseudo?: string;
+    mail?: string;
+    height?: number;
+    gender?: string;
+    birthdate?: string;
+  }
 
   const handleSubmit = async (event: {
     preventDefault: () => void;
@@ -122,7 +137,7 @@ export default function Settings() {
     event.preventDefault();
 
     const formData = event.target;
-    const updatedUser = {};
+    const updatedUser: UpdatedUser = {};
     const updatedWeight = parseFloat(newWeight);
 
     const newPseudo = formData.pseudo.value;
@@ -179,12 +194,14 @@ export default function Settings() {
     setOpenModal(false);
   };
 
-  const handlePasswordChange = async () => {
+  const handlePasswordModification = async () => {
     if (newPassword !== confirmNewPassword) {
       setPasswordMismatch(true);
       return;
     }
-
+    if (!isPasswordValid(newPassword)) {
+      return;
+    }
     await dispatch(actionChangePassword(newPassword));
     setPasswordMismatch(false);
     handleCloseModal();
@@ -198,7 +215,7 @@ export default function Settings() {
     setOpenWeightModal(false);
   };
 
-  const handleDelete = (index, weightId) => {
+  const handleDelete = (index: any, weightId: any) => {
     setDeleteIndex(index);
     setDeleteWeightId(weightId);
   };
@@ -224,7 +241,11 @@ export default function Settings() {
       console.error('Failed to delete weight:', error);
     }
   };
-
+  const handleNewPassword = (e: any) => {
+    const newPass = e.target.value;
+    setNewPassword(newPass);
+    setPasswordStrength(calculatePasswordStrength(newPass));
+  };
   return (
     <>
       {isDesktop ? <DesktopHeader /> : <Header />}
@@ -411,8 +432,9 @@ export default function Settings() {
             name="newPassword"
             type="password"
             value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
+            onChange={handleNewPassword}
           />
+          <PasswordProgression passwordStrength={passwordStrength} />
           <TextField
             margin="normal"
             required
@@ -425,7 +447,7 @@ export default function Settings() {
             onChange={(e) => setConfirmNewPassword(e.target.value)}
           />
           <Button
-            onClick={handlePasswordChange}
+            onClick={handlePasswordModification}
             fullWidth
             variant="contained"
             color="primary"
@@ -469,7 +491,10 @@ export default function Settings() {
               <TableBody>
                 {allWeights ? (
                   [...allWeights]
-                    .sort((a, b) => new Date(a.date) - new Date(b.date))
+                    .sort(
+                      (a, b) =>
+                        new Date(a.date).getTime() - new Date(b.date).getTime()
+                    )
                     .map((weightData, index) => (
                       <TableRow key={index}>
                         <TableCell>
@@ -513,7 +538,7 @@ export default function Settings() {
           </Button>
           <Button
             onClick={() => {
-              handleDeleteWeight(deleteWeightId);
+              handleDeleteWeight(deleteWeightId ?? 0);
               handleDeleteConfirmed();
             }}
             color="primary"
