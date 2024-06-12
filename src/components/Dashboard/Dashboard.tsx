@@ -44,6 +44,7 @@ import Footer from '../Base/Footer/Footer';
 import DesktopHeader from '../Base/Header/DesktopHeader';
 import DesktopFooter from '../Base/Footer/DesktopFooter';
 import {
+  fetchWeight,
   fetchGraphicWeight,
   actionWeightUpdate,
 } from '../../store/thunks/actionWeightUpdate';
@@ -71,6 +72,7 @@ const Dashboard: React.FC = () => {
   const targetMet = useAppSelector((state) => state.user.objective) || 0;
   const sessions = useAppSelector((state) => state.sessions.sessionsList);
   const totalMetPerWeek = getTotalMetPerWeek(sessions);
+  const userWeight = useAppSelector((state) => state.weight.value);
   useEffect(() => {
     dispatch(actionThunkFetchSessions());
   }, [dispatch]);
@@ -144,6 +146,7 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchGraphicWeight());
+    dispatch(fetchWeight());
   }, [dispatch]);
 
   return (
@@ -175,7 +178,9 @@ const Dashboard: React.FC = () => {
                 color="text.secondary"
                 sx={{ mt: 2, mb: 2 }}
               >
-                Achieved METs: {totalMetPerWeek}
+                Achieved METs: {totalMetPerWeek} <br />
+                Equivalent burned calories:{' '}
+                {Math.round((totalMetPerWeek * (userWeight ?? 70)) / 60)}
               </Typography>
               <LinearProgress
                 variant="determinate"

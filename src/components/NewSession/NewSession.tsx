@@ -36,6 +36,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
+import { fetchWeight } from '../../store/thunks/actionWeightUpdate';
 
 import IActivity from '../../@types/activity';
 
@@ -63,10 +64,12 @@ function NewSession() {
   const [newSessionDateTime, setNewSessionDateTime] = useState('');
   const [totalMet, setTotalMet] = useState(0);
   const [error, setError] = useState('');
+  const userWeight = useAppSelector((state) => state.weight.value);
 
   useEffect(() => {
     dispatch(actionThunkFetchSessions());
     dispatch(actionThunkFetchActivities());
+    dispatch(fetchWeight());
   }, [dispatch]);
 
   // -- LIST SESSIONS SELECTOR --
@@ -253,6 +256,15 @@ function NewSession() {
                               1
                             )}
                           </Typography>
+                          <Typography variant="body1" color="primary">
+                            Total burned calories:{' '}
+                            {Math.round(
+                              (session.activity_met *
+                                session.duration *
+                                (userWeight ?? 70)) /
+                                60
+                            )}
+                          </Typography>
                         </Box>
                         <Chip
                           label="DELETE"
@@ -368,7 +380,9 @@ function NewSession() {
 
           {totalMet > 0 && (
             <Typography variant="body1" color="textSecondary" gutterBottom>
-              Total MET expended: {totalMet.toFixed(2)}
+              Total MET expended: {totalMet.toFixed(2)} <br />
+              Total burned calories :{' '}
+              {Math.round((totalMet * (userWeight ?? 70)) / 60)}
             </Typography>
           )}
           <TextField

@@ -47,6 +47,7 @@ const Home: React.FC = () => {
   const weightDate = useAppSelector((state) => state.weight.date);
   const targetMet = useAppSelector((state) => state.user.objective);
   const totalMetPerWeek = getTotalMetPerWeek(sessionsList);
+  const userWeight = useAppSelector((state) => state.weight.value);
 
   useEffect(() => {
     dispatch(actionThunkFetchUser());
@@ -94,6 +95,15 @@ const Home: React.FC = () => {
                 value={(totalMetPerWeek / (targetMet ?? 100)) * 100}
                 sx={{ height: 40, borderRadius: 9, mt: 1 }}
               />
+              <Typography
+                variant="body2"
+                textAlign="center"
+                color="text.secondary"
+                sx={{ mt: 2 }}
+              >
+                Equivalent of calories burned :{' '}
+                {Math.round((totalMetPerWeek * (userWeight ?? 70)) / 60)}
+              </Typography>
             </CardContent>
           </Card>
           <Card sx={{ width: '100%', boxShadow: 3, borderRadius: 2 }}>
@@ -206,7 +216,15 @@ const Home: React.FC = () => {
                           color="primary"
                           sx={{ marginBottom: 1 }}
                         >
-                          Total METs {session.activity_met * session.duration}
+                          Total METs {session.activity_met * session.duration}{' '}
+                          <br />
+                          Total burned calories:{' '}
+                          {Math.round(
+                            (session.activity_met *
+                              session.duration *
+                              (userWeight ?? 70)) /
+                              60
+                          )}
                         </Typography>
                       </Box>
                     </ListItem>

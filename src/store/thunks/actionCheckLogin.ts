@@ -13,7 +13,6 @@ const actionCheckLogin = createAsyncThunk(
       if (axios.isAxiosError(error)) {
         return thunkAPI.rejectWithValue(error.response?.data);
       }
-
       return thunkAPI.rejectWithValue('An unknown error occurred');
     }
   }

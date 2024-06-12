@@ -24,6 +24,7 @@ import dayjs from 'dayjs';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 import actionThunkFetchSessions from '../../store/thunks/thunkFetchSessions';
 import thunkDeleteSession from '../../store/thunks/thunkDeleteSession';
+import { fetchWeight } from '../../store/thunks/actionWeightUpdate';
 
 // Import des sous-composants
 import Header from '../Base/Header/Header';
@@ -36,10 +37,11 @@ export default function History() {
   const dispatch = useAppDispatch();
   const sessionsList = useAppSelector((state) => state.sessions.sessionsList);
   const sessionsListToSort = sessionsList.slice(0);
-  console.log(sessionsList);
+  const userWeight = useAppSelector((state) => state.weight.value);
 
   useEffect(() => {
     dispatch(actionThunkFetchSessions());
+    dispatch(fetchWeight());
   }, [dispatch]);
 
   // Utilisation du thème pour récupérer la couleur primaire
@@ -127,7 +129,15 @@ export default function History() {
                               Total METs :
                               {(
                                 session.activity_met * session.duration
-                              ).toFixed(1)}
+                              ).toFixed(1)}{' '}
+                              <br />
+                              Total burned calories :
+                              {Math.round(
+                                (session.activity_met *
+                                  session.duration *
+                                  (userWeight ?? 70)) /
+                                  60
+                              )}
                             </Typography>
                           </Link>
                           <hr
