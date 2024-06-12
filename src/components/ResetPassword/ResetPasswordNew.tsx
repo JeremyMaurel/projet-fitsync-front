@@ -5,6 +5,7 @@
 import { useState } from 'react';
 
 import { Container, Box, Typography, TextField, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import DisconnectedHeader from '../Base/Header/DisconnectedHeader';
 import DisconnectedFooter from '../Base/Footer/DisconnectedFooter';
 import { useAppDispatch } from '../../hooks/redux-hooks';
@@ -21,6 +22,7 @@ export default function ResetPasswordNew() {
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [passwordMismatch, setPasswordMismatch] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
+  const navigate = useNavigate();
 
   const handlePasswordChange = async () => {
     if (newPassword !== confirmNewPassword) {
@@ -35,6 +37,8 @@ export default function ResetPasswordNew() {
     setNewPassword('');
     setConfirmNewPassword('');
     setPasswordMismatch(false);
+
+    navigate('/login');
   };
 
   const handleNewPassword = async (e: React.ChangeEvent<HTMLInputElement>) => {
