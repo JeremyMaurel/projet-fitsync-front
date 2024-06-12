@@ -34,7 +34,7 @@ import {
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux-hooks';
 
 import IActivity from '../../@types/activity';
@@ -44,11 +44,13 @@ import Footer from '../Base/Footer/Footer';
 import DesktopHeader from '../Base/Header/DesktopHeader';
 import thunkAddNewSession from '../../store/thunks/thunkAddNewSession';
 import actionThunkFetchSessions from '../../store/thunks/thunkFetchSessions';
+import actionThunkFetchActivities from '../../store/thunks/thunkFetchActivities';
 import DesktopFooter from '../Base/Footer/DesktopFooter';
 import thunkDeleteSession from '../../store/thunks/thunkDeleteSession';
 
 function NewSession() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   // -- NEW SESSION STATES --
   const [newSessionComment, setNewSessionComment] = useState('');
@@ -62,13 +64,14 @@ function NewSession() {
   const [totalMet, setTotalMet] = useState(0);
   const [error, setError] = useState('');
 
-  // -- LIST SESSIONS SELECTOR --
-  const sessionsList = useAppSelector((state) => state.sessions.sessionsList);
-
   useEffect(() => {
     dispatch(actionThunkFetchSessions());
+    dispatch(actionThunkFetchActivities());
   }, [dispatch]);
 
+  // -- LIST SESSIONS SELECTOR --
+  const sessionsList = useAppSelector((state) => state.sessions.sessionsList);
+  const sessionListToSort = sessionsList.slice(0);
   // -- LIST ACTIVITIES SELECTOR --
   const activitiesList = useAppSelector(
     (state) => state.activities.activitiesList
@@ -85,7 +88,7 @@ function NewSession() {
     preSelectedActivity = true;
   }
 
-  const activityToDisplay = activitiesList.find(
+  const activityToDisplay: any = activitiesList.find(
     (activity) => activity.id === idFromUrl
   );
 
@@ -116,7 +119,7 @@ function NewSession() {
 
     // Calculer le MET total dépensé
     const selectedActivity = activitiesList.find(
-      (activity) => activity.id === newSessionActivityId
+      (activity) => activity.id === newSessionActivityId || activityToDisplay
     );
     if (selectedActivity) {
       const metValue = selectedActivity.met; // Assurez-vous que le champ MET est disponible dans l'objet activité
@@ -133,9 +136,14 @@ function NewSession() {
     activityId: number,
     selectedActivityName: string
   ) => {
-    setNewSessionActivityId(activityId); // Définit l'ID de l'activité sélectionnée
-    setSearchActivities(activityName); // Met à jour le terme de recherche avec le nom de l'activité
-    setFilteredActivities([]); // Réinitialise la liste des activités filtrées
+    // Mettre à jour l'ID de l'activité sélectionnée
+    setNewSessionActivityId(activityId);
+
+    // Mettre à jour le champ de recherche avec le nom de l'activité sélectionnée
+    setSearchActivities(selectedActivityName);
+
+    // Réinitialiser la liste des activités filtrées
+    setFilteredActivities([]);
   };
 
   const handlePreSelectedActivity = (idSelectedFromUrl: number) => {
@@ -148,7 +156,7 @@ function NewSession() {
     // Créer un objet représentant la nouvelle session avec le commentaire
     const newSession = {
       duration: newSessionDuration,
-      activityId: newSessionActivityId,
+      activityId: newSessionActivityId || activityToDisplay.id,
       date: newSessionDateTime,
       comment: newSessionComment,
     };
@@ -172,7 +180,8 @@ function NewSession() {
     setNewSessionComment('');
     setNewSessionActivityId(null);
     setSearchActivities('');
-    window.location.reload();
+    // window.location.reload();
+    navigate('/home');
   };
 
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
@@ -215,39 +224,47 @@ function NewSession() {
                 My Last Sessions
               </Typography>
               <List>
-                {sessionsList.slice(-3).map((session, index) => (
-                  <Box key={session.id}>
-                    <ListItem
-                      sx={{
-                        pt: index === 0 ? 0 : 2,
-                        alignItems: 'flex-start',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                      }}
-                    >
-                      <Box sx={{ width: '100%' }}>
-                        <Typography variant="body2" color="textSecondary">
-                          {dayjs(session.date).format('MM-DD-YYYY HH:mm')}
-                        </Typography>
-                        <Typography variant="body1" sx={{ marginBottom: 1 }}>
-                          {session.activity_name}
-                        </Typography>
-                        <Typography variant="body1" color="primary">
-                          Total METs Expended:{' '}
-                          {(session.activity_met * session.duration).toFixed(1)}
-                        </Typography>
-                      </Box>
-                      <Chip
-                        label="DELETE"
-                        size="small"
-                        aria-label="delete"
-                        onClick={() => handleDeleteSession(session.id)}
-                        sx={{ fontSize: '0.60rem', height: '24px' }}
-                      />
-                    </ListItem>
-                    {index < sessionsList.slice(-3).length - 1 && <Divider />}
-                  </Box>
-                ))}
+                {sessionListToSort
+                  .sort(
+                    (a, b) =>
+                      new Date(b.date).getTime() - new Date(a.date).getTime()
+                  )
+                  .slice(0, 3)
+                  .map((session, index) => (
+                    <Box key={session.id}>
+                      <ListItem
+                        sx={{
+                          pt: index === 0 ? 0 : 2,
+                          alignItems: 'flex-start',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                        }}
+                      >
+                        <Box sx={{ width: '100%' }}>
+                          <Typography variant="body2" color="textSecondary">
+                            {dayjs(session.date).format('MM-DD-YYYY HH:mm')}
+                          </Typography>
+                          <Typography variant="body1" sx={{ marginBottom: 1 }}>
+                            {session.activity_name}
+                          </Typography>
+                          <Typography variant="body1" color="primary">
+                            Total METs Expended:{' '}
+                            {(session.activity_met * session.duration).toFixed(
+                              1
+                            )}
+                          </Typography>
+                        </Box>
+                        <Chip
+                          label="DELETE"
+                          size="small"
+                          aria-label="delete"
+                          onClick={() => handleDeleteSession(session.id)}
+                          sx={{ fontSize: '0.60rem', height: '24px' }}
+                        />
+                      </ListItem>
+                      {index < sessionsList.slice(-3).length - 1 && <Divider />}
+                    </Box>
+                  ))}
               </List>
             </CardContent>
           </Card>
@@ -303,39 +320,14 @@ function NewSession() {
               <Typography variant="h6" gutterBottom>
                 Selected Activity
               </Typography>
-              <Card
-                sx={{
-                  mb: 4,
-                  boxShadow: 3,
-                  padding: 3,
-                }}
-              >
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'flex-start',
-                  }}
-                >
-                  <Typography variant="body1" gutterBottom>
-                    {activityToDisplay?.name}
-                  </Typography>
-                  <Button
-                    variant="contained"
-                    endIcon={<CheckCircleIcon />}
-                    sx={{
-                      mt: 2,
-                      bgcolor: '#ADFA1D',
-                      '&:hover': {
-                        bgcolor: '#8BCC0F',
-                      },
-                    }}
-                    onClick={() => handlePreSelectedActivity(idFromUrl)}
-                  >
-                    Confirm the selected activity
-                  </Button>
-                </Box>
-              </Card>
+              <TextField
+                label="Activity"
+                variant="outlined"
+                value={activityToDisplay.name}
+                fullWidth
+                sx={{ mb: 2, mt: 3 }}
+                disabled
+              />
             </>
           )}
 

@@ -35,6 +35,7 @@ export default function History() {
   // -- STATE REDUX --
   const dispatch = useAppDispatch();
   const sessionsList = useAppSelector((state) => state.sessions.sessionsList);
+  const sessionsListToSort = sessionsList.slice(0);
   console.log(sessionsList);
 
   useEffect(() => {
@@ -85,80 +86,85 @@ export default function History() {
           width="100%"
         >
           <Grid container spacing={2}>
-            {sessionsList.map((session) => (
-              <Grid item xs={12} sm={6} key={session.id}>
-                <Card
-                  sx={{
-                    boxShadow: 3,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: '100%',
-                  }}
-                >
-                  <CardHeader
-                    title={
-                      <div>
-                        <Link
-                          to={`/history/${session.id}`}
-                          style={{ textDecoration: 'none', color: 'inherit' }}
-                        >
-                          <Typography variant="body2" color="primary">
-                            {dayjs(session.date).format('MM.DD.YYYY')}
-                          </Typography>
-                          <Typography variant="body2" color="primary">
-                            {dayjs(session.date).format('HH:mm')}
-                          </Typography>
-                          {session.activity_name}
+            {sessionsListToSort
+              .sort(
+                (a, b) =>
+                  new Date(b.date).getTime() - new Date(a.date).getTime()
+              )
+              .map((session) => (
+                <Grid item xs={12} sm={6} key={session.id}>
+                  <Card
+                    sx={{
+                      boxShadow: 3,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      height: '100%',
+                    }}
+                  >
+                    <CardHeader
+                      title={
+                        <div>
+                          <Link
+                            to={`/history/${session.id}`}
+                            style={{ textDecoration: 'none', color: 'inherit' }}
+                          >
+                            <Typography variant="body2" color="primary">
+                              {dayjs(session.date).format('MM.DD.YYYY')}
+                            </Typography>
+                            <Typography variant="body2" color="primary">
+                              {dayjs(session.date).format('HH:mm')}
+                            </Typography>
+                            {session.activity_name}
 
+                            <Typography
+                              variant="body2"
+                              color="textSecondary"
+                              sx={{ mt: 2 }}
+                            >
+                              Duration: {session.duration} mn
+                            </Typography>
+                            <Typography variant="body2" color="primary">
+                              Total METs :
+                              {(
+                                session.activity_met * session.duration
+                              ).toFixed(1)}
+                            </Typography>
+                          </Link>
+                          <hr
+                            style={{
+                              width: '100%',
+                              border: `none`,
+                              borderTop: `1px solid ${theme.palette.divider}`,
+                              margin: `16px 0 8px`,
+                            }}
+                          />
                           <Typography
                             variant="body2"
                             color="textSecondary"
-                            sx={{ mt: 2 }}
+                            sx={{ mt: 1 }}
                           >
-                            Duration: {session.duration} mn
+                            {' '}
+                            Comment: {session.comment}
                           </Typography>
-                          <Typography variant="body2" color="primary">
-                            Total METs :
-                            {(session.activity_met * session.duration).toFixed(
-                              1
-                            )}
-                          </Typography>
-                        </Link>
-                        <hr
-                          style={{
-                            width: '100%',
-                            border: `none`,
-                            borderTop: `1px solid ${theme.palette.divider}`,
-                            margin: `16px 0 8px`,
-                          }}
-                        />
-                        <Typography
-                          variant="body2"
-                          color="textSecondary"
-                          sx={{ mt: 1 }}
-                        >
-                          {' '}
-                          Comment: {session.comment}
-                        </Typography>
-                      </div>
-                    }
-                  />
-                  <Box mt={2} mb={2} ml={2} mr={2}>
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      onClick={() => openConfirmDeleteDialog(session.id)}
-                      sx={{
-                        color: theme.palette.text.disabled,
-                        backgroundColor: theme.palette.action.hover,
-                      }}
-                    >
-                      DELETE
-                    </Button>
-                  </Box>
-                </Card>
-              </Grid>
-            ))}
+                        </div>
+                      }
+                    />
+                    <Box mt={2} mb={2} ml={2} mr={2}>
+                      <Button
+                        fullWidth
+                        variant="contained"
+                        onClick={() => openConfirmDeleteDialog(session.id)}
+                        sx={{
+                          color: theme.palette.text.disabled,
+                          backgroundColor: theme.palette.action.hover,
+                        }}
+                      >
+                        DELETE
+                      </Button>
+                    </Box>
+                  </Card>
+                </Grid>
+              ))}
           </Grid>
         </Box>
       </Container>

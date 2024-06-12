@@ -42,6 +42,7 @@ const Home: React.FC = () => {
 
   // -- LIST SESSIONS SELECTOR --
   const sessionsList = useAppSelector((state) => state.sessions.sessionsList);
+  const sessionsListToSort = sessionsList.slice(0);
   const weight = useAppSelector((state) => state.weight.value);
   const weightDate = useAppSelector((state) => state.weight.date);
   const targetMet = useAppSelector((state) => state.user.objective);
@@ -177,35 +178,41 @@ const Home: React.FC = () => {
               My Last Sessions
             </Typography>
             <List sx={{ padding: 0 }}>
-              {sessionsList.slice(-3).map((session, index) => (
-                <Box key={session.id}>
-                  <ListItem
-                    sx={{
-                      pt: index === 0 ? 0 : 2,
-                      alignItems: 'flex-start',
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <Box sx={{ width: '100%' }}>
-                      <Typography variant="body2" color="textSecondary">
-                        {dayjs(session.date).format('MM-DD-YYYY HH:mm')}
-                      </Typography>
-                      <Typography variant="body1" sx={{ marginBottom: 1 }}>
-                        {session.activity_name}
-                      </Typography>
-                      <Typography
-                        variant="body1"
-                        color="primary"
-                        sx={{ marginBottom: 1 }}
-                      >
-                        Total METs {session.activity_met * session.duration}
-                      </Typography>
-                    </Box>
-                  </ListItem>
-                  {index < sessionsList.slice(-3).length - 1 && <Divider />}
-                </Box>
-              ))}
+              {sessionsListToSort
+                .sort(
+                  (a, b) =>
+                    new Date(b.date).getTime() - new Date(a.date).getTime()
+                )
+                .slice(0, 3)
+                .map((session, index) => (
+                  <Box key={session.id}>
+                    <ListItem
+                      sx={{
+                        pt: index === 0 ? 0 : 2,
+                        alignItems: 'flex-start',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <Box sx={{ width: '100%' }}>
+                        <Typography variant="body2" color="textSecondary">
+                          {dayjs(session.date).format('MM-DD-YYYY HH:mm')}
+                        </Typography>
+                        <Typography variant="body1" sx={{ marginBottom: 1 }}>
+                          {session.activity_name}
+                        </Typography>
+                        <Typography
+                          variant="body1"
+                          color="primary"
+                          sx={{ marginBottom: 1 }}
+                        >
+                          Total METs {session.activity_met * session.duration}
+                        </Typography>
+                      </Box>
+                    </ListItem>
+                    {index < sessionsList.slice(-3).length - 1 && <Divider />}
+                  </Box>
+                ))}
             </List>
           </CardContent>
         </Card>
